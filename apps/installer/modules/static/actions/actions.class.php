@@ -250,6 +250,26 @@ class staticActions extends sfActions
         $res = @ mysql_query($query, $link);
         if(!$res) $this->messages[] = mysql_error().' :: '.$query;
       }
+      //Create trigger for company.
+      $query = "CREATE TRIGGER company_trigger AFTER INSERT ON company 
+FOR EACH ROW  
+
+BEGIN
+
+    INSERT INTO tax (company_id,name,value,active,is_default) SELECT NEW.id,name,value,active,is_default from tax where company_id = 0;
+    INSERT INTO product_category(company_id,name) SELECT NEW.id,name from product_category where company_id = 0;
+    INSERT INTO payment_type(company_id,name,enabled) SELECT NEW.id,name,enabled from payment_type where company_id = 0;
+    INSERT INTO expense_type(company_id,name,enabled) SELECT NEW.id,name,enabled from expense_type where company_id = 0;
+    INSERT INTO customer(company_id,name,name_slug,identification) SELECT NEW.id,name,name_slug,identification from customer where company_id = 0;
+   INSERT INTO product(company_id,description,category_id) SELECT NEW.id,description, pc2.id
+   from product p inner join product_category pc on pc.id = p.category_id inner join product_category pc2 on pc.name = pc2.name and pc2.company_id = NEW.id where p.company_id = 0;
+END;
+";
+      $db=new mysqli($user->getAttribute('host'), $user->getAttribute('username'), $user->getAttribute('password'), $user->getAttribute('database')); 
+      $res = $db->multi_query ($query);
+      if(!$res) $this->messages[] = $db->error.' :: '.$query;
+      $db->close();
+      
       
       if ($this->messages)
       {
@@ -424,8 +444,8 @@ class staticActions extends sfActions
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Recibo al vencimiento','1')";
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Pagaré','1')";
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Transferencia','1')";
-    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Xeque','1')";
-    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Xeque bancario','1')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Cheque','1')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Cheque bancario','1')";
     //Tipos de gastos
     $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Compras','1')";
     $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Trabajos otras emp.','1')";
@@ -450,7 +470,6 @@ class staticActions extends sfActions
     $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Bienes de inversión','1')";
     //Default customer
     $sql[] = "INSERT INTO customer(company_id,name,name_slug,identification) VALUES (0,'CLIENTE CONTADO','clientecontado','00000000T')";
-    
     $sql[] = $this->getMigrationVersionQuery();
     // we add  "drop table if exists" statements in case there is already a db with tables
     $nsql = array();
@@ -498,7 +517,7 @@ class staticActions extends sfActions
       $this->getUser()->getAttribute('preload') ? '' : 'last_month'
       );
   }
-  
+
   /**
    * Load templates in <root_dir>/data/fixtures/templates.yml
    *
