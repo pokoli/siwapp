@@ -106,14 +106,21 @@ class CompaniesActions extends sfActions
   public function executeDelete(sfWebRequest $request)
   {
     $Company = $this->getCompany($request);
-    if(!$Company->delete())
+    //Hardcoded to avoid ereasing company 0 (with master data)
+    if($Company->getId==0)
     {
-      $this->getUser()->error($this->getContext()->getI18N()
-                              ->__('The Company could not be deleted. '
-                                   .'Probably because an associated invoice exists')
-                              );
+        $this->getUser()->error($this->getContext()->getI18N()
+                              ->__('The Default Company can not be erased'));
     }
-
+    else {
+        if(!$Company->delete())
+        {
+          $this->getUser()->error($this->getContext()->getI18N()
+                                  ->__('The Company could not be deleted. '
+                                       .'Probably because an associated invoice exists')
+                                  );
+        }
+    }
     $this->redirect('companies/index');
   }
   
@@ -158,6 +165,9 @@ class CompaniesActions extends sfActions
       $n = 0;
       foreach($request->getParameter('ids', array()) as $id)
       {
+        //Hardcoded to avoid ereasing company 0 (with master data)
+        if($id==0)
+            continue;
         if($Company = Doctrine::getTable('Company')->find($id))
         {
           switch($request->getParameter('batch_action'))
