@@ -3,7 +3,7 @@ default:
     content-type: text/html
 
   metas:
-    title:        siwapp - Installer
+    title:        fac24 - Installer
     #description:  symfony project
     #keywords:     symfony, project
     #language:     en

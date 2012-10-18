@@ -1,6 +1,6 @@
 all:
   metas:
-    title:     siwapp - Recurring Invoices
+    title:     fac24 - Recurring Invoices
   components:
     searchForm: [search, recurringForm]
 

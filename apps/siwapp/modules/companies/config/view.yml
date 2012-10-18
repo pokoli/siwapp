@@ -1,6 +1,6 @@
 all:
   metas:
-    title:     siwapp - Companyies
+    title:     fac24 - Companyies
   components:
     searchForm: [search, companyForm]
     

@@ -1,6 +1,6 @@
 all:
   metas:
-    title:     siwapp - Users
+    title:     fac24 - Users
   components:
     searchForm: [search, userForm]
     

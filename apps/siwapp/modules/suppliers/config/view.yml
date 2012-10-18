@@ -1,6 +1,6 @@
 all:
   metas:
-    title:     siwapp - Suppliers
+    title:     fac24 - Suppliers
   components:
     searchForm: [search, supplierForm]
     

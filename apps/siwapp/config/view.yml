@@ -3,7 +3,7 @@ default:
     content-type: text/html
 
   metas:
-    title:        siwapp
+    title:        fac24
     #description:  symfony project
     #keywords:     symfony, project
     language:     en
