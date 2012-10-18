@@ -372,7 +372,8 @@ class staticActions extends sfActions
     $dir = sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.'sql';
     $sql = explode(';', file_get_contents($dir.DIRECTORY_SEPARATOR.'schema.sql'), -1);
     $sql[] = file_get_contents($dir.DIRECTORY_SEPARATOR.'migration.schema.sql');
-    $sql[] = "INSERT INTO  company (name) VALUES ('Default Company')";
+    $sql[] = "INSERT INTO  company (id,name) VALUES (0,'Default Company')";
+    $sql[] = "update company set id = 0";
     
     if ($this->getUser()->getAttribute('preload'))
     {
@@ -381,14 +382,75 @@ class staticActions extends sfActions
     // if no data preload, insert a default invoice serie
     else
     {
-      $sql[] = "INSERT INTO series(company_id,name, value, first_number, enabled) VALUES (1,'Default', '', '1', '1')";
+      $sql[] = "INSERT INTO series(company_id,name, value, first_number, enabled) VALUES (0,'General', '', '1', '1')";
+        $sql[] = "INSERT INTO series(company_id,name, value, first_number, enabled) VALUES (0,'Rectificativas', '', '1', '1')";
     }
     
     $sql[] = $this->getGuardUserQuery();
     $sql[] = $this->getProfileQuery();
     //Assing the user to the first company:
-    $sql[] = "INSERT INTO company_user VALUES (1,1)";
+    $sql[] = "INSERT INTO company_user VALUES (0,'1')";
+    //Create default taxes
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA General',21.0,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Reducido',10.0,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Super Reducido',4.0,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Agricola/Forestal',12.0,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Ganadería/Pesca',10.5,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'R.E. IVA General',5.2,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'R.E. IVA Reducido',1.4,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'R.E. IVA Super Reducido',0.5,'1','0')";
+    //Retenciones
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Agraria',-2,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Alquiler',-21,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Capital mobiliario',-21,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Modulos',-1,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Profesionales',-21,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Regimen especial Agrario',-2,'1','0')";
     $sql = array_merge($sql, $this->getDefaultTemplateQuery());
+    //Product categories
+    $sql[] = "INSERT INTO product_category(company_id,name) VALUES (0,'Material')";
+    $sql[] = "INSERT INTO product_category(company_id,name) VALUES (0,'Servicios')";
+    $sql[] = "INSERT INTO product_category(company_id,name) VALUES (0,'Desplazamientos')";
+    $sql[] = "INSERT INTO product_category(company_id,name) VALUES (0,'Varios')";
+    //Products.
+    $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Mano de obra', (select id from product_category where name = 'Servicios') ";
+    $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Mantenimiento', (select id from product_category where name = 'Servicios') ";
+    $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Kilometraje', (select id from product_category where name = 'Desplazamientos') ";
+    $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Estacionamiento', (select id from product_category where name = 'Desplazamientos') ";
+    $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Dietas', (select id from product_category where name = 'Desplazamientos') ";
+    //Payment types
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Contado','1')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Recibo a la vista','1')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Recibo al vencimiento','1')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Pagaré','1')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Transferencia','1')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Xeque','1')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Xeque bancario','1')";
+    //Tipos de gastos
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Compras','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Trabajos otras emp.','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Gastos personal','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Seguridar Social Empresa','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Autonomo','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Otros gastos sociales','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Consumo','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Variación existencia','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Alquileres','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Intereses Deudas','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Tributos','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Reparaciones','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Servicios profesionales','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Transportes','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Primas de seguros','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Comisiones bancarias','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Amortizaciones','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Publicidad','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Subministros','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Otros gastos','1')";
+    $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Bienes de inversión','1')";
+    //Default customer
+    $sql[] = "INSERT INTO customer(company_id,name,name_slug,identification) VALUES (0,'CLIENTE CONTADO','clientecontado','00000000T')";
+    
     $sql[] = $this->getMigrationVersionQuery();
     // we add  "drop table if exists" statements in case there is already a db with tables
     $nsql = array();
