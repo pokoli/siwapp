@@ -1,24 +1,24 @@
 /* base colors & decorations
 GRAY    = 464648
-ORANGE1 = DA4722
-ORANGE2 = DB4823
-RED1    = C4452D
+ORANGE1 = 2A8960
+ORANGE2 = 2A8960
+RED1    = 009900
 */
 html { background-color:#FFFFFF; color:#464648; }
 #hd  { background-color:#FDFDFB; }
 #bd  { background-color:#FFFFFF; }
 #ft  { background-color:#FFFFFF; }
 
-a, a:link, a:visited { color:#DA4722; }
+a, a:link, a:visited { color:#2A8960; }
 .negative a          { color:#464648; }
-.negative a:hover    { color:#DA4722; }
+.negative a:hover    { color:#2A8960; }
 
-h2 { color:#535255; font-weight:normal; border-bottom:1px solid #DA4722; margin:0 0 1em; }
+h2 { color:#535255; font-weight:normal; border-bottom:1px solid #2A8960; margin:0 0 1em; }
 h3 { color:#9A9A9A; font-weight:normal; margin-bottom:0.556em; }
-h4 { color:#DA4722; font-weight:normal; margin-bottom:0.667em; }
+h4 { color:#2A8960; font-weight:normal; margin-bottom:0.667em; }
 
-.orange     { color:#DA4722; }
-.error_list { color:#C4452D; }
+.orange     { color:#2A8960; }
+.error_list { color:#009900; }
 
 textarea, input[type="text"], input[type="password"], select { color:inherit; }
 
@@ -35,7 +35,7 @@ div.ajaxBar { background:transparent url(../../images/ajax-bar.gif) no-repeat to
 /* to override see /css/siwapp/layout.css *-/
 #hd-navbar-menu li.active   { background-color:white; border-color:#DCDCDC; }
 /**/
-#hd-navbar-menu li a        { color:#DA4722;  }
+#hd-navbar-menu li a        { color:#2A8960;  }
 #hd-navbar-menu li.active a { color: #464648; }
 
 #new-invoice-button       { border-left:1px solid #DCDCDC; border-right:1px solid #FFFFFF; }
@@ -45,7 +45,7 @@ div.ajaxBar { background:transparent url(../../images/ajax-bar.gif) no-repeat to
 /* notifications */
 #hd-notifications div.notification { border-color:#489E00; background-color:#8DC361; color:#FFFFFF; cursor:pointer; }
 #hd-notifications div.warning      { border-color:#d8b256; background-color:#FADC76; color:#9B7720; }
-#hd-notifications div.error        { border-color:#B12F17; background-color:#C4452D; color:#FFFFFF; }
+#hd-notifications div.error        { border-color:#B12F17; background-color:#009900; color:#FFFFFF; }
 
 /* tables & listings */
 table.listing        { background-color:#FFFFFF; }
@@ -57,7 +57,7 @@ table.listing thead th a.desc { background:transparent url('../../images/icons/d
 
 table.listing tbody tr.checked td,
 table.listing tbody tr:hover td,
-table.listing tbody tr.hover td { background-color:#FFF0E1; }
+table.listing tbody tr.hover td { background-color:#D6F5D6; }
 
 table.listing tfoot th { background:transparent url('../../images/bg/thead.gif') repeat-x bottom left; }
 
@@ -67,7 +67,7 @@ table.listing tfoot th { background:transparent url('../../images/bg/thead.gif')
 span.status.closed,
 span.status.enabled  { color:#FFFFC0; background-color:#8DC361; border-color:#489E00; }
 span.status.overdue,
-span.status.pending { color:#FFFFFF; background-color:#C4452D; border-color:#B12F17; }
+span.status.pending { color:#FFFFFF; background-color:#009900; border-color:#B12F17; }
 span.status.opened,
 span.status.finished  { color:#9B7720; background-color:#FADC76; border-color:#D8B256; }
 span.status.draft,
@@ -75,11 +75,11 @@ span.status.disabled  { color:#999999; background-color:#EEEEEE; border-color:#C
 
 .estimates span.status.pending { color:#9B7720; background-color:#FADC76; border-color:#D8B256; }
 .estimates span.status.approved { color:#FFFFC0; background-color:#8DC361; border-color:#489E00; }
-.estimates span.status.rejected { color:#FFFFFF; background-color:#C4452D; border-color:#B12F17; }
+.estimates span.status.rejected { color:#FFFFFF; background-color:#009900; border-color:#B12F17; }
 /* DASHBOARD */
 .dashboard table#dashboard-summary    {}
 .dashboard table#dashboard-summary td { border-color:#DCDCDC; }
-.dashboard table#dashboard-summary tr.overdue td { color:#c4452d; }
+.dashboard table#dashboard-summary tr.overdue td { color:#009900; }
 .dashboard #dashboard-balance         {}
 .dashboard #dashboard-balance-total   {}
 
@@ -88,7 +88,7 @@ table.listing tbody tr:hover td.payments-form-container { background-color:white
 
 /* INVOICES */
 textarea:focus,
-input:focus { border-color:#DA4722; background-color:#FFF0E1; }
+input:focus { border-color:#2A8960; background-color:#D6F5D6; }
 
 #invoice-container input,
 #invoice-container textarea,
@@ -98,7 +98,7 @@ input:focus { border-color:#DA4722; background-color:#FFF0E1; }
 #invoice-container .show li ._75  { border-color:#DCDCDC; }
 #invoice-container .show label { color:#888; color:#9a9a9a; }
 
-#invoice-container label.tip,#supplier-data label.tip, #customer-data label.tip, #product-data label.tip { background:#DA4722; color:white; }
+#invoice-container label.tip,#supplier-data label.tip, #customer-data label.tip, #product-data label.tip { background:#2A8960; color:white; }
 
 /* SETTINGS */
 #settings-menu                     { border-color:#DCDCDC; }
@@ -112,7 +112,7 @@ input:focus { border-color:#DA4722; background-color:#FFF0E1; }
 #settings-wrapper textarea { border-color: #DCDCDC; }
 
 #settings-wrapper input:focus,
-#settings-wrapper textarea:focus { border-color: #DA4722; border-style:dotted; background-color:#FFF0E1; }
+#settings-wrapper textarea:focus { border-color: #2A8960; border-style:dotted; background-color:#D6F5D6; }
 
 #settings-wrapper fieldset  { border:0; }
 
@@ -120,15 +120,15 @@ input:focus { border-color:#DA4722; background-color:#FFF0E1; }
 #templateUploadForm { background:#fefefe; border:1px solid #f0f0f0; }
 
 /* ERRORS */
-.error_list { color:#c4452d; }
+.error_list { color:#009900; }
 .errorBox   { border-left:2px solid #b12f17; background:white; }
-#bd #bd-content form input.error { border-bottom-color:#c4452d; color:#c4452d; border-bottom-width:2px; }
+#bd #bd-content form input.error { border-bottom-color:#009900; color:#c4452d; border-bottom-width:2px; }
 
-#global-errors ul.error_list { border:1px solid #c4452d; }
+#global-errors ul.error_list { border:1px solid #009900; }
 
 /* BUTTONS */
 .btn-selected, .btn-selected span, .btn-selected span span,
 .btn:hover, .btn:hover span, .btn:hover span span,
 .btn.hover, .btn.hover span, .btn.hover span span, .btn:focus span,
-.btn:focus span span { border-color:#FD9378; color:#DA4722; }
+.btn:focus span span { border-color:#FD9378; color:#2A8960; }
 /* if you want to change the default theme icons don't forget to override those defined in /css/siwapp/buttons.css */
