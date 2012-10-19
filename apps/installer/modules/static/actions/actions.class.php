@@ -257,6 +257,7 @@ FOR EACH ROW
 BEGIN
 
     INSERT INTO tax (company_id,name,value,active,is_default) SELECT NEW.id,name,value,active,is_default from tax where company_id = 0;
+    INSERT INTO series (company_id,name,value,first_number,enabled) SELECT NEW.id,name,value,first_number,enabled from series where company_id = 0;
     INSERT INTO product_category(company_id,name) SELECT NEW.id,name from product_category where company_id = 0;
     INSERT INTO payment_type(company_id,name,enabled) SELECT NEW.id,name,enabled from payment_type where company_id = 0;
     INSERT INTO expense_type(company_id,name,enabled) SELECT NEW.id,name,enabled from expense_type where company_id = 0;
