@@ -393,7 +393,7 @@ END;
     $dir = sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.'sql';
     $sql = explode(';', file_get_contents($dir.DIRECTORY_SEPARATOR.'schema.sql'), -1);
     $sql[] = file_get_contents($dir.DIRECTORY_SEPARATOR.'migration.schema.sql');
-    $sql[] = "INSERT INTO  company (id,name) VALUES (0,'Default Company')";
+    $sql[] = "INSERT INTO  company (id,name,currency,currency_decimals,pdf_size) VALUES (0,'Default Company','EUR',2,'a4')";
     $sql[] = "update company set id = 0";
     
     if ($this->getUser()->getAttribute('preload'))
