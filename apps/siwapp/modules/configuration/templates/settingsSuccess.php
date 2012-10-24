@@ -19,7 +19,6 @@
         <?php echo $form['company'][0]['email']->renderRow(array('class' => 'full '.error_class($form['company'][0]['email']))) ?>
         <?php echo $form['company'][0]['url']->renderRow(array('class' => 'full '.error_class($form['company'][0]['url']))) ?>
         <?php echo $form['company'][0]['logo']->renderRow(array('class' => error_class($form['company'][0]['logo']))) ?>
-        <?php echo $form['company'][0]['currency']->renderRow(array('class' => error_class($form['company'][0]['currency']))) ?>
       </ul>
     </fieldset>
     

@@ -14,6 +14,8 @@ class CurrentCompanyForm extends CompanyForm
   public function configure()
   {
     parent::configure();
+    unset($this->widgetSchema['currency']);
+    unset($this->validatorSchema['currency']);
     unset($this->widgetSchema['company_user_list']);
     unset($this->validatorSchema['company_user_list']);
     
