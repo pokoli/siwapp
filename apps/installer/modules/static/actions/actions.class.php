@@ -475,6 +475,8 @@ END;
     //Default customer
     $sql[] = "INSERT INTO customer(company_id,name,name_slug,identification) VALUES (0,'CLIENTE CONTADO','clientecontado','00000000T')";
     $sql[] = $this->getMigrationVersionQuery();
+    //Assign templates to first company
+    $sql[] = "UPDATE template set company_id = 1";
     // we add  "drop table if exists" statements in case there is already a db with tables
     $nsql = array();
     $nsql[] = "SET foreign_key_checks = 0";
