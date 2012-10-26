@@ -264,6 +264,7 @@ BEGIN
     INSERT INTO customer(company_id,name,name_slug,identification) SELECT NEW.id,name,name_slug,identification from customer where company_id = 0;
    INSERT INTO product(company_id,description,category_id) SELECT NEW.id,description, pc2.id
    from product p inner join product_category pc on pc.id = p.category_id inner join product_category pc2 on pc.name = pc2.name and pc2.company_id = NEW.id where p.company_id = 0;
+   INSERT INTO template (company_id,name,template,models,slug) select NEW.id,name,template,models,slug FROM template where company_id = 0;
 END;
 ";
       $db=new mysqli($user->getAttribute('host'), $user->getAttribute('username'), $user->getAttribute('password'), $user->getAttribute('database')); 
@@ -476,7 +477,7 @@ END;
     $sql[] = "INSERT INTO customer(company_id,name,name_slug,identification) VALUES (0,'CLIENTE CONTADO','clientecontado','00000000T')";
     $sql[] = $this->getMigrationVersionQuery();
     //Assign templates to first company
-    $sql[] = "UPDATE template set company_id = 1";
+    $sql[] = "UPDATE template set company_id = 0";
     // we add  "drop table if exists" statements in case there is already a db with tables
     $nsql = array();
     $nsql[] = "SET foreign_key_checks = 0";
