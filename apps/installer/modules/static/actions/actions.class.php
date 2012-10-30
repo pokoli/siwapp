@@ -396,7 +396,7 @@ END;
     //TO Allow entering accents correctly.
     $sql[] = "SET NAMES 'utf8'";
     $sql[] = file_get_contents($dir.DIRECTORY_SEPARATOR.'migration.schema.sql');
-    $sql[] = "INSERT INTO  company (id,name,currency,currency_decimals,pdf_size) VALUES (0,'Default Company','EUR',2,'a4')";
+    $sql[] = "INSERT INTO  company(id,name,currency,currency_decimals,pdf_size) VALUES (0,'Default Company','EUR',2,'a4')";
     $sql[] = "update company set id = 0";
     
     if ($this->getUser()->getAttribute('preload'))
@@ -415,7 +415,7 @@ END;
     //Assing the user to the first company:
     $sql[] = "INSERT INTO company_user VALUES (0,'1')";
     //Create default taxes
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Exento',0,'1','0')";
+    $sql[  "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Exento',0,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA General',21.0,'1','1')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Reducido',10.0,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Super Reducido',4.0,'1','0')";
@@ -444,13 +444,13 @@ END;
     $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Estacionamiento', (select id from product_category where name = 'Desplazamientos') ";
     $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Dietas', (select id from product_category where name = 'Desplazamientos') ";
     //Payment types
-    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Contado','1')";
-    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Recibo a la vista','1')";
-    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Recibo al vencimiento','1')";
-    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Pagaré','1')";
-    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Transferencia','1')";
-    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Cheque','1')";
-    $sql[] = "INSERT INTO payment_type(company_id,name,enabled) VALUES(0,'Cheque bancario','1')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Contado','1','Pago al contado')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Recibo a la vista','1','Recibo bancario domiciliado a la vista')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Recibo al vencimiento','1','Recibo bancadio domiciliado al vencimiento de la factura')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Pagaré','1','Pagaré')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Transferencia','1','Transferencia bancària a XXXX-XXXX-XX-XXXXXXXXX')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Cheque','1','Cheque')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Cheque bancario','1','Cheque bancario')";
     //Tipos de gastos
     $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Compras','1')";
     $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Trabajos otras emp.','1')";
