@@ -39,41 +39,39 @@ Template:
           .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
 
           .section                    { margin-bottom: 1em; }
-          .logo                       { text-align: right; }
+          .logo                       { float: right; }
         </style>
 
         <style type="text/css">
-          /* CSS code for printing */
-          @media print {
             body           { margin:auto; }
             .section       { page-break-inside:avoid; }
             div#sfWebDebug { display:none; }
-          }
         </style>
       </head>
       <body>
-
-        {% if settings.company_logo %}
-          <div class="logo">
-            <img src="{{ settings.company_logo }}" alt="{{ settings.company_name }}" />
-          </div>
-        {% endif %}
           
-        <div class="h2">
-          <h2>Invoice #{{invoice}}</h2>
-        </div>
-
-        <div class="section">
-          <div class="company-data">
-            <ul>
-              <li>Company: {{settings.company_name}}</li>
-              <li>Address: {{settings.company_address|format}}</li>
-              <li>Phone: {{settings.company_phone}}</li>
-              <li>Fax: {{settings.company_fax}}</li>
-              <li>Email: {{settings.company_email}}</li>
-              <li>Web: {{settings.company_url}}</li>
-            </ul>
+          <div class="h2">
+           <h2> Invoice #{{invoice}}</h2>
           </div>
+
+          <div class="section">
+            <table cellspacing="0" cellpadding="0" width="100%">
+              <tr><td width=80%>
+                <ul>
+                    <li>Company: {{invoice.Company.name}}</li>
+                    <li>Address: {{invoice.Company.address|format}}</li>
+                    <li>Phone: {{invoice.Company.phone}}</li>
+                    <li>Fax: {{invoice.Company.fax}}</li>
+                    <li>Email: {{invoice.Company.email}}</li>
+                    <li>Web: {{invoice.Company.url}}</li>
+                </ul>
+              </td> 
+              {% if invoice.Company.logo %}
+                <td width="20%"> 
+                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
+                </td>
+             {% endif %}
+            </tr></table>
         </div>
 
         <div class="section">
@@ -143,7 +141,7 @@ Template:
                   <th>Description</th>
                   <th class="right">Unit Cost</th>
                   <th class="right">Qty</th>
-                  <th class="right">Taxes</th>
+                  <th class="right">Taxes total</th>
                   {# show discounts only if there is some discount #}
                   {% if invoice.discount_amount %}
                   <th class="right">Discount</th>
@@ -198,7 +196,7 @@ Template:
                 {% endfor %}
                 <tr>
                   <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Taxes</th>
+                  <th class="right">Taxes total</th>
                   <td class="td_total_taxes right">{{invoice.tax_amount|currency}}</td>
                 </tr>
                 <tr class="strong">
@@ -264,38 +262,36 @@ Template:
        </style>
 
        <style type="text/css">
-         /* CSS code for printing */
-         @media print {
            body           { margin:auto; }
            .section       { page-break-inside:avoid; }
            div#sfWebDebug { display:none; }
-         }
        </style>
       </head>
       <body>
 
-       {% if settings.company_logo %}
-         <div class="logo">
-           <img src="{{ settings.company_logo }}" alt="{{ settings.company_name }}" />
-         </div>
-       {% endif %}
+        <div class="h2">
+           <h2> Invoice #{{invoice}}</h2>
+          </div>
 
-       <div class="h2">
-         <h2>Invoice #{{invoice.number}}</h2>
-       </div>
-
-       <div class="section">
-         <div class="company-data">
-           <ul>
-             <li>Company: {{settings.company_name}}</li>
-             <li>Address: {{settings.company_address|format}}</li>
-             <li>Phone: {{settings.company_phone}}</li>
-             <li>Fax: {{settings.company_fax}}</li>
-             <li>Email: {{settings.company_email}}</li>
-             <li>Web: {{settings.company_url}}</li>
-           </ul>
-         </div>
-       </div>
+          <div class="section">
+            <table cellspacing="0" cellpadding="0" width="100%">
+              <tr><td width=80%>
+                <ul>
+                    <li>Company: {{invoice.Company.name}}</li>
+                    <li>Address: {{invoice.Company.address|format}}</li>
+                    <li>Phone: {{invoice.Company.phone}}</li>
+                    <li>Fax: {{invoice.Company.fax}}</li>
+                    <li>Email: {{invoice.Company.email}}</li>
+                    <li>Web: {{invoice.Company.url}}</li>
+                </ul>
+              </td> 
+              {% if invoice.Company.logo %}
+                <td width="20%"> 
+                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
+                </td>
+             {% endif %}
+            </tr></table>
+        </div>
 
        <div class="section">
          <h3>Client info</h3>
@@ -479,23 +475,20 @@ Template:
           .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
 
           .section                    { margin-bottom: 1em; }
-          .logo                       { text-align: right; }
+          .logo                       { float: right; }
         </style>
 
         <style type="text/css">
-          /* CSS code for printing */
-          @media print {
             body           { margin:auto; }
             .section       { page-break-inside:avoid; }
             div#sfWebDebug { display:none; }
-          }
         </style>
       </head>
       <body>
 
-        {% if settings.company_logo %}
+        {% if estimate.Company.logo %}
           <div class="logo">
-            <img src="{{ settings.company_logo }}" alt="{{ settings.company_name }}" />
+            <img src="{{ estimate.Company.logoURL }}" alt="{{ estimate.Company.name }}" />
           </div>
         {% endif %}
 
@@ -503,17 +496,24 @@ Template:
           <h2>Estimate #{{estimate}}</h2>
         </div>
 
-        <div class="section">
-          <div class="company-data">
-            <ul>
-              <li>Company: {{settings.company_name}}</li>
-              <li>Address: {{settings.company_address|format}}</li>
-              <li>Phone: {{settings.company_phone}}</li>
-              <li>Fax: {{settings.company_fax}}</li>
-              <li>Email: {{settings.company_email}}</li>
-              <li>Web: {{settings.company_url}}</li>
-            </ul>
-          </div>
+          <div class="section">
+            <table cellspacing="0" cellpadding="0" width="100%">
+              <tr><td width=80%>
+                <ul>
+                    <li>Company: {{estimate.Company.name}}</li>
+                    <li>Address: {{estimate.Company.address|format}}</li>
+                    <li>Phone: {{estimate.Company.phone}}</li>
+                    <li>Fax: {{estimate.Company.fax}}</li>
+                    <li>Email: {{estimate.Company.email}}</li>
+                    <li>Web: {{estimate.Company.url}}</li>
+                </ul>
+              </td> 
+              {% if invoice.Company.logo %}
+                <td width="20%"> 
+                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
+                </td>
+             {% endif %}
+            </tr></table>
         </div>
 
         <div class="section">
@@ -577,7 +577,7 @@ Template:
                   <th>Description</th>
                   <th class="right">Unit Cost</th>
                   <th class="right">Qty</th>
-                  <th class="right">Taxes</th>
+                  <th class="right">Taxes total</th>
                   {# show discounts only if there is some discount #}
                   {% if estimate.discount_amount %}
                   <th class="right">Discount</th>
@@ -632,7 +632,7 @@ Template:
                 {% endfor %}
                 <tr>
                   <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Taxes</th>
+                  <th class="right">Taxes total</th>
                   <td class="td_total_taxes right">{{estimate.tax_amount|currency}}</td>
                 </tr>
                 <tr class="strong">
@@ -694,16 +694,13 @@ Template:
             .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
 
             .section                    { margin-bottom: 1em; }
-            .logo                       { text-align: right; }
+            .logo                       { float: right; }
           </style>
 
           <style type="text/css">
-            /* CSS code for printing */
-            @media print {
               body           { margin:auto; }
               .section       { page-break-inside:avoid; }
               div#sfWebDebug { display:none; }
-            }
           </style>
         </head>
         <body>
@@ -769,7 +766,7 @@ Template:
                     <th>Description</th>
                     <th class="right">Unit Cost</th>
                     <th class="right">Qty</th>
-                    <th class="right">Taxes</th>
+                    <th class="right">Taxes total</th>
                     {# show discounts only if there is some discount #}
                     {% if expense.discount_amount %}
                     <th class="right">Discount</th>
@@ -824,7 +821,7 @@ Template:
                   {% endfor %}
                   <tr>
                     <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Taxes</th>
+                    <th class="right">Taxes total</th>
                     <td class="td_total_taxes right">{{expense.tax_amount|currency}}</td>
                   </tr>
                   <tr class="strong">
