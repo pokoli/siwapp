@@ -2,7 +2,7 @@ Template:
   Template_1:
     name: Invoice Template
     slug: invoice-template
-    models: Invoice
+    models: none 
     template: |
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
       <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
@@ -221,7 +221,7 @@ Template:
   Template_2:
     name: Template with product
     slug: template-with-product
-    models: Invoice
+    models: none
     template: |
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
       <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
@@ -438,7 +438,7 @@ Template:
   Template_3:
     name: Estimate Template
     slug: estimate-template
-    models: Estimate
+    models: none
     template: |
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
       <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
@@ -657,7 +657,7 @@ Template:
   Template_4:
     name: Expense Template
     slug: expense-template
-    models: Expense
+    models: none
     template: |
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
         <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
@@ -1057,9 +1057,9 @@ Template:
       </html>
 
   Template_6:
-    name: Plantilla con producto (Castellano)
-    slug: plantilla-con-producto
-    models: Invoice
+    name: Plantilla de factura con producto (Castellano)
+    slug: plantilla-factura-con-producto
+    models: none
     template: |
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
       <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
@@ -1678,7 +1678,7 @@ Template:
   Template_9:
     name: Plantilla de Factura (Català)
     slug: plantilla-factura-cat
-    models: Invoice
+    models: none
     template: |
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
       <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
@@ -1895,9 +1895,9 @@ Template:
       </html>
 
   Template_10:
-    name: Plantilla amb producte (Català)
-    slug: plantilla-amb-producte
-    models: Invoice
+    name: Plantilla de factura amb producte (Català)
+    slug: plantilla-de-factura-amb-producte
+    models: none
     template: |
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
       <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
@@ -2114,7 +2114,7 @@ Template:
   Template_11:
     name: Plantila de Presupost (Català)
     slug: plantilla-de-presupost
-    models: Estimate
+    models: none 
     template: |
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
       <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
@@ -2333,7 +2333,7 @@ Template:
   Template_12:
     name: Plantilla de despeses
     slug: plantilla-de-despeses
-    models: Expense
+    models: none
     template: |
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
         <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
