@@ -415,7 +415,7 @@ END;
     //Assing the user to the first company:
     $sql[] = "INSERT INTO company_user VALUES (0,'1')";
     //Create default taxes
-    $sql[  "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Exento',0,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Exento',0,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA General',21.0,'1','1')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Reducido',10.0,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Super Reducido',4.0,'1','0')";
