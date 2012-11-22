@@ -18,7 +18,7 @@ h3 { color:#9A9A9A; font-weight:normal; margin-bottom:0.556em; }
 h4 { color:#2A8960; font-weight:normal; margin-bottom:0.667em; }
 
 .orange     { color:#2A8960; }
-.error_list { color:#009900; }
+.error_list { color:#C4452D; }
 
 textarea, input[type="text"], input[type="password"], select { color:inherit; }
 
@@ -45,7 +45,7 @@ div.ajaxBar { background:transparent url(../../images/ajax-bar.gif) no-repeat to
 /* notifications */
 #hd-notifications div.notification { border-color:#489E00; background-color:#8DC361; color:#FFFFFF; cursor:pointer; }
 #hd-notifications div.warning      { border-color:#d8b256; background-color:#FADC76; color:#9B7720; }
-#hd-notifications div.error        { border-color:#B12F17; background-color:#009900; color:#FFFFFF; }
+#hd-notifications div.error        { border-color:#B12F17; background-color:#C4452D; color:#FFFFFF;  }
 
 /* tables & listings */
 table.listing        { background-color:#FFFFFF; }
@@ -120,12 +120,11 @@ input:focus { border-color:#2A8960; background-color:#D6F5D6; }
 #templateUploadForm { background:#fefefe; border:1px solid #f0f0f0; }
 
 /* ERRORS */
-.error_list { color:#009900; }
+.error_list { color:#c4452d; }
 .errorBox   { border-left:2px solid #b12f17; background:white; }
-#bd #bd-content form input.error { border-bottom-color:#009900; color:#c4452d; border-bottom-width:2px; }
-
-#global-errors ul.error_list { border:1px solid #009900; }
-
+#bd #bd-content form input.error { border-bottom-color:#c4452d; color:#c4452d; border-bottom-width:2px; }
+ 
+#global-errors ul.error_list { border:1px solid #c4452d; }
 /* BUTTONS */
 .btn-selected, .btn-selected span, .btn-selected span span,
 .btn:hover, .btn:hover span, .btn:hover span span,
