@@ -11,7 +11,7 @@ class ExpenseForm extends CommonForm
 {
   protected $number;
 
-  public function configure()
+  public function configure($expense = false)
   {
     unset($this['number'], $this['created_at'], $this['updated_at']);
     // we unset paid_amount so the system don't "nullify" the field on every expense editing.
@@ -24,6 +24,7 @@ class ExpenseForm extends CommonForm
     $this->widgetSchema['due_date']   = 
       new sfWidgetFormI18nJQueryDate($this->JQueryDateOptions);
     $this->widgetSchema['draft']      = new sfWidgetFormInputHidden();
+    $this->widgetSchema['default_expense_type']      = new sfWidgetFormInputHidden();
     $this->widgetSchema['closed']->setLabel('Force to be closed');
 
     $this->widgetSchema['sent_by_email']->setLabel('Sent by email');
@@ -45,10 +46,10 @@ class ExpenseForm extends CommonForm
                                                      );
 
     $this->validatorSchema['supplier_name']  = new sfValidatorString(array('required' => true));
+    $this->validatorSchema['default_expense_type'] = new sfValidatorPass();
         
     $this->widgetSchema->setNameFormat('expense[%s]');
-    
-    parent::configure();
+    parent::configure(true);
     //Override validations: 
     $this->validatorSchema['customer_email'] = new sfValidatorString(array('max_length' => 100, 'required' => false));
     $this->validatorSchema['customer_name']  =  new sfValidatorString(array('max_length' => 100, 'required' => false));
