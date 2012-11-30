@@ -978,6 +978,7 @@ Template:
                {% if invoice.PaymentType.description %}
                   - {{invoice.PaymentType.description}}
                {% endif %}
+               <br> Fecha vencimiento: {{invoice.due_date}}
           </div>
 
           <div class="payment-data">
@@ -1812,10 +1813,11 @@ Template:
         <div class="section">
           <h3>Detalls del pagament</h3>
           <div>
-               Payment type: {{invoice.PaymentType.name}}
+               Data de pagament: {{invoice.PaymentType.name}}
                {% if invoice.PaymentType.description %}
                   - {{invoice.PaymentType.description}}
                {% endif %}
+               <br> Data de venciment: {{invoice.due_date}}
           </div>
 
           <div class="payment-data">
