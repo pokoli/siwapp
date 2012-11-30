@@ -416,21 +416,21 @@ END;
     $sql[] = "INSERT INTO company_user VALUES (0,'1')";
     //Create default taxes
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Exento',0,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA General',21.0,'1','1')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Reducido',10.0,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Super Reducido',4.0,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Agricola/Forestal',12.0,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Ganadería/Pesca',10.5,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'R.E. IVA General',5.2,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'R.E. IVA Reducido',1.4,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'R.E. IVA Super Reducido',0.5,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA General (21%)',21.0,'1','1')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Reducido (10%)',10.0,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Super Reducido (4%)',4.0,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Agricola/Forestal (12%)',12.0,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Ganadería/Pesca (10.5%)',10.5,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'R.E. IVA General (5.2%)',5.2,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'R.E. IVA Reducido (1.4%)',1.4,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'R.E. IVA Super Reducido (0.5%)',0.5,'1','0')";
     //Retenciones
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Agraria',-2,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Alquiler',-21,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Capital mobiliario',-21,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Modulos',-1,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Profesionales',-21,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Regimen especial Agrario',-2,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Agraria (2%)',-2,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Alquiler (21%)',-21,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Capital mobiliario (21%)',-21,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Modulos (1%)',-1,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Profesionales (21%)',-21,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Regimen especial Agrario 2%)',-2,'1','0')";
     $sql = array_merge($sql, $this->getDefaultTemplateQuery());
     //Product categories
     $sql[] = "INSERT INTO product_category(company_id,name) VALUES (0,'Material')";
