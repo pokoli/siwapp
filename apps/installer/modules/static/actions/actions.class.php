@@ -262,7 +262,7 @@ BEGIN
     INSERT INTO payment_type(company_id,name,description,enabled) SELECT NEW.id,name,description,enabled from payment_type where company_id = 0;
     INSERT INTO expense_type(company_id,name,enabled) SELECT NEW.id,name,enabled from expense_type where company_id = 0;
     INSERT INTO customer(company_id,name,name_slug,identification) SELECT NEW.id,name,name_slug,identification from customer where company_id = 0;
-   INSERT INTO product(company_id,description,category_id) SELECT NEW.id,description, pc2.id
+   INSERT INTO product(company_id,reference,description,category_id) SELECT NEW.id,reference,description, pc2.id
    from product p inner join product_category pc on pc.id = p.category_id inner join product_category pc2 on pc.name = pc2.name and pc2.company_id = NEW.id where p.company_id = 0;
    INSERT INTO template (company_id,name,template,models,slug) select NEW.id,name,template,models,slug FROM template where company_id = 0;
 END;
@@ -438,11 +438,11 @@ END;
     $sql[] = "INSERT INTO product_category(company_id,name) VALUES (0,'Desplazamientos')";
     $sql[] = "INSERT INTO product_category(company_id,name) VALUES (0,'Varios')";
     //Products.
-    $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Mano de obra', (select id from product_category where name = 'Servicios') ";
-    $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Mantenimiento', (select id from product_category where name = 'Servicios') ";
-    $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Kilometraje', (select id from product_category where name = 'Desplazamientos') ";
-    $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Estacionamiento', (select id from product_category where name = 'Desplazamientos') ";
-    $sql[] = "INSERT INTO product(company_id,description,category_id) SELECT 0,'Dietas', (select id from product_category where name = 'Desplazamientos') ";
+    $sql[] = "INSERT INTO product(company_id,reference,description,category_id) SELECT 0,'Mano de obra','Mano de obra', (select id from product_category where name = 'Servicios') ";
+    $sql[] = "INSERT INTO product(company_id,reference,description,category_id) SELECT 0,'Mantenimiento','Mantenimiento', (select id from product_category where name = 'Servicios') ";
+    $sql[] = "INSERT INTO product(company_id,reference,description,category_id) SELECT 0,'Kilometraje','Kilometraje', (select id from product_category where name = 'Desplazamientos') ";
+    $sql[] = "INSERT INTO product(company_id,reference,description,category_id) SELECT 0,'Estacionamiento','Estacionamiento', (select id from product_category where name = 'Desplazamientos') ";
+    $sql[] = "INSERT INTO product(company_id,reference,description,category_id) SELECT 0,'Dietas','Dietas', (select id from product_category where name = 'Desplazamientos') ";
     //Payment types
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Contado','1','Pago al contado')";
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Recibo a la vista','1','Recibo bancario domiciliado a la vista')";
