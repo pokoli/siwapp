@@ -1,6 +1,6 @@
 Template:
   Template_1:
-    name: Invoice Template
+    name: English - Invoice Template
     slug: invoice-template
     models: none 
     template: |
@@ -220,7 +220,7 @@ Template:
       </html>
 
   Template_2:
-    name: Template with product
+    name: English - Template with product
     slug: template-with-product
     models: none
     template: |
@@ -444,7 +444,7 @@ Template:
       </html>
 
   Template_3:
-    name: Estimate Template
+    name: English - Estimate Template
     slug: estimate-template
     models: none
     template: |
@@ -663,7 +663,7 @@ Template:
       </html>
 
   Template_4:
-    name: Expense Template
+    name: English - Expense Template
     slug: expense-template
     models: none
     template: |
@@ -846,7 +846,7 @@ Template:
 
 
   Template_5:
-    name: Plantilla de Factura (Castellano)
+    name: Castellano - Plantilla de Factura
     slug: plantilla-factura
     models: Invoice
     template: |
@@ -1066,7 +1066,7 @@ Template:
       </html>
 
   Template_6:
-    name: Plantilla de factura con producto (Castellano)
+    name: Castellano - Plantilla de factura con producto
     slug: plantilla-factura-con-producto
     models: none
     template: |
@@ -1283,7 +1283,7 @@ Template:
       </html>
 
   Template_7:
-    name: Plantila de Presupuestos (Castellano)
+    name: Castellano - Plantila de Presupuesto
     slug: plantilla-de-presupuestos
     models: Estimate
     template: |
@@ -1502,7 +1502,7 @@ Template:
       </html>
 
   Template_8:
-    name: Plantilla de gastos 
+    name: Castellano - Plantilla de gastos
     slug: plantilla-de-gastos
     models: Expense
     template: |
@@ -1685,7 +1685,7 @@ Template:
 
 
   Template_9:
-    name: Plantilla de Factura (Català)
+    name: Català - Plantilla de Factura
     slug: plantilla-factura-cat
     models: none
     template: |
@@ -1905,7 +1905,7 @@ Template:
       </html>
 
   Template_10:
-    name: Plantilla de factura amb producte (Català)
+    name: Català - Plantilla de factura amb producte
     slug: plantilla-de-factura-amb-producte
     models: none
     template: |
@@ -2122,7 +2122,7 @@ Template:
       </html>
 
   Template_11:
-    name: Plantila de Presupost (Català)
+    name: Català - Plantila de Pressupost
     slug: plantilla-de-presupost
     models: none 
     template: |
@@ -2341,7 +2341,7 @@ Template:
       </html>
 
   Template_12:
-    name: Plantilla de despeses
+    name: Català - Plantilla de despeses
     slug: plantilla-de-despeses
     models: none
     template: |
