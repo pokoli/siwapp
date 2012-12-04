@@ -44,7 +44,7 @@ class sfValidatorNumber extends sfValidatorBase
     $this->addOption('min');
     $this->addOption('max');
 
-    $this->setMessage('invalid', '"%value%" is not a number.');
+    $this->setMessage('invalid', '"%value%" no es un numero valido.');
   }
 
   /**
