@@ -448,9 +448,10 @@ END;
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Recibo a la vista','1','Recibo bancario domiciliado a la vista')";
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Recibo al vencimiento','1','Recibo bancadio domiciliado al vencimiento de la factura')";
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Pagaré','1','Pagaré')";
-    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Transferencia','1','Transferencia bancària a XXXX-XXXX-XX-XXXXXXXXX')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Transferencia','1','Transferencia bancaria a XXXX-XXXX-XX-XXXXXXXXX')";
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Cheque','1','Cheque')";
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Cheque bancario','1','Cheque bancario')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Tarjeta de crédito','1','Tarjeta de crédito')";
     //Tipos de gastos
     $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Compras','1')";
     $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Trabajos otras emp.','1')";
