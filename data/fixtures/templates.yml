@@ -1554,6 +1554,9 @@ Template:
           </style>
         </head>
         <body>
+          <div class="h2">
+           <h2> Gasto #{{expense}}</h2>
+          </div>
           <div class="section">
             <h3>Información del proveedor</h3>
 
@@ -2352,7 +2355,7 @@ Template:
         <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
         <head>
           <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-          <title>Gasto</title>
+          <title>Despesa</title>
 
           <style type="text/css">
             /* Custom CSS code */
@@ -2393,6 +2396,9 @@ Template:
           </style>
         </head>
         <body>
+          <div class="h2">
+           <h2> Despesa #{{expense}}</h2>
+          </div>
           <div class="section">
             <h3>Informació del proveïdor</h3>
 
