@@ -30,6 +30,10 @@
       </span>
     </a>
     
+      <?php
+        if($sf_user->getAttribute('logo_url') != '') 
+            echo image_tag($sf_user->getAttribute('logo_url'), 'alt=siwapp width=210 height=100 border=0') 
+      ?>
     <ul id="hd-top-menu" class="inline content">
       <li><?php echo __('Welcome, [1]!', array('[1]' => $sf_user->getUsername())) ?> |</li>
       <!--<li><?php // echo link_to(__('Help'), '@homepage') ?> |</li>-->

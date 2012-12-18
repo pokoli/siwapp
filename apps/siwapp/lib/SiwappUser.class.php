@@ -35,6 +35,7 @@ class SiwappUser extends sfGuardSecurityUser
     
     $this->setAttribute('currency', $currency);
     $this->setAttribute('currency_decimals', $currency_decimals);
+    $this->setAttribute('logo_url', $companyObject->getLogoURL());
    
   }
 
