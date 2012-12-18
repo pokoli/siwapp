@@ -125,6 +125,7 @@ class SupplierTable extends Doctrine_Table
   {
     $items = Doctrine::getTable('Supplier')->createQuery()
       ->where('name_slug LIKE ?', '%'.SupplierTable::slugify($q).'%')
+      ->AndWhere('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))
       ->limit($limit)
       ->execute();
     
