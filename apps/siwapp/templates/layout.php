@@ -50,6 +50,13 @@
       </li>
       <li><?php echo link_to(__('Settings'), 'configuration/settings', array('accesskey' => "s")) ?> |</li>
       <li><?php echo link_to(__('Logout'), '@sf_guard_signout') ?></li>
+      <?php
+        if($sf_user->getAttribute('default_logo_url') != '') {
+            echo '<span class="default_logo"><a href="http://'.$sf_user->getAttribute('default_link').'" target="_blank">';
+            echo image_tag($sf_user->getAttribute('default_logo_url'), 'alt=siwapp width=130 height=60 border=0');
+            echo '</a></span>';
+        }
+      ?>
     </ul>
     
     </div>

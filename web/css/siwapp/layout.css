@@ -48,6 +48,11 @@ a.xit:hover { background-position:-10px center; }
   top:90px;
   left:150px;
 }
+#hd-top-menu .default_logo {
+  position:absolute;
+  top:35px;
+  right:30px;
+}
 #hd-top-menu { float:right; padding:1em 2em 1em 1em; }
 
 #hd-navbar {

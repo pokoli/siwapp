@@ -8,6 +8,10 @@ class SiwappUser extends sfGuardSecurityUser
         parent::signIn($user, $remember, $con);
         $this->loadCompany();
         $this->loadUserSettings();
+        $companyObject = new Company();
+        $companyObject = $companyObject->loadById(0);
+        $this->setAttribute('default_logo_url', $companyObject->getLogoURL());
+        $this->setAttribute('default_link', $companyObject->getUrl());
     }catch(Exception $e)
     {
         parent::signOut();
