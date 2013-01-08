@@ -265,12 +265,22 @@ BEGIN
    INSERT INTO product(company_id,reference,description,category_id) SELECT NEW.id,reference,description, pc2.id
    from product p inner join product_category pc on pc.id = p.category_id inner join product_category pc2 on pc.name = pc2.name and pc2.company_id = NEW.id where p.company_id = 0;
    INSERT INTO template (company_id,name,template,models,slug) select NEW.id,name,template,models,slug FROM template where company_id = 0;
-   UPDATE payment_type set description = concat('Transferencia bancaria a',NEW.entity,'-',NEW.office,'-',NEW.control_digit,'-',account) where company_id = NEW.id and name = 'Transferencia'
+   UPDATE payment_type set description = concat('Transferencia bancaria a ',NEW.entity,'-',NEW.office,'-',NEW.control_digit,'-',NEW.account) where company_id = NEW.id and name = 'Transferencia';
+END;
+";
+
+    $query2 = "CREATE TRIGGER company_trigger_before BEFORE INSERT ON company 
+FOR EACH ROW  
+
+BEGIN
+    SET NEW.legal_terms = concat(NEW.name,',',NEW.address,' ', NEW.city,'  ',NEW.postalcode,', ',NEW.identification,'. ', NEW.mercantil_registry, ' De acuerdo con la Lei Organica de Proteccion de Datos 15/99, podrá consultar, rectificar y cancelar sus datos mediante escrito a la dirección de correo electronico: ',NEW.email);
 END;
 ";
       $db=new mysqli($user->getAttribute('host'), $user->getAttribute('username'), $user->getAttribute('password'), $user->getAttribute('database')); 
       $res = $db->multi_query ($query);
       if(!$res) $this->messages[] = $db->error.' :: '.$query;
+      $res = $db->multi_query ($query2);
+      if(!$res) $this->messages[] = $db->error.' :: '.$query2;
       $db->close();
       
       
@@ -447,7 +457,7 @@ END;
     //Payment types
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Contado','1','Pago al contado')";
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Recibo a la vista','1','Recibo bancario domiciliado a la vista')";
-    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Recibo al vencimiento','1','Recibo bancadio domiciliado al vencimiento de la factura')";
+    $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Recibo al vencimiento','1','Recibo bancario domiciliado al vencimiento de la factura')";
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Pagaré','1','Pagaré')";
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Transferencia','1','Transferencia bancaria a XXXX-XXXX-XX-XXXXXXXXX')";
     $sql[] = "INSERT INTO payment_type(company_id,name,enabled,description) VALUES(0,'Cheque','1','Cheque')";
