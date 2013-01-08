@@ -204,6 +204,79 @@ class invoicesActions extends sfActions
    *
    * @return void
    **/
+  public function executeExport(sfWebRequest $request)
+  {
+
+      $n = 0;
+      $objPHPExcel = new sfPhpExcel();
+      $objPHPExcel->setActiveSheetIndex(0);
+      //Generate Headers.
+      $objPHPExcel->getActiveSheet()->setTitle('VENTAS');
+      $objPHPExcel->getActiveSheet()->setCellValue('A1', 'FECHA');
+      $objPHPExcel->getActiveSheet()->setCellValue('B1', 'REGISTRO');
+      $objPHPExcel->getActiveSheet()->setCellValue('C1', 'CUENTA');
+      $objPHPExcel->getActiveSheet()->setCellValue('D1', 'NIF');
+      $objPHPExcel->getActiveSheet()->setCellValue('E1', 'NOMBRE');
+      $objPHPExcel->getActiveSheet()->setCellValue('F1', 'DESCRIPCIÓN');
+      $objPHPExcel->getActiveSheet()->setCellValue('G1', 'BASE');
+      $objPHPExcel->getActiveSheet()->setCellValue('H1', '%IVA');
+      $objPHPExcel->getActiveSheet()->setCellValue('I1', 'IMPORTE IVA');
+      $objPHPExcel->getActiveSheet()->setCellValue('J1', 'BASE RETENCION');
+      $objPHPExcel->getActiveSheet()->setCellValue('K1', '%IRPF');
+      $objPHPExcel->getActiveSheet()->setCellValue('L1', 'TOTAL IRPF');
+      $objPHPExcel->getActiveSheet()->setCellValue('M1', 'TOTAL');
+      $objPHPExcel->getActiveSheet()->setCellValue('N1', 'CONTRAPARTIDA'); 
+      $objPHPExcel->getActiveSheet()->setCellValue('O1', 'PAIS'); 
+      $objPHPExcel->getActiveSheet()->setCellValue('P1', 'PROVINCIA'); 
+      $objPHPExcel->getActiveSheet()->setCellValue('Q1', 'PAGO AUTOMATICO'); 
+      $objPHPExcel->getActiveSheet()->setCellValue('R1', 'OPERACION ARRENDAMIENTO'); 
+      foreach($request->getParameter('ids', array()) as $id)
+      {
+        if($invoice = Doctrine::getTable('Invoice')->find($id))
+        {
+              foreach ($invoice->getGrupedTaxes() as $tax => $value) 
+              {
+                  $objPHPExcel->getActiveSheet()->setCellValue('A'. ($n+2), $invoice->getIssueDate()); //FECHA
+                  $objPHPExcel->getActiveSheet()->setCellValue('B'. ($n+2), ''); //REGISTRO
+                  $objPHPExcel->getActiveSheet()->setCellValue('C'. ($n+2), ''); //CUENTA
+                  $objPHPExcel->getActiveSheet()->setCellValue('D'. ($n+2), $invoice->getCustomerIdentification()); //NIF
+                  $objPHPExcel->getActiveSheet()->setCellValue('E'. ($n+2), $invoice->getCustomerName()); //NOMBRE
+                  $objPHPExcel->getActiveSheet()->setCellValue('F'. ($n+2), 'FACTURA'.$invoice->getId()); //DESCRIPCIÓN
+                  $objPHPExcel->getActiveSheet()->setCellValue('G'. ($n+2),  $value['base']); //BASE 
+                  $objPHPExcel->getActiveSheet()->setCellValue('H'. ($n+2), $value['tax_value']); //%IVA
+                  $objPHPExcel->getActiveSheet()->setCellValue('I'. ($n+2), $value['tax']); //IMPORTE IVA
+                  $objPHPExcel->getActiveSheet()->setCellValue('J'. ($n+2), 0); //BASE RETENCION
+                  $objPHPExcel->getActiveSheet()->setCellValue('K'. ($n+2), 0); //%IRPF
+                  $objPHPExcel->getActiveSheet()->setCellValue('L'. ($n+2), 0); //TOTAL IRPF
+                  $objPHPExcel->getActiveSheet()->setCellValue('M'. ($n+2), $value['total']); //TOTAL
+                  $objPHPExcel->getActiveSheet()->setCellValue('N'. ($n+2), ''); //CONTRAPARTIDA 
+                  $objPHPExcel->getActiveSheet()->setCellValue('O'. ($n+2), $invoice->getCustomer()->getInvoicingCountry()); //PAIS
+                  $objPHPExcel->getActiveSheet()->setCellValue('P'. ($n+2), $invoice->getCustomer()->getInvoicingState()); //PROVINCIA
+                  $objPHPExcel->getActiveSheet()->setCellValue('Q'. ($n+2), ''); //PAGO AUTOMATICO
+                  $objPHPExcel->getActiveSheet()->setCellValue('R'. ($n+2), ''); //OPERACION ARRENDAMIENTO
+                  $n++;
+              }
+        }
+      }
+
+    $this->setLayout(false);
+    $response = $this->getContext()->getResponse();
+    $response->clearHttpHeaders();
+    $response->setHttpHeader('Content-Type', 'application/vnd.ms-excel;charset=utf-8');
+    $response->setHttpHeader('Content-Disposition:', 'attachment;filename=export.xls'); 
+
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    ob_start();
+    $objWriter->save('php://output');
+    $response->setContent(ob_get_clean());
+    return sfView::NONE;
+  }
+  
+  /**
+   * batch actions
+   *
+   * @return void
+   **/
   public function executeBatch(sfWebRequest $request)
   {
     $i18n = $this->getContext()->getI18N();
