@@ -206,7 +206,6 @@ class invoicesActions extends sfActions
    **/
   public function executeExport(sfWebRequest $request)
   {
-
       $n = 0;
       $objPHPExcel = new sfPhpExcel();
       $objPHPExcel->setActiveSheetIndex(0);
@@ -236,18 +235,18 @@ class invoicesActions extends sfActions
         {
               foreach ($invoice->getGrupedTaxes() as $tax => $value) 
               {
-                  $objPHPExcel->getActiveSheet()->setCellValue('A'. ($n+2), $invoice->getIssueDate()); //FECHA
-                  $objPHPExcel->getActiveSheet()->setCellValue('B'. ($n+2), ''); //REGISTRO
+                  $objPHPExcel->getActiveSheet()->setCellValue('A'. ($n+2),date('d/m/Y',strtotime($invoice->getIssueDate()))); //FECHA
+                  $objPHPExcel->getActiveSheet()->setCellValue('B'. ($n+2), $invoice.''); //REGISTRO
                   $objPHPExcel->getActiveSheet()->setCellValue('C'. ($n+2), ''); //CUENTA
                   $objPHPExcel->getActiveSheet()->setCellValue('D'. ($n+2), $invoice->getCustomerIdentification()); //NIF
-                  $objPHPExcel->getActiveSheet()->setCellValue('E'. ($n+2), $invoice->getCustomerName()); //NOMBRE
-                  $objPHPExcel->getActiveSheet()->setCellValue('F'. ($n+2), 'FACTURA'.$invoice->getId()); //DESCRIPCIÓN
+                  $objPHPExcel->getActiveSheet()->setCellValue('E'. ($n+2), $invoice->getCustomerName()); //NOMBR
+                  $objPHPExcel->getActiveSheet()->setCellValue('F'. ($n+2), 'FACTURA'.$invoice); //DESCRIPCIÓN
                   $objPHPExcel->getActiveSheet()->setCellValue('G'. ($n+2),  $value['base']); //BASE 
                   $objPHPExcel->getActiveSheet()->setCellValue('H'. ($n+2), $value['tax_value']); //%IVA
                   $objPHPExcel->getActiveSheet()->setCellValue('I'. ($n+2), $value['tax']); //IMPORTE IVA
-                  $objPHPExcel->getActiveSheet()->setCellValue('J'. ($n+2), 0); //BASE RETENCION
-                  $objPHPExcel->getActiveSheet()->setCellValue('K'. ($n+2), 0); //%IRPF
-                  $objPHPExcel->getActiveSheet()->setCellValue('L'. ($n+2), 0); //TOTAL IRPF
+                  $objPHPExcel->getActiveSheet()->setCellValue('J'. ($n+2), $value['base_retencion']); //BASE RETENCION
+                  $objPHPExcel->getActiveSheet()->setCellValue('K'. ($n+2), abs($value['retencion_value'])); //%IRPF
+                  $objPHPExcel->getActiveSheet()->setCellValue('L'. ($n+2), abs($value['retencion'])); //TOTAL IRPF
                   $objPHPExcel->getActiveSheet()->setCellValue('M'. ($n+2), $value['total']); //TOTAL
                   $objPHPExcel->getActiveSheet()->setCellValue('N'. ($n+2), ''); //CONTRAPARTIDA 
                   $objPHPExcel->getActiveSheet()->setCellValue('O'. ($n+2), $invoice->getCustomer()->getInvoicingCountry()); //PAIS
@@ -324,7 +323,7 @@ class invoicesActions extends sfActions
             //El índice 8 y 9 contendrían el sexto registro opcional, que es distinto a los demás
             $conceptosDom = array();
             //Los dos primeros índices serán el primer registro opcional
-            $conceptosDom[] = str_pad("Factura ".$invoice->getId(), 40, ' ', STR_PAD_RIGHT) . str_pad("emitida por: ".$companyObject->getName(), 40, ' ', STR_PAD_RIGHT);
+            $conceptosDom[] = str_pad("Factura ".$invoice, 40, ' ', STR_PAD_RIGHT) . str_pad("emitida por: ".$companyObject->getName(), 40, ' ', STR_PAD_RIGHT);
             $conceptosDom[] = str_pad('emitida el ' . date('d/m/Y') . ' para: '.$invoice->getCustomerName(), 40, ' ', STR_PAD_RIGHT) . str_pad(" ES-".$customer->getIdentification(), 40, ' ', STR_PAD_RIGHT);
             $conceptosDom[] = '';
             $conceptosDom[] = '';
