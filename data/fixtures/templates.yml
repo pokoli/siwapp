@@ -905,7 +905,7 @@ Template:
 
           <div class="section">
             <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=80%>
+              <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{invoice.Company.name}}</li>
                     <li>Dirección:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
@@ -916,7 +916,7 @@ Template:
                 </ul>
               </td> 
               {% if invoice.Company.logo %}
-                <td width="20%"> 
+                <tr><td width="40%"> 
                    <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
                 </td>
              {% endif %}
@@ -1125,7 +1125,7 @@ Template:
 
           <div class="section">
             <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=80%>
+              <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{invoice.Company.name}}</li>
                     <li>Dirección:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
@@ -1136,7 +1136,7 @@ Template:
                 </ul>
               </td> 
               {% if invoice.Company.logo %}
-                <td width="20%"> 
+                <tr><td width="40%"> 
                    <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
                 </td>
              {% endif %}
@@ -1348,7 +1348,7 @@ Template:
 
           <div class="section">
             <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=80%>
+              <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{estimate.Company.name}}</li>
                     <li>Dirección:<br> {{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}}</li>
@@ -1359,7 +1359,7 @@ Template:
                 </ul>
               </td> 
               {% if invoice.Company.logo %}
-                <td width="20%"> 
+                <tr><td width="40%"> 
                    <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
                 </td>
              {% endif %}
@@ -1747,7 +1747,7 @@ Template:
 
           <div class="section">
             <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=80%>
+              <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{invoice.Company.name}}</li>
                     <li>Direcció:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
@@ -1758,7 +1758,7 @@ Template:
                 </ul>
               </td> 
               {% if invoice.Company.logo %}
-                <td width="20%"> 
+                <tr><td width="40%"> 
                    <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
                 </td>
              {% endif %}
@@ -1967,7 +1967,7 @@ Template:
 
           <div class="section">
             <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=80%>
+              <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{invoice.Company.name}}</li>
                     <li>Direcció:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
@@ -1978,7 +1978,7 @@ Template:
                 </ul>
               </td> 
               {% if invoice.Company.logo %}
-                <td width="20%"> 
+                <tr><td width="40%"> 
                    <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
                 </td>
              {% endif %}
@@ -2190,7 +2190,7 @@ Template:
 
           <div class="section">
             <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=80%>
+              <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{estimate.Company.name}}</li>
                     <li>Direcció:<br> {{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}}</li>
@@ -2201,7 +2201,7 @@ Template:
                 </ul>
               </td> 
               {% if invoice.Company.logo %}
-                <td width="20%"> 
+                <tr><td width="40%"> 
                    <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
                 </td>
              {% endif %}
