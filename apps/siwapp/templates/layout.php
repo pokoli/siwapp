@@ -32,7 +32,7 @@
     
       <?php
         if($sf_user->getAttribute('logo_url') != '') 
-            echo image_tag($sf_user->getAttribute('logo_url'), 'alt=siwapp width=210 height=100 border=0') 
+            echo image_tag($sf_user->getAttribute('logo_url'), 'alt=siwapp height=100 border=0') 
       ?>
     <ul id="hd-top-menu" class="inline content">
       <li><?php echo __('Welcome, [1]!', array('[1]' => $sf_user->getUsername())) ?> |</li>
@@ -53,7 +53,7 @@
       <?php
         if($sf_user->getAttribute('default_logo_url') != '') {
             echo '<span class="default_logo"><a href="http://'.$sf_user->getAttribute('default_link').'" target="_blank">';
-            echo image_tag($sf_user->getAttribute('default_logo_url'), 'alt=siwapp width=130 height=60 border=0');
+            echo image_tag($sf_user->getAttribute('default_logo_url'), 'alt=siwapp height=60 border=0');
             echo '</a></span>';
         }
       ?>
