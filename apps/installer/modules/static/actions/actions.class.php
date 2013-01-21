@@ -419,6 +419,7 @@ END;
     {
       $sql[] = "INSERT INTO series(company_id,name, value, first_number, enabled) VALUES (0,'General', '', '1', '1')";
         $sql[] = "INSERT INTO series(company_id,name, value, first_number, enabled) VALUES (0,'Rectificativas', '', '1', '1')";
+        $sql[] = "INSERT INTO series(company_id,name, value, first_number, enabled) VALUES (0,'DD', '', '1', '1')";
     }
     
     $sql[] = $this->getGuardUserQuery();
