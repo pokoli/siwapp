@@ -2136,7 +2136,7 @@ Template:
       <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Presupost</title>
+        <title>Pressupost</title>
 
         <style type="text/css">
           /* Custom CSS code */
@@ -2185,7 +2185,7 @@ Template:
         {% endif %}
 
         <div class="h2">
-          <h2>Presupost #{{estimate}}</h2>
+          <h2>Pressupost #{{estimate}}</h2>
         </div>
 
           <div class="section">
