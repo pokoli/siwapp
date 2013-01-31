@@ -58,7 +58,7 @@ $csrf     = new sfForm();
               <td><?php echo $customer->getIdentification() ?></td>
               <td><?php echo $customer ?></td>
               <td><?php echo $customer->getEmail() ?></td>
-              <td><?php echo $customer->getPhone() ?></td>
+              <td><?php echo $customer->getPhone() ?><?php echo $customer->getMobile()!="" ? " / ".$customer->getMobile() :"" ?></td>
             <td class="right"><?php if ($customer->getDueAmount($sf_data->getRaw('date_range')) != 0) echo format_currency($customer->getDueAmount($sf_data->getRaw('date_range')), $currency) ?></td>
               <td class="right">
                <?php echo format_currency($customer->getGrossAmount($sf_data->getRaw('date_range')), $currency)  ?>
