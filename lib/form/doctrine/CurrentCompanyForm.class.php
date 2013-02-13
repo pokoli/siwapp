@@ -25,6 +25,7 @@ class CurrentCompanyForm extends CompanyForm
     unset($this->validatorSchema['currency']);
     unset($this->widgetSchema['company_user_list']);
     unset($this->validatorSchema['company_user_list']);
+    $this->widgetSchema['legal_terms'] = new sfWidgetFormTextarea(array(), array('cols' => '30', 'rows' => '7'));
     
     $companyObject = $this->getCurrentCompany();
     
