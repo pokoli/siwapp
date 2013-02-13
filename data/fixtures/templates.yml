@@ -908,7 +908,7 @@ Template:
               <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{invoice.Company.name}}</li>
-                    <li>Dirección:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
+                    <li>Adreçan:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
                     <li>Teléfono: {{invoice.Company.phone}}</li>
                     <li>Fax: {{invoice.Company.fax}}</li>
                     <li>Email: {{invoice.Company.email}}</li>
@@ -959,13 +959,13 @@ Template:
               <tr>
                 <td>
                   <span class="left">
-                    <label>Dirección de facturación:</label>
+                    <label>Adreçan de facturación:</label>
                     <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
                   </span>
                 </td>
                 <td>
                   <span class="right">
-                    <label>Dirección de envío:</label>
+                    <label>Adreçan de envío:</label>
                     <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
                   </span>
                 </td>
@@ -1128,7 +1128,7 @@ Template:
               <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{invoice.Company.name}}</li>
-                    <li>Dirección:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
+                    <li>Adreçan:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
                     <li>Telefono: {{invoice.Company.phone}}</li>
                     <li>Fax: {{invoice.Company.fax}}</li>
                     <li>Email: {{invoice.Company.email}}</li>
@@ -1179,13 +1179,13 @@ Template:
              <tr>
                <td>
                  <span class="left">
-                   <label>Dirección de facturación:</label>
+                   <label>Adreçan de facturación:</label>
                    <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
                  </span>
                </td>
                <td>
                  <span class="right">
-                   <label>Dirección de envío:</label>
+                   <label>Adreçan de envío:</label>
                    <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
                  </span>
                </td>
@@ -1351,7 +1351,7 @@ Template:
               <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{estimate.Company.name}}</li>
-                    <li>Dirección:<br> {{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}}</li>
+                    <li>Adreçan:<br> {{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}}</li>
                     <li>Telefono: {{estimate.Company.phone}}</li>
                     <li>Fax: {{estimate.Company.fax}}</li>
                     <li>Email: {{estimate.Company.email}}</li>
@@ -1402,13 +1402,13 @@ Template:
               <tr>
                 <td>
                   <span class="left">
-                    <label>Dirección de facturación:</label>
+                    <label>Adreçan de facturación:</label>
                     <br> {{estimate.invoicing_address}} <br> {{estimate.invoicing_postalcode}} {{estimate.invoicing_city}} <br> {{estimate.invoicing_state}} {{estimate.invoicing_country}}
                   </span>
                 </td>
                 <td>
                   <span class="right">
-                    <label>Dirección de envío:</label>
+                    <label>Adreçan de envío:</label>
                     <br> {{estimate.shipping_address}} <br> {{estimate.shipping_postalcode}} {{estimate.shipping_city}} <br> {{estimate.shipping_state}} {{estimate.shipping_country}}
                   </span>
                 </td>
@@ -1593,7 +1593,7 @@ Template:
                 <tr>
                   <td>
                     <span class="left">
-                      <label>Dirección de facturación:</label>
+                      <label>Adreçan de facturación:</label>
                       <br> {{expense.invoicing_address}} <br> {{expense.invoicing_postalcode}} {{expense.invoicing_city}} <br> {{expense.invoicing_state}} {{expense.invoicing_country}}
                     </span>
                   </td>
@@ -1750,7 +1750,7 @@ Template:
               <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{invoice.Company.name}}</li>
-                    <li>Direcció:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
+                    <li>Adreça:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
                     <li>Telèfon: {{invoice.Company.phone}}</li>
                     <li>Fax: {{invoice.Company.fax}}</li>
                     <li>Email: {{invoice.Company.email}}</li>
@@ -1801,13 +1801,13 @@ Template:
               <tr>
                 <td>
                   <span class="left">
-                    <label>Direcció de facturació:</label>
+                    <label>Adreça de facturació:</label>
                     <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
                   </span>
                 </td>
                 <td>
                   <span class="right">
-                    <label>Direcció d'enviament:</label>
+                    <label>Adreça d'enviament:</label>
                     <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
                   </span>
                 </td>
@@ -1970,7 +1970,7 @@ Template:
               <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{invoice.Company.name}}</li>
-                    <li>Direcció:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
+                    <li>Adreça:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
                     <li>Telèfon: {{invoice.Company.phone}}</li>
                     <li>Fax: {{invoice.Company.fax}}</li>
                     <li>Email: {{invoice.Company.email}}</li>
@@ -2021,13 +2021,13 @@ Template:
              <tr>
                <td>
                  <span class="left">
-                   <label>Direcció de facturació:</label>
+                   <label>Adreça de facturació:</label>
                    <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
                  </span>
                </td>
                <td>
                  <span class="right">
-                   <label>Direcció d'enviament:</label>
+                   <label>Adreça d'enviament:</label>
                    <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
                  </span>
                </td>
@@ -2193,7 +2193,7 @@ Template:
               <tr><td width=60%>
                 <ul>
                     <li>Empresa: {{estimate.Company.name}}</li>
-                    <li>Direcció:<br> {{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}}</li>
+                    <li>Adreça:<br> {{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}}</li>
                     <li>Telèfon: {{estimate.Company.phone}}</li>
                     <li>Fax: {{estimate.Company.fax}}</li>
                     <li>Email: {{estimate.Company.email}}</li>
@@ -2244,13 +2244,13 @@ Template:
               <tr>
                 <td>
                   <span class="left">
-                    <label>Direcció de facturació:</label>
+                    <label>Adreça de facturació:</label>
                     <br> {{estimate.invoicing_address}} <br> {{estimate.invoicing_postalcode}} {{estimate.invoicing_city}} <br> {{estimate.invoicing_state}} {{estimate.invoicing_country}}
                   </span>
                 </td>
                 <td>
                   <span class="right">
-                    <label>Direcció d'enviament:</label>
+                    <label>Adreça d'enviament:</label>
                     <br> {{estimate.shipping_address}} <br> {{estimate.shipping_postalcode}} {{estimate.shipping_city}} <br> {{estimate.shipping_state}} {{estimate.shipping_country}}
                   </span>
                 </td>
@@ -2435,7 +2435,7 @@ Template:
                 <tr>
                   <td>
                     <span class="left">
-                      <label>Direcció de facturació:</label>
+                      <label>Adreça de facturació:</label>
                       <br> {{expense.invoicing_address}} <br> {{expense.invoicing_postalcode}} {{expense.invoicing_city}} <br> {{expense.invoicing_state}} {{expense.invoicing_country}}
                     </span>
                   </td>
