@@ -10,6 +10,7 @@ class SiwappUser extends sfGuardSecurityUser
         $this->loadUserSettings();
         $companyObject = new Company();
         $companyObject = $companyObject->loadById(0);
+        $this->setAttribute('debug_developer', false);
         $this->setAttribute('default_logo_url', $companyObject->getLogoURL());
         $this->setAttribute('default_link', $companyObject->getUrl());
     }catch(Exception $e)
@@ -79,6 +80,7 @@ class SiwappUser extends sfGuardSecurityUser
         );
     }  
     $this->setAttribute('available_companies',$available_companies);
+    
     
     $this->setAttribute('siwapp_modules', 
                         array_merge(
