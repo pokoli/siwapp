@@ -57,6 +57,24 @@ class configurationActions extends sfActions
    * undocumented function
    *
    * @return void
+   * @author Sergi Almacellas Abellana <sergi@koolpi.com>
+   **/
+  public function executeTesting(sfWebRequest $request)
+  {
+    $user = $this->getUser();
+    $i18n = $this->getContext()->getI18N();
+    
+    if ($request->isMethod('post'))
+    {
+        $user = $this->getUser();
+        $user->setAttribute('debug_developer',!$user->getAttribute('debug_developer'));
+    }
+  }
+
+  /**
+   * undocumented function
+   *
+   * @return void
    * @author Sergi Almacellas  <sergi.almacellas@btactic.com>
    **/
   public function executeProductCategories(sfWebRequest $request)

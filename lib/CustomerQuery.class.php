@@ -35,6 +35,7 @@ class CustomerQuery extends Doctrine_Query
         $this->toDate($search['to']);
       }
     }
+
     return $this;
   }
   
@@ -80,10 +81,15 @@ class CustomerQuery extends Doctrine_Query
         $sum = sprintf('SUM(if(i.%s is null,0,i.%s)) as total',$field,$field);
         break;
     }
+    
+    
     $other->select($sum)->orderBy('total')
       ->addSelect("'t' AS true_column")
       ->addWhere("i.draft = ?",0)
       ->groupBy('true_column');
+   if(!sfContext::getInstance()->getUser()->getAttribute('debug_developer'))
+        $other->andWhere(" exists (select id from series where name <> 'DD' and id = series_id ) ");
+  
 
     return $other->fetchOne() ? $other->fetchOne()->getTotal() : 0;
   }

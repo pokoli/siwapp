@@ -1630,6 +1630,18 @@
         <source>Customer email</source>
         <target>Email del client</target>
       </trans-unit>
+      <trans-unit>
+        <source>Testing</source>
+        <target>Proves</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Testings are </source>
+        <target>Les proves estan </target>
+      </trans-unit>
+      <trans-unit>
+        <source>Click on the save button to change it.</source>
+        <target>Feu click al botó Desar per a canviar-ho.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

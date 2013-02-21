@@ -32,7 +32,8 @@ class productsActions extends sfActions
     $page       = $this->getUser()->getAttribute('page', 1, $namespace);
     $maxResults = $this->getUser()->getPaginationMaxResults();
     
-    $q = ProductQuery::create()->search($search)->orderBy("$sort[0] $sort[1], reference $sort[1]");
+    $q = ProductQuery::create();
+    $q->search($search)->orderBy("$sort[0] $sort[1], reference $sort[1]");
     // totals
     $this->quantity = $q->total('quantity');
     $this->sold     = $q->total('sold');

@@ -24,6 +24,9 @@ class SeriesTable extends Doctrine_Table
     }
     
     $finder->where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'));
+    if(!sfContext::getInstance()->getUser()->getAttribute('debug_developer'))
+        $finder->andWhere("name <> 'DD' ");
+
     
     foreach ($finder->execute() as $s)
     {

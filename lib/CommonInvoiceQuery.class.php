@@ -30,7 +30,8 @@ class CommonInvoiceQuery extends Doctrine_Query
       if(isset($search['period_type']) && $search['period_type']) 
         $this->andWhere("i.period_type = ?", $search['period_type']);
     }
-    
+   if(!sfContext::getInstance()->getUser()->getAttribute('debug_developer'))
+        $this->andWhere(" exists (select id from series where name <> 'DD' and id = series_id ) ");
     return $this;
   }
   

@@ -28,7 +28,34 @@ class ProductQuery extends Doctrine_Query
              i.quantity * i.unitary_cost
             )
          ) AS sold";
+  public $quantity_col_dd = "
+             FORMAT(
+                    SUM(
+                        IF(
+                           inv.draft=1 
+                           OR inv.type='RecurringInvoice' 
+                           OR i.quantity IS NULL
+                           OR s.name = 'DD',
+                           0, 
+                           i.quantity
+                          ), 
+                        0
+                       ),
+                    0
+                   ) AS quantity";
 
+    public $sold_col_dd = "
+      SUM(
+          IF(
+             inv.draft = 1
+             OR inv.type = 'RecurringInvoice'
+             OR i.quantity IS NULL
+             OR i.unitary_cost IS NULL
+             OR s.name = 'DD',
+             0, 
+             i.quantity * i.unitary_cost
+            )
+         ) AS sold";
 
   public static function create($conn = null, $class = null)
   {
@@ -36,13 +63,17 @@ class ProductQuery extends Doctrine_Query
 
       
     $q->addSelect('p.id, p.reference, p.description, p.price')
-      ->addSelect('pc.name AS category')
-      ->addSelect($q->quantity_col)
-      ->addSelect($q->sold_col)
-      ->from("Product p, p.Items i, i.Common inv, p.ProductCategory pc")
+      ->addSelect('pc.name AS category');
+    if(!sfContext::getInstance()->getUser()->getAttribute('debug_developer'))
+      $q->addSelect($q->quantity_col_dd)->addSelect($q->sold_col_dd);
+    else
+      $q->addSelect($q->quantity_col)->addSelect($q->sold_col);
+    $q->from("Product p, p.Items i, i.Common inv, p.ProductCategory pc")
+      ->leftJoin('inv.Series s')
       ->Where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))
       ->orderBy('p.reference asc')
       ->groupBy('p.id');
+      
     //    echo $q->getSqlQuery();
     return $q;
   }
@@ -96,6 +127,8 @@ class ProductQuery extends Doctrine_Query
   public function total($field)
   {
     $other = clone($this);
+    if(!sfContext::getInstance()->getUser()->getAttribute('debug_developer'))
+        $other->andWhere(" exists (select id from series where name <> 'DD' and id = series_id ) ");
     $other->addSelect("'t' AS true_column")->groupBy('true_column');
     switch($field)
     {

@@ -165,6 +165,10 @@ profile:
 categories:
   url:   /settings/categories
   param:  { module: configuration, action: productCategories, searchForm: false, tab: categories }
+  
+testing:
+  url:   /settings/testing
+  param:  { module: configuration, action: testing, searchForm: false, tab: testing }
 
 templates_edit:
   url:   /settings/templates/edit/:id
