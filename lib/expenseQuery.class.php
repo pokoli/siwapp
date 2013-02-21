@@ -15,9 +15,9 @@ class ExpenseQuery extends CommonInvoiceQuery
     return $q;
   }
   
-  public function search($search = null)
+  public function search($search = null,$expense = false)
   {
-    parent::search($search);
+    parent::search($search,true);
     
     if($search)
     {
