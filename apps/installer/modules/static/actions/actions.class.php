@@ -273,7 +273,7 @@ END;
 FOR EACH ROW  
 
 BEGIN
-    SET NEW.legal_terms = concat(NEW.name,',',NEW.address,' ', NEW.city,'  ',NEW.postalcode,', ',NEW.identification,'. ', NEW.mercantil_registry, ' De acuerdo con la Ley Organica de Proteccion de Datos 15/99, podrá consultar, rectificar y cancelar sus datos mediante escrito a la dirección de correo electronico: ',NEW.email);
+    SET NEW.legal_terms = concat(NEW.name,', ', NEW.address,' ', NEW.city,' ',NEW.postalcode,' (',NEW.state,'). ', NEW.mercantil_registry, '. De acuerdo con la Ley Orgánica de Protección de Datos 15/99, podrá consultar, rectificar y cancelar sus datos mediante escrito a la dirección de correo electronico: ',NEW.email);
 END;
 ";
       $db=new mysqli($user->getAttribute('host'), $user->getAttribute('username'), $user->getAttribute('password'), $user->getAttribute('database')); 
