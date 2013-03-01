@@ -8,6 +8,7 @@ class SiwappUser extends sfGuardSecurityUser
         parent::signIn($user, $remember, $con);
         $this->loadCompany();
         $this->loadUserSettings();
+        $this->clearSearch();
         $companyObject = new Company();
         $companyObject = $companyObject->loadById(0);
         $this->setAttribute('debug_developer', false);
@@ -95,6 +96,17 @@ class SiwappUser extends sfGuardSecurityUser
     $this->setCulture($culture);
   }
   
+  /**
+   * Clear Search Parameters
+   */
+  public function clearSearch()
+  {
+    $namespaces = array('customers','estimates','expenses','invoices','products','recurring','suppliers');
+    foreach($namespaces as $ns)
+    {
+      $this->getAttributeHolder()->remove('search', null, $ns);
+    }
+  }
   /**
    * Search Parameters
    */
