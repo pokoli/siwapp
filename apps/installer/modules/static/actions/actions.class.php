@@ -443,6 +443,7 @@ END;
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Modulos (1%)',-1,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Profesionales (21%)',-21,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Regimen especial Agrario 2%)',-2,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Profesional Reduida 9%)',-9,'1','0')";
     $sql = array_merge($sql, $this->getDefaultTemplateQuery());
     //Product categories
     $sql[] = "INSERT INTO product_category(company_id,name) VALUES (0,'Material')";
