@@ -27,7 +27,7 @@ class Invoice extends BaseInvoice
   public function __toString()
   {
     if(!$this->getSeries()) return '';
-    return $this->getSeries()->getValue().($this->draft ? '[draft]' : $this->getNumber());
+    return $this->getSeries()->getName()."-".($this->draft ? '[proforma]' : $this->getNumber());
   }
   
   public function getDueAmount()
