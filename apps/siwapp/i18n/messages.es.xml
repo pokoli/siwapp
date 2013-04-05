@@ -1627,6 +1627,7 @@
         <target>Email del cliente</target>
       </trans-unit>
       <trans-unit>
+<<<<<<< HEAD
         <source>Testing</source>
         <target>Pruebas</target>
       </trans-unit>
@@ -1637,6 +1638,34 @@
       <trans-unit>
         <source>Click on the save button to change it.</source>
         <target>Haz click en el botón Guardar para cambiarlo.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Fiscality Enabled</source>
+        <target>Fiscalidad activada</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Fiscality</source>
+        <target>Fiscalidad</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Incoming Taxes</source>
+        <target>Impuestos Repercutidos</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Outgoing Taxes</source>
+        <target>Impuestos Soportados</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Tax Name</source>
+        <target>Impuesto</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Base</source>
+        <target>Base</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Tax Value</source>
+        <target>Importe</target>
       </trans-unit>
     </body>
   </file>
