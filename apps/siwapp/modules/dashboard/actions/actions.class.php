@@ -69,6 +69,26 @@ class dashboardActions extends sfActions
             ->Where('company_id = ?',$company_id )->search($search)
             ->addGroupBy('et.name');
         $this->detailed_expenses = $q->fetchArray();
+        //347
+        $q = InvoiceQuery::create()
+            ->addSelect('i.customer_name as customer_name')->addSelect('i.customer_identification customer_identification')
+            ->addSelect('sum(
+               case when MONTH(issue_date) >= 1 and MONTH(issue_date) <= 3 then gross_amount else 0 end) as 1t
+            ')
+            ->addSelect('sum(
+               case when MONTH(issue_date) >= 4 and MONTH(issue_date) <= 6 then gross_amount else 0 end) as 2t
+            ')
+            ->addSelect('sum(
+               case when MONTH(issue_date) >= 7 and MONTH(issue_date) <= 9 then gross_amount else 0 end) as 3t
+            ')
+            ->addSelect('sum(
+               case when MONTH(issue_date) >= 10 and MONTH(issue_date) <= 12 then gross_amount else 0 end) as 4t
+            ')
+            ->addSelect('sum(gross_amount) as total')
+            ->Where('company_id = ?',$company_id )->AndWhere('YEAR(issue_date) = ?',$search['to']['year'])
+            ->addGroupBy('i.customer_name')->addGroupBy('i.customer_identification')
+            ->having('sum(gross_amount) > 3005.06');
+            $this->fiscal_347 = $q->fetchArray();
     }
     
     $q = InvoiceQuery::create()->Where('company_id = ?',$company_id )->search($search)->limit($this->maxResults);

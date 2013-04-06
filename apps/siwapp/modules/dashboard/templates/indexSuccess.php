@@ -146,6 +146,35 @@
     </tbody>
   </table>
   </div>
+  <div class="left">
+  <h3><?php echo __('347'); ?></h3>
+  <table class="dashboard-info">
+    <tbody>
+      <tr>
+        <th><?php echo __('Customer Identification') ?></th>
+        <th><?php echo __('Customer Name') ?></th>
+        <th><?php echo __('1er T.') ?></th>
+        <th><?php echo __('2on T.') ?></th>
+        <th><?php echo __('3er T.') ?></th>
+        <th><?php echo __('4t T.') ?></th>
+        <th><?php echo __('Total') ?></th>
+      </tr>
+      <?php foreach ($fiscal_347 as $tax_data) {
+      ?><tr>
+        <td><?php echo $tax_data['customer_identification'] ?></td>
+        <td><?php echo $tax_data['customer_name'] ?></td>
+        <td class="right"><?php echo format_currency($tax_data['1t'], $currency)?></td>
+        <td class="right"><?php echo format_currency($tax_data['2t'], $currency)?></td>
+        <td class="right"><?php echo format_currency($tax_data['3t'], $currency)?></td>
+        <td class="right"><?php echo format_currency($tax_data['4t'], $currency)?></td>
+        <td class="right"><?php echo format_currency($tax_data['total'], $currency)?></td>
+      </tr>
+      <?php
+      }
+      ?>
+    </tbody>
+  </table>
+  </div>
   </div> <!-- fiscality-wrapper -->
 <div class="clear"></div>
 <?php
