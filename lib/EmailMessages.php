@@ -9,7 +9,8 @@ class SiwappMessage extends Swift_Message
     parent::__construct();
     $company = new Company();
     $company = $company->loadById(sfContext::getInstance()->getUser()->getAttribute('company_id'));
-    $this->setFrom($company->getEmail(), $company->getName());
+    $this->setFrom("noreply@fac24.net", $company->getName());
+    $this->setReplyTo($company->getEmail());
     $this->company_name = $company->getName();
   }
 }
