@@ -151,7 +151,7 @@
   <table class="dashboard-info">
     <tbody>
       <tr>
-        <th><?php echo __('Customer Identification') ?></th>
+        <th><?php echo __('Customer identification') ?></th>
         <th><?php echo __('Customer Name') ?></th>
         <th><?php echo __('1er T.') ?></th>
         <th><?php echo __('2on T.') ?></th>
