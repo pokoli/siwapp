@@ -17,28 +17,28 @@ class staticActions extends sfActions
     {
       $sfRootDirParameter = "?sf_root_dir=$sfRootDirParameter";
     }
-    
+
     $step = substr($this->getActionName(), -1);
-    
+
     // if the user has not reached the step redirect him
     if($step > $this->getUser()->getAttribute('step', 1))
     {
       $this->redirect("@step".$this->getUser()->getAttribute('step', 1).$sfRootDirParameter);
     }
-    
+
     $prev = $step - 1;
     $next = $step + 1;
-    
+
     $this->thisPage = "@step".$step.$sfRootDirParameter;
     $this->prev = "@step".$prev.$sfRootDirParameter;
     $this->next = "@step".$next.$sfRootDirParameter;
     $this->step = $step;
-    
+
     $this->db_file     = sfConfig::get('sf_config_dir').DIRECTORY_SEPARATOR.'databases.yml';
     $this->config_file = sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.'config.php';
   }
-  
-  
+
+
   /**
    * Step #1: Choose language and country
    *
@@ -51,17 +51,17 @@ class staticActions extends sfActions
   {
     $this->preferred_language  = CultureTools::getPreferredLanguage($request);
     $this->getUser()->setAttribute('step', 1);
-    
+
     if(!$this->getUser()->getAttribute('language'))
     {
       $this->getUser()->setCulture($this->preferred_language);
     }
-    
+
     if ($request->isMethod('post'))
     {
       $this->getUser()->setAttribute('language', $this->getRequestParameter('language'));
       $this->getUser()->setAttribute('country', $this->getRequestParameter('country'));
-      
+
       $culture = $this->getRequestParameter('language');
       if($this->getRequestParameter('country'))
       {
@@ -69,11 +69,11 @@ class staticActions extends sfActions
       }
       $this->getUser()->setCulture($culture);
       $this->getUser()->setAttribute('step', 2);
-      
+
       $this->redirect($this->next);
     }
   }
-  
+
   /**
    * ajax function to get a select with the countries available with language
    *
@@ -82,7 +82,7 @@ class staticActions extends sfActions
   {
     $this->preferred_country = CultureTools::getPreferredCountry($request);
     $this->lang = $this->getRequestParameter('language');
-    
+
     if (CultureTools::getCountriesForLanguage($this->lang))
     {
       return sfView::SUCCESS;
@@ -92,7 +92,7 @@ class staticActions extends sfActions
       return sfView::NONE;
     }
   }
-  
+
   /**
    * Step #2: Pre-Installation Check
    * @param $request
@@ -113,7 +113,7 @@ class staticActions extends sfActions
     $this->checks_recommended = Checks::getRecommended();
     $this->checks_fileperms = Checks::getFilePerms();
   }
-  
+
   /**
    * Step #3: License
    * @param $request
@@ -126,7 +126,7 @@ class staticActions extends sfActions
       $this->redirect($this->next);
     }
   }
-  
+
   /**
    * Step #4: Database
    * The validator of this form checks database connection
@@ -138,7 +138,7 @@ class staticActions extends sfActions
   public function executeStep4(sfWebRequest $request)
   {
     $this->form = new DatabaseConfigurationForm();
-    
+
     if ($request->isMethod('post'))
     {
       $params = $request->getParameter('db');
@@ -151,12 +151,12 @@ class staticActions extends sfActions
         $u->setAttribute('password', $params['password']);
         $u->setAttribute('host', $params['host']);
         $u->setAttribute('step', 5);
-        
+
         $this->redirect($this->next);
       }
     }
   }
-  
+
   /**
    * Step #5: Configuration
    * @param $request
@@ -164,13 +164,13 @@ class staticActions extends sfActions
   public function executeStep5(sfWebRequest $request)
   {
     $u = $this->getUser();
-    
+
     $this->form = new MainConfigurationForm(array(
       'admin_email'        => $u->getAttribute('admin_email'),
       'admin_username'     => $u->getAttribute('admin_username'),
       'preload'            => $u->getAttribute('preload', false)
     ));
-    
+
     if ($request->isMethod('post'))
     {
       $params = $request->getParameter('config');
@@ -182,12 +182,12 @@ class staticActions extends sfActions
         $u->setAttribute('admin_password', $params['admin_password']);
         $u->setAttribute('preload', isset($params['preload']) ? true : false);
         $u->setAttribute('step', 6);
-        
+
         $this->redirect($this->next);
       }
     }
   }
-  
+
   /**
    * Step #6: Finish
    * @param $request
@@ -205,7 +205,7 @@ class staticActions extends sfActions
       $dbname     = $user->getAttribute('database');
       $dbusername = $user->getAttribute('username');
       $dbpassword = $user->getAttribute('password');
-      
+
       $this->redirectIf($this->checkConfigFiles(), 'http://'.$_SERVER['HTTP_HOST']
         .substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], 'installer')-1).'/index.php');
     }
@@ -218,7 +218,7 @@ class staticActions extends sfActions
         4. insert the model schema >> ERROR: sql errors
         5. insert data             >> ERROR: sql errors
       */
-      
+
       if (!$this->writeDatabaseConfig())
       {
         $this->downloads['database'] = $this->getDownloadArray('database');
@@ -227,7 +227,7 @@ class staticActions extends sfActions
       {
         $this->warnings[] = $tmp;
       }
-      
+
       if(!$this->writeConfig())
       {
         $this->downloads['config'] = $this->getDownloadArray('config');
@@ -236,13 +236,13 @@ class staticActions extends sfActions
       {
         $this->warnings[] = $tmp;
       }
-      
+
       if (!$link = $this->getDatabaseConnection())
       {
         $this->messages[] = $this->getContext()->getI18N()->__("Can't connect to the database. Please review the data.");
         return sfView::ERROR;
       }
-      
+
       foreach ($this->getDataQuery() as $query)
       {
         // skip the delimiter
@@ -251,8 +251,8 @@ class staticActions extends sfActions
         if(!$res) $this->messages[] = mysql_error().' :: '.$query;
       }
       //Create trigger for company.
-      $query = "CREATE TRIGGER company_trigger AFTER INSERT ON company 
-FOR EACH ROW  
+      $query = "CREATE TRIGGER company_trigger AFTER INSERT ON company
+FOR EACH ROW
 
 BEGIN
 
@@ -269,21 +269,21 @@ BEGIN
 END;
 ";
 
-    $query2 = "CREATE TRIGGER company_trigger_before BEFORE INSERT ON company 
-FOR EACH ROW  
+    $query2 = "CREATE TRIGGER company_trigger_before BEFORE INSERT ON company
+FOR EACH ROW
 
 BEGIN
     SET NEW.legal_terms = concat(NEW.name,', ', NEW.address,' ', NEW.city,' ',NEW.postalcode,' (',NEW.state,'). ', NEW.mercantil_registry, '. De acuerdo con la Ley Orgánica de Protección de Datos 15/99, podrá consultar, rectificar y cancelar sus datos mediante escrito a la dirección de correo electronico: ',NEW.email);
 END;
 ";
-      $db=new mysqli($user->getAttribute('host'), $user->getAttribute('username'), $user->getAttribute('password'), $user->getAttribute('database')); 
+      $db=new mysqli($user->getAttribute('host'), $user->getAttribute('username'), $user->getAttribute('password'), $user->getAttribute('database'));
       $res = $db->multi_query ($query);
       if(!$res) $this->messages[] = $db->error.' :: '.$query;
       $res = $db->multi_query ($query2);
       if(!$res) $this->messages[] = $db->error.' :: '.$query2;
       $db->close();
-      
-      
+
+
       if ($this->messages)
       {
         array_unshift($this->messages, $this->getContext()->getI18N()->__("There were some sql errors creating the database."));
@@ -291,8 +291,8 @@ END;
       }
     }
   }
-  
-  
+
+
   /**
    * undocumented function
    *
@@ -320,7 +320,7 @@ END;
 
     return sfView::NONE;
   }
-  
+
   /**
    * returns an array with information of the file to download
    *
@@ -330,7 +330,7 @@ END;
   {
     $web_folder = substr(sfConfig::get('sf_web_dir'),
       strlen(realpath(sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.'..'))+1);
-      
+
     switch($type)
     {
       case 'database':
@@ -348,10 +348,10 @@ END;
           'file'        => $this->config_file);
         break;
     }
-    
+
     return $download;
   }
-  
+
   /**
    * checks that both configuration files are ok (exists, readable, and with the right data)
    *
@@ -361,12 +361,12 @@ END;
   {
     $cond1 = $this->checkApplicationConfigFile();
     $cond2 = $this->checkDatabaseConfigFile();
-    
+
     if ($cond1 && $cond2)
     {
       return true;
     }
-    
+
     if (!$cond1)
     {
       $this->downloads['config']   = $this->getDownloadArray('config');
@@ -375,10 +375,10 @@ END;
     {
       $this->downloads['database'] = $this->getDownloadArray('database');
     }
-    
+
     return false;
   }
-  
+
   /**
    * returns link to the database
    *
@@ -389,10 +389,10 @@ END;
     $u = $this->getUser();
     $link   = @ mysql_connect($u->getAttribute('host'), $u->getAttribute('username'), $u->getAttribute('password'));
     $opened = @ mysql_select_db($u->getAttribute('database'));
-    
+
     return ($link && $opened) ? $link : false;
   }
-  
+
   /**
    * Returns an array of sql queries, containing schema.sql,
    * and properties defined
@@ -409,7 +409,7 @@ END;
     $sql[] = file_get_contents($dir.DIRECTORY_SEPARATOR.'migration.schema.sql');
     $sql[] = "INSERT INTO  company(id,name,currency,currency_decimals,pdf_size) VALUES (0,'Default Company','EUR',2,'a4')";
     $sql[] = "update company set id = 0";
-    
+
     if ($this->getUser()->getAttribute('preload'))
     {
       $sql[] = "INSERT INTO property VALUES ('sample_data_load', '1')";
@@ -421,7 +421,7 @@ END;
         $sql[] = "INSERT INTO series(company_id,name, value, first_number, enabled) VALUES (0,'Rectificativas', '', '1', '1')";
         $sql[] = "INSERT INTO series(company_id,name, value, first_number, enabled) VALUES (0,'DD', '', '1', '1')";
     }
-    
+
     $sql[] = $this->getGuardUserQuery();
     $sql[] = $this->getProfileQuery();
     //Assing the user to the first company:
@@ -442,8 +442,8 @@ END;
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Capital mobiliario (21%)',-21,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Modulos (1%)',-1,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Profesionales (21%)',-21,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Regimen especial Agrario 2%)',-2,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Profesional Reduida 9%)',-9,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Ret. Regimen especial Agrario 2%)',-2,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Ret. Profesional Reduida 9%)',-9,'1','0')";
     $sql = array_merge($sql, $this->getDefaultTemplateQuery());
     //Product categories
     $sql[] = "INSERT INTO product_category(company_id,name) VALUES (0,'Material')";
@@ -505,7 +505,7 @@ END;
     $nsql[] = "SET foreign_key_checks = 1";
     return $nsql;
   }
-  
+
   /**
    * returns the sql that inserts the super_admin user
    *
@@ -517,10 +517,10 @@ END;
     $name = $u->getAttribute('admin_username');
     $salt = md5(rand(100000, 999999) . $name);
     $pass = sha1($salt . $u->getAttribute('admin_password'));
-    
+
     return "INSERT INTO sf_guard_user (id, username,algorithm,salt,password,is_active,is_super_admin,created_at,updated_at) VALUES (1, '$name', 'sha1', '$salt', '$pass', 1, 1,now(),now())";
   }
-  
+
   /**
    * returns the sql query that inserts the profile data of the super_admin user.
    *
@@ -529,7 +529,7 @@ END;
   private function getProfileQuery()
   {
     $u = $this->getUser();
-    
+
     return sprintf("INSERT INTO sf_guard_user_profile (id, sf_guard_user_id, email, language, country, search_filter) "
       ."VALUES (1, 1, '%s', '%s', '%s', '%s')",
       $u->getAttribute('admin_email'),
@@ -560,7 +560,7 @@ END;
         $slug = $tdata['slug'];
         $mod = $tdata['models'];
         $temp = $tdata['template'];
-        
+
         if (get_magic_quotes_gpc())
         {
           $name = stripslashes($name);
@@ -577,10 +577,10 @@ END;
         $sql[] = "INSERT INTO template (name, slug, models, template, created_at, updated_at)"
           ." VALUES ('$name', '$slug', '$mod', '$temp', now(), now())";
       }
-      
+
       return $sql;
     }
-    
+
     return array();
   }
 
@@ -596,7 +596,7 @@ END;
     $sql[] = "INSERT INTO migration_version VALUES (".$migration->getLatestVersion().")";
     return implode("; ",$sql).";";
   }
-  
+
   /**
    * renders _databases_yml partial with the data given by the user
    *
@@ -605,15 +605,15 @@ END;
   private function generateDatabaseConfig()
   {
     $user = $this->getUser();
-    
+
     $this->host     = $user->getAttribute('host');
     $this->database = $user->getAttribute('database');
     $this->username = $user->getAttribute('username');
     $this->password = $user->getAttribute('password');
-    
+
     return $this->getPartial('static/databases_yml');
   }
-  
+
   /**
    * writes the databases.yml configuration file
    *
@@ -623,7 +623,7 @@ END;
   {
     return @file_put_contents($this->db_file, $this->generateDatabaseConfig());
   }
-  
+
   /**
    * renders _config_php partial with the sf_root_dir
    * specified by the user, or the default one
@@ -633,14 +633,14 @@ END;
   private function generateConfig()
   {
     $sf_root_dir = $this->getRequestParameter('sf_root_dir');
-    
+
     $this->sf_root_dir = $sf_root_dir ?
       "'".$sf_root_dir."'" :
       '$options[\'sf_web_dir\'].DIRECTORY_SEPARATOR.\'..\'';
-      
+
     return $this->getPartial('static/config_php');
   }
-  
+
   /**
    * writes the config.php file
    *
@@ -650,7 +650,7 @@ END;
   {
     return @file_put_contents($this->config_file, $this->generateConfig());
   }
-  
+
   /**
    * checks that application configuration file have the right data
    *
@@ -659,17 +659,17 @@ END;
   private function checkApplicationConfigFile ()
   {
     $cond0 = file_exists($this->config_file) && is_readable($this->config_file);
-    
+
     if ($cond0) {
-      
+
       if (require($this->config_file))
       {
         $sf_root_dir = $this->getRequestParameter('sf_root_dir');
-    
+
         $root_dir_path = $sf_root_dir ?
         $sf_root_dir :
         $options['sf_web_dir'].DIRECTORY_SEPARATOR.'..';
-        
+
         $cond1 = $sw_installed;
         $cond2 = realpath($root_dir_path) == $options['sf_root_dir'];
       }
@@ -677,14 +677,14 @@ END;
         return false;
       }
     }
-    
+
     if ($cond1 && $cond2)
     {
       return true;
     }
     return false;
   }
-  
+
   /**
    * checks that database configuration file have the right data
    *
@@ -693,27 +693,27 @@ END;
   private function checkDatabaseConfigFile ()
   {
     $cond0 = file_exists($this->db_file) && is_readable($this->db_file);
-    
+
     if ($cond0)
     {
       // We call this to populate the databse config variables
       $tmpDatabaseConfigFile = $this->generateDatabaseConfig();
       $databaseArray = sfYaml::load($this->db_file);
-      
+
       if ($databaseArray)
       {
         $dsn = 'mysql:host='.$this->host.';dbname='.$this->database;
         $cond1 = $databaseArray['all']['doctrine']['param']['dsn'] == $dsn;
         $cond2 = $databaseArray['all']['doctrine']['param']['username'] == $this->username;
         $cond3 = $databaseArray['all']['doctrine']['param']['password'] == $this->password;
-        
+
         if ($cond1 && $cond2 && $cond3) {
           return true;
         }
       }
     }
-    
+
     return false;
   }
-  
+
 }
