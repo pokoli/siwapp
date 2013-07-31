@@ -1,4 +1,17 @@
 <?php
+
+function normaliza ($string){
+        $a = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+            ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+            $b = 'aaaaaaaceeeeiiiidnoooooouuuuy
+                bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+                $string = utf8_decode($string);
+                    $string = strtr($string, utf8_decode($a), $b);
+                    $string = strtoupper($string);
+                        return utf8_encode($string);
+}
+
+
 class SiwappMessage extends Swift_Message
 {
 
@@ -9,7 +22,7 @@ class SiwappMessage extends Swift_Message
     parent::__construct();
     $company = new Company();
     $company = $company->loadById(sfContext::getInstance()->getUser()->getAttribute('company_id'));
-    $this->setFrom("noreply@fac24.net", $company->getName());
+    $this->setFrom("noreply@fac24.net", normaliza($company->getName()));
     $this->setReplyTo($company->getEmail());
     $this->company_name = $company->getName();
   }
@@ -21,7 +34,7 @@ class CustomerMessage extends SiwappMessage
   public function __construct($customer)
   {
     parent::__construct();
-    $this->setTo($customer->getEmail(), $customer->getName());
+    $this->setTo($customer->getEmail(), normaliza($customer->getName()));
   }
 }
 
@@ -63,7 +76,7 @@ class PasswordMessage extends SiwappMessage
 
 
     $this
-      ->setTo($profile->email,$profile->first_name.' '.$profile->last_name)
+      ->setTo($profile->email,normaliza($profile->first_name.' '.$profile->last_name))
       ->setSubject(PropertyTable::get('company_name').': '.$i18n->__('Siwapp Invoice System').$i18n->__('Password recovery'))
       ->setBody(implode("\r\n",$body));
   }
@@ -71,7 +84,7 @@ class PasswordMessage extends SiwappMessage
 
 
 /**
- * An email message containing the invoice/estimate formatted in html and 
+ * An email message containing the invoice/estimate formatted in html and
  * with the pdf as attachment.
  *
  * @package siwapp
@@ -86,7 +99,7 @@ class InvoiceMessage extends SiwappMessage
   public function __construct($invoice)
   {
     parent::__construct();
-    $this->setTo($invoice->customer_email, $invoice->customer_name);
+    $this->setTo($invoice->customer_email, normaliza($invoice->customer_name));
 
     $model = get_class($invoice);
     $data = Printer::getInvoiceData($model,$invoice->getId());
@@ -106,7 +119,7 @@ class InvoiceMessage extends SiwappMessage
         ->setBody($printer->render($data), 'text/html')
         ->attach($attachment);
       $this->setReadyState(true);
-      
+
     }
     catch(LogicException $e)
     {
