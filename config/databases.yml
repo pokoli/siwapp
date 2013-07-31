@@ -2,7 +2,7 @@ all:
   doctrine:
     class: sfDoctrineDatabase
     param:
-      dsn: 'mysql:host=localhost;dbname=teixido'
+      dsn: 'mysql:host=localhost;dbname=siwapp'
       username: 'siwapp'
       password: 'wappis'
 
