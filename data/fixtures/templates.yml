@@ -1,677 +1,15 @@
 Template:
   Template_1:
-    name: English - Invoice Template
-    slug: invoice-template
-    models: none 
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-      <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Invoice</title>
 
-        <style type="text/css">
-          /* Custom CSS code */
-          table {border-spacing:0; border-collapse: collapse;}
-          ul {list-style-type: none; padding-left:0;}
-          body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
-          body { color:#464648; margin:2cm 1.5cm; }
-          h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
-          h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
-
-          table th.right,
-          table td.right              { text-align:right; }
-
-          .customer-data              { padding:1em 0; }
-          .customer-data table        { width:100%;       }
-          .customer-data table td     { width:50%;        }
-          .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
-          .customer-data td span.left { margin-right:1em; }
-          .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
-          .payment-data               { padding:1em 0;    }
-          .payment-data table         { width:100%;       }
-          .payment-data th,
-          .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
-          .payment-data thead th      { background:#FAFAFA; }
-          .payment-data th            { font-weight:bold; white-space:nowrap; }
-          .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
-          .payment-data span.tax      { display:block; white-space:nowrap; }
-          .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
-
-          .section                    { margin-bottom: 1em; }
-          .logo                       { float: right; }
-        </style>
-
-        <style type="text/css">
-            body           { margin:auto; }
-            .section       { page-break-inside:avoid; }
-            div#sfWebDebug { display:none; }
-        </style>
-      </head>
-      <body>
-          
-          <div class="h2">
-           <h2> Invoice #{{invoice}}</h2>
-          </div>
-
-          <div class="section">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=60%>
-                <ul>
-                    <li>Company: {{invoice.Company.name}}</li>
-                    <li>Address: <br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}} </li>
-                    <li>Phone: {{invoice.Company.phone}}</li>
-                    <li>Fax: {{invoice.Company.fax}}</li>
-                    <li>Email: {{invoice.Company.email}}</li>
-                    <li>Web: {{invoice.Company.url}}</li>
-                </ul>
-              </td> 
-              {% if invoice.Company.logo %}
-                <tr><td width="40%"> 
-                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
-                </td>
-             {% endif %}
-            </tr></table>
-        </div>
-
-        <div class="section">
-          <h3>Client info</h3>
-
-          <div class="customer-data">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Customer:</label>
-                    {{invoice.customer_name}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Customer identification:</label>
-                    {{invoice.customer_identification}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Contact person:</label>
-                    {{invoice.contact_person}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Email:</label>
-                    {{invoice.customer_email}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Invoicing address:</label>
-                    <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Shipping address:</label>
-                    <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Payment details</h3>
-          <div>
-               Payment type: {{invoice.PaymentType.name}}
-               {% if invoice.PaymentType.description %}
-                  - {{invoice.PaymentType.description}}
-               {% endif %}
-               <br> Due Date: {{invoice.due_date}}
-          </div>
-
-          <div class="payment-data">
-            <table>
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th class="right">Unit Cost</th>
-                  <th class="right">Qty</th>
-                  <th class="right">Taxes total</th>
-                  {# show discounts only if there is some discount #}
-                  {% if invoice.discount_amount %}
-                  <th class="right">Discount</th>
-                  {% endif %}
-                  <th class="right">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in invoice.Items %}
-                  <tr>
-                    <td>
-                      {{item.description}}
-                    </td>
-                    <td class="right">{{item.unitary_cost|currency}}</td>
-                    <td class="right">{{item.quantity}}</td>
-                    <td class="right">
-                      {% for tax in item.Taxes %}
-                        <span class="tax">{{tax.name}}</span>
-                      {% endfor %}
-                    </td>
-                    {% if invoice.discount_amount %}
-                    <td class="right">{{item.discount_amount|currency}}</td>
-                    {% endif %}
-                    <td class="right">{{item.gross_amount|currency}}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Base</th>
-                  <td class="right">{{invoice.base_amount|currency}}</td>
-                </tr>
-                {% if invoice.discount_amount %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Discount</th>
-                  <td class="td_global_discount right">{{invoice.discount_amount|currency}}</td>
-                </tr>
-                {% endif %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Subtotal</th>
-                  <td class="td_subtotal right">{{invoice.net_amount|currency}}</td>
-                </tr>
-                {% for name,ammount in invoice.tax_details %}
-                  <tr>
-                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">{{name}}</th>
-                    <td class="td_subtotal right">{{ammount|currency}}</td>
-                  </tr>  
-                {% endfor %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Taxes total</th>
-                  <td class="td_total_taxes right">{{invoice.tax_amount|currency}}</td>
-                </tr>
-                <tr class="strong">
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Total</th>
-                  <td class="td_total right">{{invoice.gross_amount|currency}}</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-        
-        <div class="section">
-          <h3>Terms & conditions</h3>
-          <div class="terms">
-            {{invoice.terms|format}}
-          </div>
-        </div>
-      </body>
-      </html>
-
-  Template_2:
-    name: English - Template with product
-    slug: template-with-product
-    models: none
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-      <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-       <title>Invoice</title>
-
-       <style type="text/css">
-         /* Custom CSS code */
-         table {border-spacing:0; border-collapse: collapse;}
-         ul {list-style-type: none; padding-left:0;}
-         body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
-         body { color:#464648; margin:2cm 1.5cm; }
-         h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
-         h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
-
-         table th.right,
-         table td.right              { text-align:right; }
-
-         .customer-data              { padding:1em 0; }
-         .customer-data table        { width:100%;       }
-         .customer-data table td     { width:50%;        }
-         .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
-         .customer-data td span.left { margin-right:1em; }
-         .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
-         .payment-data               { padding:1em 0;    }
-         .payment-data table         { width:100%;       }
-         .payment-data th,
-         .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
-         .payment-data thead th      { background:#FAFAFA; }
-         .payment-data th            { font-weight:bold; white-space:nowrap; }
-         .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
-         .payment-data span.tax      { display:block; white-space:nowrap; }
-         .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
-
-         .section                    { margin-bottom: 1em; }
-         .logo                       { text-align: right; }
-       </style>
-
-       <style type="text/css">
-           body           { margin:auto; }
-           .section       { page-break-inside:avoid; }
-           div#sfWebDebug { display:none; }
-       </style>
-      </head>
-      <body>
-
-        <div class="h2">
-           <h2> Invoice #{{invoice}}</h2>
-          </div>
-
-          <div class="section">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=60%>
-                <ul>
-                    <li>Company: {{invoice.Company.name}}</li>
-                    <li>Address: <br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}} </li>
-                    <li>Phone: {{invoice.Company.phone}}</li>
-                    <li>Fax: {{invoice.Company.fax}}</li>
-                    <li>Email: {{invoice.Company.email}}</li>
-                    <li>Web: {{invoice.Company.url}}</li>
-                </ul>
-              </td> 
-              {% if invoice.Company.logo %}
-                <tr><td width="40%"> 
-                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
-                </td>
-             {% endif %}
-            </tr></table>
-        </div>
-
-       <div class="section">
-         <h3>Client info</h3>
-
-         <div class="customer-data">
-           <table cellspacing="0" cellpadding="0" width="100%">
-             <tr>
-               <td>
-                 <span class="left">
-                   <label>Customer:</label>
-                   {{invoice.customer_name}}
-                 </span>
-               </td>
-               <td>
-                 <span class="right">
-                   <label>Customer identification:</label>
-                   {{invoice.customer_identification}}
-                 </span>
-               </td>
-             </tr>
-             <tr>
-               <td>
-                 <span class="left">
-                   <label>Contact person:</label>
-                   {{invoice.contact_person}}
-                 </span>
-               </td>
-               <td>
-                 <span class="right">
-                   <label>Email:</label>
-                   {{invoice.customer_email}}
-                 </span>
-               </td>
-             </tr>
-             <tr>
-               <td>
-                 <span class="left">
-                   <label>Invoicing address:</label>
-                   <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
-                 </span>
-               </td>
-               <td>
-                 <span class="right">
-                   <label>Shipping address:</label>
-                   <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
-                 </span>
-               </td>
-             </tr>
-           </table>
-         </div>
-       </div>
-
-        <div class="section">
-          <h3>Payment details</h3>
-          <div>
-               Payment type: {{invoice.PaymentType.name}}
-               {% if invoice.PaymentType.description %}
-                  - {{invoice.PaymentType.description}}
-               {% endif %}
-               <br> Due Date: {{invoice.due_date}}
-          </div>
-
-         <div class="payment-data">
-           <table>
-             <thead>
-               <tr>
-                 <th>Reference</th>
-                 <th>Description</th>
-                 <th class="right">Unit Cost</th>
-                 <th class="right">Qty</th>
-                 <th class="right">TVA</th>
-                 {# show discounts only if there is some discount #}
-                 {% if invoice.discount_amount %}
-                 <th class="right">Discount</th>
-                 {% endif %}
-                 <th class="right">Price</th>
-               </tr>
-             </thead>
-             <tbody>
-               {% for item in invoice.Items %}
-                 <tr>
-                   <td>
-                     {{item.product_id|product_reference}}
-                   </td>
-                   <td>
-                     {{item.description}}
-                   </td>
-                   <td class="right">{{item.unitary_cost|currency}}</td>
-                   <td class="right">{{item.quantity}}</td>
-                   <td class="right">
-                     {% for tax in item.Taxes %}
-                       <span class="tax">{{tax.name}}</span>
-                     {% endfor %}
-                   </td>
-                   {% if invoice.discount_amount %}
-                   <td class="right">{{item.discount|currency}}</td>
-                   {% endif %}
-                   <td class="right">{{item.gross|currency}}</td>
-                 </tr>
-               {% endfor %}
-             </tbody>
-             <tfoot>
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Base</th>
-                 <td class="right">{{invoice.base_amount|currency}}</td>
-               </tr>
-               {% if invoice.discount_amount %}
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Discount</th>
-                 <td class="td_global_discount right">{{invoice.discount_amount|currency}}</td>
-               </tr>
-               {% endif %}
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Subtotal</th>
-                 <td class="td_subtotal right">{{invoice.net_amount|currency}}</td>
-               </tr>
-               {% for name,ammount in invoice.tax_details %}
-                 <tr>
-                   <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                   <th class="right">{{name}}</th>
-                   <td class="td_subtotal right">{{ammount|currency}}</td>
-                 </tr>  
-               {% endfor %}
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Taxes</th>
-                 <td class="td_total_taxes right">{{invoice.tax_amount|currency}}</td>
-               </tr>
-               <tr class="strong">
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Total</th>
-                 <td class="td_total right">{{invoice.gross_amount|currency}}</td>
-               </tr>
-             </tfoot>
-           </table>
-         </div>
-       </div>
-
-       <div class="section">
-         <h3>Terms & conditions</h3>
-         <div class="terms">
-           {{invoice.terms|format}}
-         </div>
-       </div>
-      </body>
-      </html>
-
-  Template_3:
-    name: English - Estimate Template
-    slug: estimate-template
-    models: none
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-      <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Estimate</title>
-
-        <style type="text/css">
-          /* Custom CSS code */
-          table {border-spacing:0; border-collapse: collapse;}
-          ul {list-style-type: none; padding-left:0;}
-          body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
-          body { color:#464648; margin:2cm 1.5cm; }
-          h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
-          h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
-
-          table th.right,
-          table td.right              { text-align:right; }
-
-          .customer-data              { padding:1em 0; }
-          .customer-data table        { width:100%;       }
-          .customer-data table td     { width:50%;        }
-          .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
-          .customer-data td span.left { margin-right:1em; }
-          .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
-          .payment-data               { padding:1em 0;    }
-          .payment-data table         { width:100%;       }
-          .payment-data th,
-          .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
-          .payment-data thead th      { background:#FAFAFA; }
-          .payment-data th            { font-weight:bold; white-space:nowrap; }
-          .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
-          .payment-data span.tax      { display:block; white-space:nowrap; }
-          .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
-
-          .section                    { margin-bottom: 1em; }
-          .logo                       { float: right; }
-        </style>
-
-        <style type="text/css">
-            body           { margin:auto; }
-            .section       { page-break-inside:avoid; }
-            div#sfWebDebug { display:none; }
-        </style>
-      </head>
-      <body>
-
-        {% if estimate.Company.logo %}
-          <div class="logo">
-            <img src="{{ estimate.Company.logoURL }}" alt="{{ estimate.Company.name }}" />
-          </div>
-        {% endif %}
-
-        <div class="h2">
-          <h2>Estimate #{{estimate}}</h2>
-        </div>
-
-          <div class="section">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=60%>
-                <ul>
-                    <li>Company: {{estimate.Company.name}}</li>
-                    <li>Address: <br> {{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}} </li>
-                    <li>Phone: {{estimate.Company.phone}}</li>
-                    <li>Fax: {{estimate.Company.fax}}</li>
-                    <li>Email: {{estimate.Company.email}}</li>
-                    <li>Web: {{estimate.Company.url}}</li>
-                </ul>
-              </td> 
-              {% if invoice.Company.logo %}
-                <tr><td width="40%"> 
-                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
-                </td>
-             {% endif %}
-            </tr></table>
-        </div>
-
-        <div class="section">
-          <h3>Client info</h3>
-
-          <div class="customer-data">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Customer:</label>
-                    {{estimate.customer_name}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Customer identification:</label>
-                    {{estimate.customer_identification}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Contact person:</label>
-                    {{estimate.contact_person}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Email:</label>
-                    {{estimate.customer_email}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Invoicing address:</label>
-                    <br> {{estimate.invoicing_address}} <br> {{estimate.invoicing_postalcode}} {{estimate.invoicing_city}} <br> {{estimate.invoicing_state}} {{estimate.invoicing_country}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Shipping address:</label>
-                    <br> {{estimate.shipping_address}} <br> {{estimate.shipping_postalcode}} {{estimate.shipping_city}} <br> {{estimate.shipping_state}} {{estimate.shipping_country}}
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Payment details</h3>
-
-          <div class="payment-data">
-            <table>
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th class="right">Unit Cost</th>
-                  <th class="right">Qty</th>
-                  <th class="right">Taxes total</th>
-                  {# show discounts only if there is some discount #}
-                  {% if estimate.discount_amount %}
-                  <th class="right">Discount</th>
-                  {% endif %}
-                  <th class="right">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in estimate.Items %}
-                  <tr>
-                    <td>
-                      {{item.description}}
-                    </td>
-                    <td class="right">{{item.unitary_cost|currency}}</td>
-                    <td class="right">{{item.quantity}}</td>
-                    <td class="right">
-                      {% for tax in item.Taxes %}
-                        <span class="tax">{{tax.name}}</span>
-                      {% endfor %}
-                    </td>
-                    {% if estimate.discount_amount %}
-                    <td class="right">{{item.discount_amount|currency}}</td>
-                    {% endif %}
-                    <td class="right">{{item.gross_amount|currency}}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Base</th>
-                  <td class="right">{{estimate.base_amount|currency}}</td>
-                </tr>
-                {% if estimate.discount_amount %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Discount</th>
-                  <td class="td_global_discount right">{{estimate.discount_amount|currency}}</td>
-                </tr>
-                {% endif %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Subtotal</th>
-                  <td class="td_subtotal right">{{estimate.net_amount|currency}}</td>
-                </tr>
-                {% for name,ammount in invoice.tax_details %}
-                  <tr>
-                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">{{name}}</th>
-                    <td class="td_subtotal right">{{ammount|currency}}</td>
-                  </tr>  
-                {% endfor %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Taxes total</th>
-                  <td class="td_total_taxes right">{{estimate.tax_amount|currency}}</td>
-                </tr>
-                <tr class="strong">
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Total</th>
-                  <td class="td_total right">{{estimate.gross_amount|currency}}</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Terms & conditions</h3>
-          <div class="terms">
-            {{estimate.terms|format}}
-          </div>
-        </div>
-      </body>
-      </html>
-
-  Template_4:
-    name: English - Expense Template
-    slug: expense-template
-    models: none
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+      name: English - Invoice Template
+      slug: invoice-template
+      models:
+      template: |-
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
         <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
         <head>
           <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-          <title>Expense</title>
+          <title>Invoice</title>
 
           <style type="text/css">
             /* Custom CSS code */
@@ -712,11 +50,33 @@ Template:
           </style>
         </head>
         <body>
-          <div class="h2">
-           <h2> Expense #{{expense}}</h2>
+
+            <div class="h2">
+             <h2> Invoice #{{invoice}}</h2>
+            </div>
+
+            <div class="section">
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr><td width=60%>
+                  <ul>
+                      <li>Company: {{invoice.Company.name}} - {{invoice.Company.identification}} </li>
+                      <li>Address: <br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}} </li>
+                      <li>Phone: {{invoice.Company.phone}}</li>
+                      <li>Fax: {{invoice.Company.fax}}</li>
+                      <li>Email: {{invoice.Company.email}}</li>
+                      <li>Web: {{invoice.Company.url}}</li>
+                  </ul>
+                </td>
+                {% if invoice.Company.logo %}
+                  <td width="40%">
+                     <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
+                  </td>
+               {% endif %}
+              </tr></table>
           </div>
+
           <div class="section">
-            <h3>Supplier info</h3>
+            <h3>Client info</h3>
 
             <div class="customer-data">
               <table cellspacing="0" cellpadding="0" width="100%">
@@ -724,13 +84,13 @@ Template:
                   <td>
                     <span class="left">
                       <label>Customer:</label>
-                      {{expense.supplier_name}}
+                      {{invoice.customer_name}}
                     </span>
                   </td>
                   <td>
                     <span class="right">
                       <label>Customer identification:</label>
-                      {{expense.supplier_identification}}
+                      {{invoice.customer_identification}}
                     </span>
                   </td>
                 </tr>
@@ -738,13 +98,13 @@ Template:
                   <td>
                     <span class="left">
                       <label>Contact person:</label>
-                      {{expense.contact_person}}
+                      {{invoice.contact_person}}
                     </span>
                   </td>
                   <td>
                     <span class="right">
                       <label>Email:</label>
-                      {{expense.supplier_email}}
+                      {{invoice.customer_email}}
                     </span>
                   </td>
                 </tr>
@@ -752,11 +112,13 @@ Template:
                   <td>
                     <span class="left">
                       <label>Invoicing address:</label>
-                      <br> {{expense.invoicing_address}} <br> {{expense.invoicing_postalcode}} {{expense.invoicing_city}} <br> {{expense.invoicing_state}} {{expense.invoicing_country}}
+                      <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
                     </span>
                   </td>
                   <td>
                     <span class="right">
+                      <label>Shipping address:</label>
+                      <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
                     </span>
                   </td>
                 </tr>
@@ -766,9 +128,13 @@ Template:
 
           <div class="section">
             <h3>Payment details</h3>
-            <span> Invoiced on : {{expense.issue_date}}</span><br>
-            <span> Supplier reference : {{expense.supplier_reference}}</span
-            <br><br>
+            <div>
+                 Payment type:
+                 {% if invoice.PaymentType.description %}
+                    {{invoice.PaymentType.description}}
+                 {% endif %}
+                 <br> Due Date: {{invoice.due_date}}
+            </div>
 
             <div class="payment-data">
               <table>
@@ -779,14 +145,14 @@ Template:
                     <th class="right">Qty</th>
                     <th class="right">Taxes total</th>
                     {# show discounts only if there is some discount #}
-                    {% if expense.discount_amount %}
+                    {% if invoice.discount_amount %}
                     <th class="right">Discount</th>
                     {% endif %}
                     <th class="right">Price</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for item in expense.Items %}
+                  {% for item in invoice.Items %}
                     <tr>
                       <td>
                         {{item.description}}
@@ -798,7 +164,7 @@ Template:
                           <span class="tax">{{tax.name}}</span>
                         {% endfor %}
                       </td>
-                      {% if expense.discount_amount %}
+                      {% if invoice.discount_amount %}
                       <td class="right">{{item.discount_amount|currency}}</td>
                       {% endif %}
                       <td class="right">{{item.gross_amount|currency}}</td>
@@ -807,713 +173,65 @@ Template:
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
                     <th class="right">Base</th>
-                    <td class="right">{{expense.base_amount|currency}}</td>
+                    <td class="right">{{invoice.base_amount|currency}}</td>
                   </tr>
-                  {% if expense.discount_amount %}
+                  {% if invoice.discount_amount %}
                   <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
                     <th class="right">Discount</th>
-                    <td class="td_global_discount right">{{expense.discount_amount|currency}}</td>
+                    <td class="td_global_discount right">{{invoice.discount_amount|currency}}</td>
                   </tr>
                   {% endif %}
                   <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
                     <th class="right">Subtotal</th>
-                    <td class="td_subtotal right">{{expense.net_amount|currency}}</td>
+                    <td class="td_subtotal right">{{invoice.net_amount|currency}}</td>
                   </tr>
-                  {% for name,ammount in expense.tax_details %}
+                  {% for name,ammount in invoice.tax_details %}
                     <tr>
-                      <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
+                      <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
                       <th class="right">{{name}}</th>
                       <td class="td_subtotal right">{{ammount|currency}}</td>
-                    </tr>  
+                    </tr>
                   {% endfor %}
                   <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
                     <th class="right">Taxes total</th>
-                    <td class="td_total_taxes right">{{expense.tax_amount|currency}}</td>
+                    <td class="td_total_taxes right">{{invoice.tax_amount|currency}}</td>
                   </tr>
                   <tr class="strong">
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Total</th>
-                    <td class="td_total right">{{expense.gross_amount|currency}}</td>
+                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <th class="right">Total Factura</th>
+                    <td class="td_total right">{{invoice.gross_amount|currency}}</td>
                   </tr>
                 </tfoot>
               </table>
             </div>
           </div>
+
+          <div class="section">
+            <h3>Terms & conditions</h3>
+            <div class="terms">
+              {{invoice.terms|format}}
+            </div>
+          </div>
         </body>
         </html>
 
+    -
 
-  Template_5:
-    name: Castellano - Plantilla de Factura
-    slug: plantilla-factura
-    models: Invoice
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-      <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Factura</title>
-
-        <style type="text/css">
-          /* Custom CSS code */
-          table {border-spacing:0; border-collapse: collapse;}
-          ul {list-style-type: none; padding-left:0;}
-          body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
-          body { color:#464648; margin:2cm 1.5cm; }
-          h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
-          h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
-
-          table th.right,
-          table td.right              { text-align:right; }
-
-          .customer-data              { padding:1em 0; }
-          .customer-data table        { width:100%;       }
-          .customer-data table td     { width:50%;        }
-          .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
-          .customer-data td span.left { margin-right:1em; }
-          .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
-          .payment-data               { padding:1em 0;    }
-          .payment-data table         { width:100%;       }
-          .payment-data th,
-          .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
-          .payment-data thead th      { background:#FAFAFA; }
-          .payment-data th            { font-weight:bold; white-space:nowrap; }
-          .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
-          .payment-data span.tax      { display:block; white-space:nowrap; }
-          .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
-
-          .section                    { margin-bottom: 1em; }
-          .logo                       { float: right; }
-        </style>
-
-        <style type="text/css">
-            body           { margin:auto; }
-            .section       { page-break-inside:avoid; }
-            div#sfWebDebug { display:none; }
-        </style>
-      </head>
-      <body>
-          
-          <div class="h2">
-           <h2> Factura #{{invoice}}</h2>
-          </div>
-
-          <div class="section">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=60%>
-                <ul>
-                    <li>Empresa: {{invoice.Company.name}}</li>
-                    <li>Adreçan:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
-                    <li>Teléfono: {{invoice.Company.phone}}</li>
-                    <li>Fax: {{invoice.Company.fax}}</li>
-                    <li>Email: {{invoice.Company.email}}</li>
-                    <li>Pagina Web: {{invoice.Company.url}}</li>
-                </ul>
-              </td> 
-              {% if invoice.Company.logo %}
-                <tr><td width="40%"> 
-                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
-                </td>
-             {% endif %}
-            </tr></table>
-        </div>
-
-        <div class="section">
-          <h3>Información del cliente</h3>
-
-          <div class="customer-data">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Cliente:</label>
-                    {{invoice.customer_name}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Identificador legal:</label>
-                    {{invoice.customer_identification}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Persona de contacto:</label>
-                    {{invoice.contact_person}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Email:</label>
-                    {{invoice.customer_email}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Adreçan de facturación:</label>
-                    <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Adreçan de envío:</label>
-                    <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Detalles del pago</h3>
-          <div>
-               Payment type: {{invoice.PaymentType.name}}
-               {% if invoice.PaymentType.description %}
-                  - {{invoice.PaymentType.description}}
-               {% endif %}
-               <br> Fecha vencimiento: {{invoice.due_date}}
-          </div>
-
-          <div class="payment-data">
-            <table>
-              <thead>
-                <tr>
-                  <th>Descripción</th>
-                  <th class="right">Precio</th>
-                  <th class="right">Cantidad</th>
-                  <th class="right">Impuestos</th>
-                  {# show discounts only if there is some discount #}
-                  {% if invoice.discount_amount %}
-                  <th class="right">Descuento</th>
-                  {% endif %}
-                  <th class="right">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in invoice.Items %}
-                  <tr>
-                    <td>
-                      {{item.description}}
-                    </td>
-                    <td class="right">{{item.unitary_cost|currency}}</td>
-                    <td class="right">{{item.quantity}}</td>
-                    <td class="right">
-                      {% for tax in item.Taxes %}
-                        <span class="tax">{{tax.name}}</span>
-                      {% endfor %}
-                    </td>
-                    {% if invoice.discount_amount %}
-                    <td class="right">{{item.discount_amount|currency}}</td>
-                    {% endif %}
-                    <td class="right">{{item.gross_amount|currency}}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Base Imponible</th>
-                  <td class="right">{{invoice.base_amount|currency}}</td>
-                </tr>
-                {% if invoice.discount_amount %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Descuento</th>
-                  <td class="td_global_discount right">{{invoice.discount_amount|currency}}</td>
-                </tr>
-                {% endif %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Subtotal</th>
-                  <td class="td_subtotal right">{{invoice.net_amount|currency}}</td>
-                </tr>
-                {% for name,ammount in invoice.tax_details %}
-                  <tr>
-                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">{{name}}</th>
-                    <td class="td_subtotal right">{{ammount|currency}}</td>
-                  </tr>  
-                {% endfor %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Total impuestos</th>
-                  <td class="td_total_taxes right">{{invoice.tax_amount|currency}}</td>
-                </tr>
-                <tr class="strong">
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Total</th>
-                  <td class="td_total right">{{invoice.gross_amount|currency}}</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-        
-        <div class="section">
-          <h3>Condiciones</h3>
-          <div class="terms">
-            {{invoice.terms|format}}
-          </div>
-        </div>
-      </body>
-      </html>
-
-  Template_6:
-    name: Castellano - Plantilla de factura con producto
-    slug: plantilla-factura-con-producto
-    models: none
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-      <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-       <title>Factura</title>
-
-       <style type="text/css">
-         /* Custom CSS code */
-         table {border-spacing:0; border-collapse: collapse;}
-         ul {list-style-type: none; padding-left:0;}
-         body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
-         body { color:#464648; margin:2cm 1.5cm; }
-         h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
-         h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
-
-         table th.right,
-         table td.right              { text-align:right; }
-
-         .customer-data              { padding:1em 0; }
-         .customer-data table        { width:100%;       }
-         .customer-data table td     { width:50%;        }
-         .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
-         .customer-data td span.left { margin-right:1em; }
-         .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
-         .payment-data               { padding:1em 0;    }
-         .payment-data table         { width:100%;       }
-         .payment-data th,
-         .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
-         .payment-data thead th      { background:#FAFAFA; }
-         .payment-data th            { font-weight:bold; white-space:nowrap; }
-         .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
-         .payment-data span.tax      { display:block; white-space:nowrap; }
-         .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
-
-         .section                    { margin-bottom: 1em; }
-         .logo                       { text-align: right; }
-       </style>
-
-       <style type="text/css">
-           body           { margin:auto; }
-           .section       { page-break-inside:avoid; }
-           div#sfWebDebug { display:none; }
-       </style>
-      </head>
-      <body>
-
-        <div class="h2">
-           <h2> Factura #{{invoice}}</h2>
-          </div>
-
-          <div class="section">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=60%>
-                <ul>
-                    <li>Empresa: {{invoice.Company.name}}</li>
-                    <li>Adreçan:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
-                    <li>Telefono: {{invoice.Company.phone}}</li>
-                    <li>Fax: {{invoice.Company.fax}}</li>
-                    <li>Email: {{invoice.Company.email}}</li>
-                    <li>Web: {{invoice.Company.url}}</li>
-                </ul>
-              </td> 
-              {% if invoice.Company.logo %}
-                <tr><td width="40%"> 
-                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
-                </td>
-             {% endif %}
-            </tr></table>
-        </div>
-
-       <div class="section">
-         <h3>Información del cliente</h3>
-
-         <div class="customer-data">
-           <table cellspacing="0" cellpadding="0" width="100%">
-             <tr>
-               <td>
-                 <span class="left">
-                   <label>Cliente:</label>
-                   {{invoice.customer_name}}
-                 </span>
-               </td>
-               <td>
-                 <span class="right">
-                   <label>Identificacion legal:</label>
-                   {{invoice.customer_identification}}
-                 </span>
-               </td>
-             </tr>
-             <tr>
-               <td>
-                 <span class="left">
-                   <label>Persona de contacto:</label>
-                   {{invoice.contact_person}}
-                 </span>
-               </td>
-               <td>
-                 <span class="right">
-                   <label>Email:</label>
-                   {{invoice.customer_email}}
-                 </span>
-               </td>
-             </tr>
-             <tr>
-               <td>
-                 <span class="left">
-                   <label>Adreçan de facturación:</label>
-                   <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
-                 </span>
-               </td>
-               <td>
-                 <span class="right">
-                   <label>Adreçan de envío:</label>
-                   <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
-                 </span>
-               </td>
-             </tr>
-           </table>
-         </div>
-       </div>
-
-       <div class="section">
-         <h3>Detalles del pago</h3>
-
-         <div class="payment-data">
-           <table>
-             <thead>
-               <tr>
-                 <th>Referencia</th>
-                 <th>Descripción</th>
-                 <th class="right">Precio</th>
-                 <th class="right">Cantidad</th>
-                 <th class="right">Impuestos</th>
-                 {# show discounts only if there is some discount #}
-                 {% if invoice.discount_amount %}
-                 <th class="right">Descuento</th>
-                 {% endif %}
-                 <th class="right">Total</th>
-               </tr>
-             </thead>
-             <tbody>
-               {% for item in invoice.Items %}
-                 <tr>
-                   <td>
-                     {{item.product_id|product_reference}}
-                   </td>
-                   <td>
-                     {{item.description}}
-                   </td>
-                   <td class="right">{{item.unitary_cost|currency}}</td>
-                   <td class="right">{{item.quantity}}</td>
-                   <td class="right">
-                     {% for tax in item.Taxes %}
-                       <span class="tax">{{tax.name}}</span>
-                     {% endfor %}
-                   </td>
-                   {% if invoice.discount_amount %}
-                   <td class="right">{{item.discount|currency}}</td>
-                   {% endif %}
-                   <td class="right">{{item.gross|currency}}</td>
-                 </tr>
-               {% endfor %}
-             </tbody>
-             <tfoot>
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Base</th>
-                 <td class="right">{{invoice.base_amount|currency}}</td>
-               </tr>
-               {% if invoice.discount_amount %}
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Descuento</th>
-                 <td class="td_global_discount right">{{invoice.discount_amount|currency}}</td>
-               </tr>
-               {% endif %}
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Subtotal</th>
-                 <td class="td_subtotal right">{{invoice.net_amount|currency}}</td>
-               </tr>
-               {% for name,ammount in invoice.tax_details %}
-                 <tr>
-                   <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                   <th class="right">{{name}}</th>
-                   <td class="td_subtotal right">{{ammount|currency}}</td>
-                 </tr>  
-               {% endfor %}
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Total Impuestos</th>
-                 <td class="td_total_taxes right">{{invoice.tax_amount|currency}}</td>
-               </tr>
-               <tr class="strong">
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Total</th>
-                 <td class="td_total right">{{invoice.gross_amount|currency}}</td>
-               </tr>
-             </tfoot>
-           </table>
-         </div>
-       </div>
-
-       <div class="section">
-         <h3>Condiciones</h3>
-         <div class="terms">
-           {{invoice.terms|format}}
-         </div>
-       </div>
-      </body>
-      </html>
-
-  Template_7:
-    name: Castellano - Plantila de Presupuesto
-    slug: plantilla-de-presupuestos
-    models: Estimate
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-      <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Estimate</title>
-
-        <style type="text/css">
-          /* Custom CSS code */
-          table {border-spacing:0; border-collapse: collapse;}
-          ul {list-style-type: none; padding-left:0;}
-          body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
-          body { color:#464648; margin:2cm 1.5cm; }
-          h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
-          h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
-
-          table th.right,
-          table td.right              { text-align:right; }
-
-          .customer-data              { padding:1em 0; }
-          .customer-data table        { width:100%;       }
-          .customer-data table td     { width:50%;        }
-          .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
-          .customer-data td span.left { margin-right:1em; }
-          .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
-          .payment-data               { padding:1em 0;    }
-          .payment-data table         { width:100%;       }
-          .payment-data th,
-          .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
-          .payment-data thead th      { background:#FAFAFA; }
-          .payment-data th            { font-weight:bold; white-space:nowrap; }
-          .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
-          .payment-data span.tax      { display:block; white-space:nowrap; }
-          .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
-
-          .section                    { margin-bottom: 1em; }
-          .logo                       { float: right; }
-        </style>
-
-        <style type="text/css">
-            body           { margin:auto; }
-            .section       { page-break-inside:avoid; }
-            div#sfWebDebug { display:none; }
-        </style>
-      </head>
-      <body>
-
-        {% if estimate.Company.logo %}
-          <div class="logo">
-            <img src="{{ estimate.Company.logoURL }}" alt="{{ estimate.Company.name }}" />
-          </div>
-        {% endif %}
-
-        <div class="h2">
-          <h2>Pressupuesto #{{estimate}}</h2>
-        </div>
-
-          <div class="section">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=60%>
-                <ul>
-                    <li>Empresa: {{estimate.Company.name}}</li>
-                    <li>Adreçan:<br> {{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}}</li>
-                    <li>Telefono: {{estimate.Company.phone}}</li>
-                    <li>Fax: {{estimate.Company.fax}}</li>
-                    <li>Email: {{estimate.Company.email}}</li>
-                    <li>Web: {{estimate.Company.url}}</li>
-                </ul>
-              </td> 
-              {% if invoice.Company.logo %}
-                <tr><td width="40%"> 
-                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
-                </td>
-             {% endif %}
-            </tr></table>
-        </div>
-
-        <div class="section">
-          <h3>Información del cliente</h3>
-
-          <div class="customer-data">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Cliente:</label>
-                    {{estimate.customer_name}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Identificacion legal:</label>
-                    {{estimate.customer_identification}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Persona de contacto:</label>
-                    {{estimate.contact_person}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Email:</label>
-                    {{estimate.customer_email}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Adreçan de facturación:</label>
-                    <br> {{estimate.invoicing_address}} <br> {{estimate.invoicing_postalcode}} {{estimate.invoicing_city}} <br> {{estimate.invoicing_state}} {{estimate.invoicing_country}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Adreçan de envío:</label>
-                    <br> {{estimate.shipping_address}} <br> {{estimate.shipping_postalcode}} {{estimate.shipping_city}} <br> {{estimate.shipping_state}} {{estimate.shipping_country}}
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Detalles del pago</h3>
-
-          <div class="payment-data">
-            <table>
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th class="right">Unit Cost</th>
-                  <th class="right">Qty</th>
-                  <th class="right">Taxes total</th>
-                  {# show discounts only if there is some discount #}
-                  {% if estimate.discount_amount %}
-                  <th class="right">Discount</th>
-                  {% endif %}
-                  <th class="right">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in estimate.Items %}
-                  <tr>
-                    <td>
-                      {{item.description}}
-                    </td>
-                    <td class="right">{{item.unitary_cost|currency}}</td>
-                    <td class="right">{{item.quantity}}</td>
-                    <td class="right">
-                      {% for tax in item.Taxes %}
-                        <span class="tax">{{tax.name}}</span>
-                      {% endfor %}
-                    </td>
-                    {% if estimate.discount_amount %}
-                    <td class="right">{{item.discount_amount|currency}}</td>
-                    {% endif %}
-                    <td class="right">{{item.gross_amount|currency}}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Base</th>
-                  <td class="right">{{estimate.base_amount|currency}}</td>
-                </tr>
-                {% if estimate.discount_amount %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Discount</th>
-                  <td class="td_global_discount right">{{estimate.discount_amount|currency}}</td>
-                </tr>
-                {% endif %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Subtotal</th>
-                  <td class="td_subtotal right">{{estimate.net_amount|currency}}</td>
-                </tr>
-                {% for name,ammount in invoice.tax_details %}
-                  <tr>
-                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">{{name}}</th>
-                    <td class="td_subtotal right">{{ammount|currency}}</td>
-                  </tr>  
-                {% endfor %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Taxes total</th>
-                  <td class="td_total_taxes right">{{estimate.tax_amount|currency}}</td>
-                </tr>
-                <tr class="strong">
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Total</th>
-                  <td class="td_total right">{{estimate.gross_amount|currency}}</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Terms & conditions</h3>
-          <div class="terms">
-            {{estimate.terms|format}}
-          </div>
-        </div>
-      </body>
-      </html>
-
-  Template_8:
-    name: Castellano - Plantilla de gastos
-    slug: plantilla-de-gastos
-    models: Expense
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+  Template_2:
+      name: English - Estimate Template
+      slug: estimate-template
+      models:
+      template: |-
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
         <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
         <head>
           <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-          <title>Gasto</title>
+          <title>Estimate</title>
 
           <style type="text/css">
             /* Custom CSS code */
@@ -1554,51 +272,488 @@ Template:
           </style>
         </head>
         <body>
+
+          {% if estimate.Company.logo %}
+            <div class="logo">
+              <img src="{{ estimate.Company.logoURL }}" alt="{{ estimate.Company.name }}" />
+            </div>
+          {% endif %}
+
           <div class="h2">
-           <h2> Gasto #{{expense}}</h2>
+            <h2>Estimate #{{estimate}}</h2>
           </div>
+
+            <div class="section">
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr><td width=60%>
+                  <ul>
+                      <li>Company: {{estimate.Company.name}}</li>
+                      <li>Address: <br> {{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}} </li>
+                      <li>Phone: {{estimate.Company.phone}}</li>
+                      <li>Fax: {{estimate.Company.fax}}</li>
+                      <li>Email: {{estimate.Company.email}}</li>
+                      <li>Web: {{estimate.Company.url}}</li>
+                  </ul>
+                </td>
+                {% if invoice.Company.logo %}
+                  <td width="40%">
+                     <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
+                  </td>
+               {% endif %}
+              </tr></table>
+          </div>
+
           <div class="section">
-            <h3>Información del proveedor</h3>
+            <h3>Client info</h3>
 
             <div class="customer-data">
               <table cellspacing="0" cellpadding="0" width="100%">
                 <tr>
                   <td>
                     <span class="left">
-                      <label>Proveedor:</label>
-                      {{expense.supplier_name}}
+                      <label>Customer:</label>
+                      {{estimate.customer_name}}
                     </span>
                   </td>
                   <td>
                     <span class="right">
-                      <label>Identificacion legal:</label>
-                      {{expense.supplier_identification}}
+                      <label>Customer identification:</label>
+                      {{estimate.customer_identification}}
                     </span>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <span class="left">
-                      <label>Persona de contacto:</label>
-                      {{expense.contact_person}}
+                      <label>Contact person:</label>
+                      {{estimate.contact_person}}
                     </span>
                   </td>
                   <td>
                     <span class="right">
                       <label>Email:</label>
-                      {{expense.supplier_email}}
+                      {{estimate.customer_email}}
                     </span>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <span class="left">
-                      <label>Adreçan de facturación:</label>
-                      <br> {{expense.invoicing_address}} <br> {{expense.invoicing_postalcode}} {{expense.invoicing_city}} <br> {{expense.invoicing_state}} {{expense.invoicing_country}}
+                      <label>Invoicing address:</label>
+                      <br> {{estimate.invoicing_address}} <br> {{estimate.invoicing_postalcode}} {{estimate.invoicing_city}} <br> {{estimate.invoicing_state}} {{estimate.invoicing_country}}
                     </span>
                   </td>
                   <td>
                     <span class="right">
+                      <label>Shipping address:</label>
+                      <br> {{estimate.shipping_address}} <br> {{estimate.shipping_postalcode}} {{estimate.shipping_city}} <br> {{estimate.shipping_state}} {{estimate.shipping_country}}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>Payment details</h3>
+
+            <div class="payment-data">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th class="right">Unit Cost</th>
+                    <th class="right">Qty</th>
+                    <th class="right">Taxes total</th>
+                    {# show discounts only if there is some discount #}
+                    {% if estimate.discount_amount %}
+                    <th class="right">Discount</th>
+                    {% endif %}
+                    <th class="right">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in estimate.Items %}
+                    <tr>
+                      <td>
+                        {{item.description}}
+                      </td>
+                      <td class="right">{{item.unitary_cost|currency}}</td>
+                      <td class="right">{{item.quantity}}</td>
+                      <td class="right">
+                        {% for tax in item.Taxes %}
+                          <span class="tax">{{tax.name}}</span>
+                        {% endfor %}
+                      </td>
+                      {% if estimate.discount_amount %}
+                      <td class="right">{{item.discount_amount|currency}}</td>
+                      {% endif %}
+                      <td class="right">{{item.gross_amount|currency}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <th class="right">Base</th>
+                    <td class="right">{{estimate.base_amount|currency}}</td>
+                  </tr>
+                  {% if estimate.discount_amount %}
+                  <tr>
+                    <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <th class="right">Discount</th>
+                    <td class="td_global_discount right">{{estimate.discount_amount|currency}}</td>
+                  </tr>
+                  {% endif %}
+                  <tr>
+                    <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <th class="right">Subtotal</th>
+                    <td class="td_subtotal right">{{estimate.net_amount|currency}}</td>
+                  </tr>
+                  {% for name,ammount in invoice.tax_details %}
+                    <tr>
+                      <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
+                      <th class="right">{{name}}</th>
+                      <td class="td_subtotal right">{{ammount|currency}}</td>
+                    </tr>
+                  {% endfor %}
+                  <tr>
+                    <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <th class="right">Taxes total</th>
+                    <td class="td_total_taxes right">{{estimate.tax_amount|currency}}</td>
+                  </tr>
+                  <tr class="strong">
+                    <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <th class="right">Total Factura</th>
+                    <td class="td_total right">{{estimate.gross_amount|currency}}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>Terms & conditions</h3>
+            <div class="terms">
+              {{estimate.terms|format}}
+            </div>
+          </div>
+        </body>
+        </html>
+
+    -
+  Template_3:
+      name: English - Expense Template
+      slug: expense-template
+      models:
+      template: |-
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+          <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
+          <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>Expense</title>
+
+            <style type="text/css">
+              /* Custom CSS code */
+              table {border-spacing:0; border-collapse: collapse;}
+              ul {list-style-type: none; padding-left:0;}
+              body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
+              body { color:#464648; margin:2cm 1.5cm; }
+              h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
+              h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
+
+              table th.right,
+              table td.right              { text-align:right; }
+
+              .customer-data              { padding:1em 0; }
+              .customer-data table        { width:100%;       }
+              .customer-data table td     { width:50%;        }
+              .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
+              .customer-data td span.left { margin-right:1em; }
+              .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
+              .payment-data               { padding:1em 0;    }
+              .payment-data table         { width:100%;       }
+              .payment-data th,
+              .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
+              .payment-data thead th      { background:#FAFAFA; }
+              .payment-data th            { font-weight:bold; white-space:nowrap; }
+              .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
+              .payment-data span.tax      { display:block; white-space:nowrap; }
+              .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
+
+              .section                    { margin-bottom: 1em; }
+              .logo                       { float: right; }
+            </style>
+
+            <style type="text/css">
+                body           { margin:auto; }
+                .section       { page-break-inside:avoid; }
+                div#sfWebDebug { display:none; }
+            </style>
+          </head>
+          <body>
+            <div class="h2">
+             <h2> Expense #{{expense}}</h2>
+            </div>
+            <div class="section">
+              <h3>Supplier info</h3>
+
+              <div class="customer-data">
+                <table cellspacing="0" cellpadding="0" width="100%">
+                  <tr>
+                    <td>
+                      <span class="left">
+                        <label>Customer:</label>
+                        {{expense.supplier_name}}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="right">
+                        <label>Customer identification:</label>
+                        {{expense.supplier_identification}}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="left">
+                        <label>Contact person:</label>
+                        {{expense.contact_person}}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="right">
+                        <label>Email:</label>
+                        {{expense.supplier_email}}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="left">
+                        <label>Invoicing address:</label>
+                        <br> {{expense.invoicing_address}} <br> {{expense.invoicing_postalcode}} {{expense.invoicing_city}} <br> {{expense.invoicing_state}} {{expense.invoicing_country}}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="right">
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="section">
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr><td width=60%>
+                  <ul>
+                      <li>Company: {{expense.Company.name}} - {{expense.Company.identification}} </li>
+                      <li>Address:<br> {{expense.Company.address}} <br> {{expense.Company.postalcode}} {{expense.Company.city}} <br> {{expense.Company.state}} {{expense.Company.country}}</li>
+                      <li>Phone: {{expense.Company.phone}}</li>
+                      <li>Fax: {{expense.Company.fax}}</li>
+                      <li>Email: {{expense.Company.email}}</li>
+                      <li>WebSite: {{expense.Company.url}}</li>
+                  </ul>
+                </td>
+              </tr></table>
+          </div>
+            <div class="section">
+              <h3>Payment details</h3>
+              <span> Invoiced on : {{expense.issue_date}}</span><br>
+              <span> Supplier reference : {{expense.supplier_reference}}</span
+              <br><br>
+
+              <div class="payment-data">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Description</th>
+                      <th class="right">Unit Cost</th>
+                      <th class="right">Qty</th>
+                      <th class="right">Taxes total</th>
+                      {# show discounts only if there is some discount #}
+                      {% if expense.discount_amount %}
+                      <th class="right">Discount</th>
+                      {% endif %}
+                      <th class="right">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in expense.Items %}
+                      <tr>
+                        <td>
+                          {{item.description}}
+                        </td>
+                        <td class="right">{{item.unitary_cost|currency}}</td>
+                        <td class="right">{{item.quantity}}</td>
+                        <td class="right">
+                          {% for tax in item.Taxes %}
+                            <span class="tax">{{tax.name}}</span>
+                          {% endfor %}
+                        </td>
+                        {% if expense.discount_amount %}
+                        <td class="right">{{item.discount_amount|currency}}</td>
+                        {% endif %}
+                        <td class="right">{{item.gross_amount|currency}}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
+                      <th class="right">Base</th>
+                      <td class="right">{{expense.base_amount|currency}}</td>
+                    </tr>
+                    {% if expense.discount_amount %}
+                    <tr>
+                      <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
+                      <th class="right">Discount</th>
+                      <td class="td_global_discount right">{{expense.discount_amount|currency}}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                      <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
+                      <th class="right">Subtotal</th>
+                      <td class="td_subtotal right">{{expense.net_amount|currency}}</td>
+                    </tr>
+                    {% for name,ammount in expense.tax_details %}
+                      <tr>
+                        <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
+                        <th class="right">{{name}}</th>
+                        <td class="td_subtotal right">{{ammount|currency}}</td>
+                      </tr>
+                    {% endfor %}
+                    <tr>
+                      <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
+                      <th class="right">Taxes total</th>
+                      <td class="td_total_taxes right">{{expense.tax_amount|currency}}</td>
+                    </tr>
+                    <tr class="strong">
+                      <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
+                      <th class="right">Total Factura</th>
+                      <td class="td_total right">{{expense.gross_amount|currency}}</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </body>
+          </html>
+
+    -
+  Template_4:
+      name: Castellano - Plantilla de Factura
+      slug: plantilla-factura
+      models:
+      template: |-
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+        <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+          <title>Factura</title>
+
+          <style type="text/css">
+            /* Custom CSS code */
+            table {border-spacing:0; border-collapse: collapse;}
+            ul {list-style-type: none; padding-left:0;}
+            body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
+            body { color:#464648; margin:2cm 1.5cm; }
+            h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DCDCDC; margin-right:40% }
+            h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
+
+            table th.right,
+            table td.right              { text-align:right; }
+
+
+            table th.padding             { width: 7.5%; }
+            table td.padding              { width: 12.5%; }
+
+            .customer-data              { padding:1em 0; }
+            .customer-data table        { width:100%;       }
+            .customer-data table td     { width:50%;        }
+            .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
+            .customer-data td span.left { margin-right:1em; }
+            .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
+            .payment-data               { padding:1em 0;    }
+            .payment-data table         { width:100%;       }
+            .payment-data th,
+            .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
+            .payment-data thead th      { background:#FAFAFA; }
+            .payment-data th            { font-weight:bold; white-space:nowrap; }
+            .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
+            .payment-data span.tax      { display:block; white-space:nowrap; }
+            .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
+
+            .section                    { margin-bottom: 1em; }
+            .logo                       { float: right; }
+             .tax                       { vertical-align:center; }
+          </style>
+
+          <style type="text/css">
+              body           { margin:auto; }
+              .section       { page-break-inside:avoid; }
+              div#sfWebDebug { display:none; }
+          </style>
+        </head>
+        <body>
+
+            <div class="h2">
+             <h2> Factura #{{invoice}} ({{invoice.getSeries.name}})</h2>
+            </div>
+
+            <div class="section">
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr><td width=60%>
+                  <ul>
+                      <li style="font-weight:bold;">{{invoice.Company.name}} - {{invoice.Company.identification}} </li>
+                      <li>{{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
+                      <li>Telefono: {{invoice.Company.phone}}  Fax: {{invoice.Company.fax}}</li>
+                      <li>Email: {{invoice.Company.email}} </li>
+                      <li>Pagina Web: {{invoice.Company.url}}</li>
+                  </ul>
+                </td>
+                {% if invoice.Company.logo %}
+                  <td width="40%">
+                     <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
+                  </td>
+               {% endif %}
+              </tr></table>
+          </div>
+
+          <div class="section">
+            <h3>Información del cliente</h3>
+
+            <div class="customer-data">
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr>
+                  <td>
+                    <span class="left">
+                      <label>Identificador legal:</label>
+                      {{invoice.customer_identification}}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="right">
+                     <label>Cliente:</label>
+                      {{invoice.customer_name}}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="left">
+                      <label>Dirección de facturación:</label>
+                      <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="right">
+                      <label>Dirección de envío:</label>
+                      {% if invoice.shipping_address|length > 0 %}
+                        <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
+                      {% else %}
+                        <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
+                 {% endif %}
                     </span>
                   </td>
                 </tr>
@@ -1608,27 +763,31 @@ Template:
 
           <div class="section">
             <h3>Detalles del pago</h3>
-            <span> Facturado el : {{expense.issue_date}}</span><br>
-            <span> Referencia: {{expense.supplier_reference}}</span
-            <br><br>
+            <div>
+                   Fecha factura:  {{invoice.issue_date}}<br>Forma de pago:
+                 {% if invoice.PaymentType.description %}
+                    {{invoice.PaymentType.description}}
+                 {% endif %}
+                 <br> Fecha de vencimento: {{invoice.due_date}}
+            </div>
 
             <div class="payment-data">
               <table>
                 <thead>
                   <tr>
-                    <th>Descripción</th>
-                    <th class="right">Precio</th>
-                    <th class="right">Cantidad</th>
-                    <th class="right">Impuestos</th>
+                    <th width="50%">Descripción</th>
+                    <th width="12.5%" class="right">Precio</th>
+                    <th class="right">Cdad.</th>
+                    <th class="right">Imp.</th>
                     {# show discounts only if there is some discount #}
-                    {% if expense.discount_amount %}
-                    <th class="right">Descuento</th>
+                    {% if invoice.discount_amount > 0 %}
+                    <th class="right">Desc.</th>
                     {% endif %}
-                    <th class="right">Total</th>
+                    <th width="12.5%" class="right">Total Factura</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for item in expense.Items %}
+                  {% for item in invoice.Items %}
                     <tr>
                       <td>
                         {{item.description}}
@@ -1637,725 +796,59 @@ Template:
                       <td class="right">{{item.quantity}}</td>
                       <td class="right">
                         {% for tax in item.Taxes %}
-                          <span class="tax">{{tax.name}}</span>
+                          <span class="tax">{{tax.value}}%</span>
                         {% endfor %}
                       </td>
-                      {% if expense.discount_amount %}
-                      <td class="right">{{item.discount_amount|currency}}</td>
+                      {% if invoice.discount_amount > 0 %}
+                      <td class="right">{{item.discount}}%</td>
                       {% endif %}
-                      <td class="right">{{item.gross_amount|currency}}</td>
+                      <td class="right">{{item.net_amount|currency}}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Base</th>
-                    <td class="right">{{expense.base_amount|currency}}</td>
-                  </tr>
-                  {% if expense.discount_amount %}
-                  <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Descuento</th>
-                    <td class="td_global_discount right">{{expense.discount_amount|currency}}</td>
-                  </tr>
-                  {% endif %}
-                  <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Subtotal</th>
-                    <td class="td_subtotal right">{{expense.net_amount|currency}}</td>
-                  </tr>
-                  {% for name,ammount in expense.tax_details %}
-                    <tr>
-                      <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                      <th class="right">{{name}}</th>
-                      <td class="td_subtotal right">{{ammount|currency}}</td>
-                    </tr>  
+                </table>
+                <div style="padding-top:30px">
+                <table>
+                  {% for name,value in invoice.tax_details %}
+                      <tr>
+                      <th class="right padding">Base {{name}}</th>
+                      <td width="12.5%"  class="td_subtotal right padding">{{value.base|currency}}</td>
+                      <th class="right padding">{{name}}</th>
+                      <td width="12.5%"  class="td_subtotal right padding">{{value.tax|currency}}</td>
+                      </tr>
                   {% endfor %}
+                  </tr>
                   <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Total impuestos</th>
-                    <td class="td_total_taxes right">{{expense.tax_amount|currency}}</td>
-                  </tr>
-                  <tr class="strong">
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Total</th>
-                    <td class="td_total right">{{expense.gross_amount|currency}}</td>
-                  </tr>
-                </tfoot>
+                     <th class="right padding">Descuento</th>
+                     <td width="12.5%" class="td_global_discount right padding">{{invoice.discount_amount|currency}}</td>
+                     <th class="right padding">Total Factura</th>
+                     <td width="12.5%" class="td_total right padding">{{invoice.gross_amount|currency}}</td>
+                   </tr>
               </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>Terminos y Condiciones</h3>
+            <div class="terms">
+              {{invoice.terms|format}}
             </div>
           </div>
         </body>
         </html>
 
-
-  Template_9:
-    name: Català - Plantilla de Factura
-    slug: plantilla-factura-cat
-    models: none
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-      <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Factura</title>
-
-        <style type="text/css">
-          /* Custom CSS code */
-          table {border-spacing:0; border-collapse: collapse;}
-          ul {list-style-type: none; padding-left:0;}
-          body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
-          body { color:#464648; margin:2cm 1.5cm; }
-          h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
-          h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
-
-          table th.right,
-          table td.right              { text-align:right; }
-
-          .customer-data              { padding:1em 0; }
-          .customer-data table        { width:100%;       }
-          .customer-data table td     { width:50%;        }
-          .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
-          .customer-data td span.left { margin-right:1em; }
-          .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
-          .payment-data               { padding:1em 0;    }
-          .payment-data table         { width:100%;       }
-          .payment-data th,
-          .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
-          .payment-data thead th      { background:#FAFAFA; }
-          .payment-data th            { font-weight:bold; white-space:nowrap; }
-          .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
-          .payment-data span.tax      { display:block; white-space:nowrap; }
-          .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
-
-          .section                    { margin-bottom: 1em; }
-          .logo                       { float: right; }
-        </style>
-
-        <style type="text/css">
-            body           { margin:auto; }
-            .section       { page-break-inside:avoid; }
-            div#sfWebDebug { display:none; }
-        </style>
-      </head>
-      <body>
-          
-          <div class="h2">
-           <h2> Factura #{{invoice}}</h2>
-          </div>
-
-          <div class="section">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=60%>
-                <ul>
-                    <li>Empresa: {{invoice.Company.name}}</li>
-                    <li>Adreça:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
-                    <li>Telèfon: {{invoice.Company.phone}}</li>
-                    <li>Fax: {{invoice.Company.fax}}</li>
-                    <li>Email: {{invoice.Company.email}}</li>
-                    <li>Pàgina Web: {{invoice.Company.url}}</li>
-                </ul>
-              </td> 
-              {% if invoice.Company.logo %}
-                <tr><td width="40%"> 
-                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
-                </td>
-             {% endif %}
-            </tr></table>
-        </div>
-
-        <div class="section">
-          <h3>Informació del client</h3>
-
-          <div class="customer-data">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Client:</label>
-                    {{invoice.customer_name}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Identificador legal:</label>
-                    {{invoice.customer_identification}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Persona de contacte:</label>
-                    {{invoice.contact_person}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Email:</label>
-                    {{invoice.customer_email}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Adreça de facturació:</label>
-                    <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Adreça d'enviament:</label>
-                    <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Detalls del pagament</h3>
-          <div>
-               Data de pagament: {{invoice.PaymentType.name}}
-               {% if invoice.PaymentType.description %}
-                  - {{invoice.PaymentType.description}}
-               {% endif %}
-               <br> Data de venciment: {{invoice.due_date}}
-          </div>
-
-          <div class="payment-data">
-            <table>
-              <thead>
-                <tr>
-                  <th>Descripció</th>
-                  <th class="right">Preu</th>
-                  <th class="right">Quantitat</th>
-                  <th class="right">Impostos</th>
-                  {# show discounts only if there is some discount #}
-                  {% if invoice.discount_amount %}
-                  <th class="right">Descompte</th>
-                  {% endif %}
-                  <th class="right">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in invoice.Items %}
-                  <tr>
-                    <td>
-                      {{item.description}}
-                    </td>
-                    <td class="right">{{item.unitary_cost|currency}}</td>
-                    <td class="right">{{item.quantity}}</td>
-                    <td class="right">
-                      {% for tax in item.Taxes %}
-                        <span class="tax">{{tax.name}}</span>
-                      {% endfor %}
-                    </td>
-                    {% if invoice.discount_amount %}
-                    <td class="right">{{item.discount_amount|currency}}</td>
-                    {% endif %}
-                    <td class="right">{{item.gross_amount|currency}}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Base Imponible</th>
-                  <td class="right">{{invoice.base_amount|currency}}</td>
-                </tr>
-                {% if invoice.discount_amount %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Descompte</th>
-                  <td class="td_global_discount right">{{invoice.discount_amount|currency}}</td>
-                </tr>
-                {% endif %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Subtotal</th>
-                  <td class="td_subtotal right">{{invoice.net_amount|currency}}</td>
-                </tr>
-                {% for name,ammount in invoice.tax_details %}
-                  <tr>
-                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">{{name}}</th>
-                    <td class="td_subtotal right">{{ammount|currency}}</td>
-                  </tr>  
-                {% endfor %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Total Impostos</th>
-                  <td class="td_total_taxes right">{{invoice.tax_amount|currency}}</td>
-                </tr>
-                <tr class="strong">
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Total</th>
-                  <td class="td_total right">{{invoice.gross_amount|currency}}</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-        
-        <div class="section">
-          <h3>Condiciones</h3>
-          <div class="terms">
-            {{invoice.terms|format}}
-          </div>
-        </div>
-      </body>
-      </html>
-
-  Template_10:
-    name: Català - Plantilla de factura amb producte
-    slug: plantilla-de-factura-amb-producte
-    models: none
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-      <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-       <title>Factura</title>
-
-       <style type="text/css">
-         /* Custom CSS code */
-         table {border-spacing:0; border-collapse: collapse;}
-         ul {list-style-type: none; padding-left:0;}
-         body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
-         body { color:#464648; margin:2cm 1.5cm; }
-         h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
-         h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
-
-         table th.right,
-         table td.right              { text-align:right; }
-
-         .customer-data              { padding:1em 0; }
-         .customer-data table        { width:100%;       }
-         .customer-data table td     { width:50%;        }
-         .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
-         .customer-data td span.left { margin-right:1em; }
-         .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
-         .payment-data               { padding:1em 0;    }
-         .payment-data table         { width:100%;       }
-         .payment-data th,
-         .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
-         .payment-data thead th      { background:#FAFAFA; }
-         .payment-data th            { font-weight:bold; white-space:nowrap; }
-         .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
-         .payment-data span.tax      { display:block; white-space:nowrap; }
-         .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
-
-         .section                    { margin-bottom: 1em; }
-         .logo                       { text-align: right; }
-       </style>
-
-       <style type="text/css">
-           body           { margin:auto; }
-           .section       { page-break-inside:avoid; }
-           div#sfWebDebug { display:none; }
-       </style>
-      </head>
-      <body>
-
-        <div class="h2">
-           <h2> Factura #{{invoice}}</h2>
-          </div>
-
-          <div class="section">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=60%>
-                <ul>
-                    <li>Empresa: {{invoice.Company.name}}</li>
-                    <li>Adreça:<br> {{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
-                    <li>Telèfon: {{invoice.Company.phone}}</li>
-                    <li>Fax: {{invoice.Company.fax}}</li>
-                    <li>Email: {{invoice.Company.email}}</li>
-                    <li>Pàgina Web: {{invoice.Company.url}}</li>
-                </ul>
-              </td> 
-              {% if invoice.Company.logo %}
-                <tr><td width="40%"> 
-                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
-                </td>
-             {% endif %}
-            </tr></table>
-        </div>
-
-       <div class="section">
-         <h3>Informació del client</h3>
-
-         <div class="customer-data">
-           <table cellspacing="0" cellpadding="0" width="100%">
-             <tr>
-               <td>
-                 <span class="left">
-                   <label>Client:</label>
-                   {{invoice.customer_name}}
-                 </span>
-               </td>
-               <td>
-                 <span class="right">
-                   <label>Identificacion legal:</label>
-                   {{invoice.customer_identification}}
-                 </span>
-               </td>
-             </tr>
-             <tr>
-               <td>
-                 <span class="left">
-                   <label>Persona de contacte:</label>
-                   {{invoice.contact_person}}
-                 </span>
-               </td>
-               <td>
-                 <span class="right">
-                   <label>Email:</label>
-                   {{invoice.customer_email}}
-                 </span>
-               </td>
-             </tr>
-             <tr>
-               <td>
-                 <span class="left">
-                   <label>Adreça de facturació:</label>
-                   <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
-                 </span>
-               </td>
-               <td>
-                 <span class="right">
-                   <label>Adreça d'enviament:</label>
-                   <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
-                 </span>
-               </td>
-             </tr>
-           </table>
-         </div>
-       </div>
-
-       <div class="section">
-         <h3>Detalls del pagament</h3>
-
-         <div class="payment-data">
-           <table>
-             <thead>
-               <tr>
-                 <th>Referencia</th>
-                 <th>Descripció</th>
-                 <th class="right">Preu</th>
-                 <th class="right">Quantitat</th>
-                 <th class="right">Impostos</th>
-                 {# show discounts only if there is some discount #}
-                 {% if invoice.discount_amount %}
-                 <th class="right">Descompte</th>
-                 {% endif %}
-                 <th class="right">Total</th>
-               </tr>
-             </thead>
-             <tbody>
-               {% for item in invoice.Items %}
-                 <tr>
-                   <td>
-                     {{item.product_id|product_reference}}
-                   </td>
-                   <td>
-                     {{item.description}}
-                   </td>
-                   <td class="right">{{item.unitary_cost|currency}}</td>
-                   <td class="right">{{item.quantity}}</td>
-                   <td class="right">
-                     {% for tax in item.Taxes %}
-                       <span class="tax">{{tax.name}}</span>
-                     {% endfor %}
-                   </td>
-                   {% if invoice.discount_amount %}
-                   <td class="right">{{item.discount|currency}}</td>
-                   {% endif %}
-                   <td class="right">{{item.gross|currency}}</td>
-                 </tr>
-               {% endfor %}
-             </tbody>
-             <tfoot>
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Base</th>
-                 <td class="right">{{invoice.base_amount|currency}}</td>
-               </tr>
-               {% if invoice.discount_amount %}
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Descompte</th>
-                 <td class="td_global_discount right">{{invoice.discount_amount|currency}}</td>
-               </tr>
-               {% endif %}
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Subtotal</th>
-                 <td class="td_subtotal right">{{invoice.net_amount|currency}}</td>
-               </tr>
-               {% for name,ammount in invoice.tax_details %}
-                 <tr>
-                   <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                   <th class="right">{{name}}</th>
-                   <td class="td_subtotal right">{{ammount|currency}}</td>
-                 </tr>  
-               {% endfor %}
-               <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Total Impostos</th>
-                 <td class="td_total_taxes right">{{invoice.tax_amount|currency}}</td>
-               </tr>
-               <tr class="strong">
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
-                 <th class="right">Total</th>
-                 <td class="td_total right">{{invoice.gross_amount|currency}}</td>
-               </tr>
-             </tfoot>
-           </table>
-         </div>
-       </div>
-
-       <div class="section">
-         <h3>Condiciones</h3>
-         <div class="terms">
-           {{invoice.terms|format}}
-         </div>
-       </div>
-      </body>
-      </html>
-
-  Template_11:
-    name: Català - Plantila de Pressupost
-    slug: plantilla-de-presupost
-    models: none 
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-      <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Pressupost</title>
-
-        <style type="text/css">
-          /* Custom CSS code */
-          table {border-spacing:0; border-collapse: collapse;}
-          ul {list-style-type: none; padding-left:0;}
-          body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
-          body { color:#464648; margin:2cm 1.5cm; }
-          h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
-          h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
-
-          table th.right,
-          table td.right              { text-align:right; }
-
-          .customer-data              { padding:1em 0; }
-          .customer-data table        { width:100%;       }
-          .customer-data table td     { width:50%;        }
-          .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
-          .customer-data td span.left { margin-right:1em; }
-          .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
-          .payment-data               { padding:1em 0;    }
-          .payment-data table         { width:100%;       }
-          .payment-data th,
-          .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
-          .payment-data thead th      { background:#FAFAFA; }
-          .payment-data th            { font-weight:bold; white-space:nowrap; }
-          .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
-          .payment-data span.tax      { display:block; white-space:nowrap; }
-          .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
-
-          .section                    { margin-bottom: 1em; }
-          .logo                       { float: right; }
-        </style>
-
-        <style type="text/css">
-            body           { margin:auto; }
-            .section       { page-break-inside:avoid; }
-            div#sfWebDebug { display:none; }
-        </style>
-      </head>
-      <body>
-
-        {% if estimate.Company.logo %}
-          <div class="logo">
-            <img src="{{ estimate.Company.logoURL }}" alt="{{ estimate.Company.name }}" />
-          </div>
-        {% endif %}
-
-        <div class="h2">
-          <h2>Pressupost #{{estimate}}</h2>
-        </div>
-
-          <div class="section">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr><td width=60%>
-                <ul>
-                    <li>Empresa: {{estimate.Company.name}}</li>
-                    <li>Adreça:<br> {{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}}</li>
-                    <li>Telèfon: {{estimate.Company.phone}}</li>
-                    <li>Fax: {{estimate.Company.fax}}</li>
-                    <li>Email: {{estimate.Company.email}}</li>
-                    <li>Pàgina Web: {{estimate.Company.url}}</li>
-                </ul>
-              </td> 
-              {% if invoice.Company.logo %}
-                <tr><td width="40%"> 
-                   <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
-                </td>
-             {% endif %}
-            </tr></table>
-        </div>
-
-        <div class="section">
-          <h3>Informació del client</h3>
-
-          <div class="customer-data">
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Client:</label>
-                    {{estimate.customer_name}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Identificacion legal:</label>
-                    {{estimate.customer_identification}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Persona de contacte:</label>
-                    {{estimate.contact_person}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Email:</label>
-                    {{estimate.customer_email}}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="left">
-                    <label>Adreça de facturació:</label>
-                    <br> {{estimate.invoicing_address}} <br> {{estimate.invoicing_postalcode}} {{estimate.invoicing_city}} <br> {{estimate.invoicing_state}} {{estimate.invoicing_country}}
-                  </span>
-                </td>
-                <td>
-                  <span class="right">
-                    <label>Adreça d'enviament:</label>
-                    <br> {{estimate.shipping_address}} <br> {{estimate.shipping_postalcode}} {{estimate.shipping_city}} <br> {{estimate.shipping_state}} {{estimate.shipping_country}}
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Detalls del pagament</h3>
-
-          <div class="payment-data">
-            <table>
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th class="right">Unit Cost</th>
-                  <th class="right">Qty</th>
-                  <th class="right">Taxes total</th>
-                  {# show discounts only if there is some discount #}
-                  {% if estimate.discount_amount %}
-                  <th class="right">Discount</th>
-                  {% endif %}
-                  <th class="right">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in estimate.Items %}
-                  <tr>
-                    <td>
-                      {{item.description}}
-                    </td>
-                    <td class="right">{{item.unitary_cost|currency}}</td>
-                    <td class="right">{{item.quantity}}</td>
-                    <td class="right">
-                      {% for tax in item.Taxes %}
-                        <span class="tax">{{tax.name}}</span>
-                      {% endfor %}
-                    </td>
-                    {% if estimate.discount_amount %}
-                    <td class="right">{{item.discount_amount|currency}}</td>
-                    {% endif %}
-                    <td class="right">{{item.gross_amount|currency}}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Base</th>
-                  <td class="right">{{estimate.base_amount|currency}}</td>
-                </tr>
-                {% if estimate.discount_amount %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Discount</th>
-                  <td class="td_global_discount right">{{estimate.discount_amount|currency}}</td>
-                </tr>
-                {% endif %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Subtotal</th>
-                  <td class="td_subtotal right">{{estimate.net_amount|currency}}</td>
-                </tr>
-                {% for name,ammount in invoice.tax_details %}
-                  <tr>
-                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">{{name}}</th>
-                    <td class="td_subtotal right">{{ammount|currency}}</td>
-                  </tr>  
-                {% endfor %}
-                <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Taxes total</th>
-                  <td class="td_total_taxes right">{{estimate.tax_amount|currency}}</td>
-                </tr>
-                <tr class="strong">
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
-                  <th class="right">Total</th>
-                  <td class="td_total right">{{estimate.gross_amount|currency}}</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Terms & conditions</h3>
-          <div class="terms">
-            {{estimate.terms|format}}
-          </div>
-        </div>
-      </body>
-      </html>
-
-  Template_12:
-    name: Català - Plantilla de despeses
-    slug: plantilla-de-despeses
-    models: none
-    template: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+    -
+  Template_5:
+      name: Castellano - Plantila de Presupuesto
+      slug: plantilla-de-presupuestos
+      models:
+      template: |-
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
         <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
         <head>
           <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-          <title>Despesa</title>
+          <title>Presupuesto</title>
 
           <style type="text/css">
             /* Custom CSS code */
@@ -2363,11 +856,15 @@ Template:
             ul {list-style-type: none; padding-left:0;}
             body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
             body { color:#464648; margin:2cm 1.5cm; }
-            h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
+            h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DCDCDC; margin-right:40% }
             h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
 
             table th.right,
             table td.right              { text-align:right; }
+
+
+            table th.padding             { width: 7.5%; }
+            table td.padding              { width: 12.5%; }
 
             .customer-data              { padding:1em 0; }
             .customer-data table        { width:100%;       }
@@ -2387,6 +884,7 @@ Template:
 
             .section                    { margin-bottom: 1em; }
             .logo                       { float: right; }
+             .tax                       { vertical-align:center; }
           </style>
 
           <style type="text/css">
@@ -2396,51 +894,64 @@ Template:
           </style>
         </head>
         <body>
-          <div class="h2">
-           <h2> Despesa #{{expense}}</h2>
+
+            <div class="h2">
+             <h2> Presupuesto #{{estimate}} ({{estimate.getSeries.name}})</h2>
+            </div>
+
+            <div class="section">
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr><td width=60%>
+                  <ul>
+                      <li style="font-weight:bold;">{{estimate.Company.name}} - {{estimate.Company.identification}} </li>
+                      <li>{{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}}</li>
+                      <li>Telefono: {{estimate.Company.phone}}  Fax: {{estimate.Company.fax}}</li>
+                      <li>Email: {{estimate.Company.email}} </li>
+                      <li>Pagina Web: {{estimate.Company.url}}</li>
+                  </ul>
+                </td>
+                {% if estimate.Company.logo %}
+                  <td width="40%">
+                     <img src="{{ estimate.Company.logoURL }}" alt="{{ estimate.Company.name }}" />
+                  </td>
+               {% endif %}
+              </tr></table>
           </div>
+
           <div class="section">
-            <h3>Informació del proveïdor</h3>
+            <h3>Información del cliente</h3>
 
             <div class="customer-data">
               <table cellspacing="0" cellpadding="0" width="100%">
                 <tr>
                   <td>
                     <span class="left">
-                      <label>Proveïdor:</label>
-                      {{expense.supplier_name}}
+                      <label>Identificador legal:</label>
+                      {{estimate.customer_identification}}
                     </span>
                   </td>
                   <td>
                     <span class="right">
-                      <label>Identificacion legal:</label>
-                      {{expense.supplier_identification}}
+                     <label>Cliente:</label>
+                      {{estimate.customer_name}}
                     </span>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <span class="left">
-                      <label>Persona de contacte:</label>
-                      {{expense.contact_person}}
+                      <label>Dirección de facturación:</label>
+                      <br> {{estimate.invoicing_address}} <br> {{estimate.invoicing_postalcode}} {{estimate.invoicing_city}} <br> {{estimate.invoicing_state}} {{estimate.invoicing_country}}
                     </span>
                   </td>
                   <td>
                     <span class="right">
-                      <label>Email:</label>
-                      {{expense.supplier_email}}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <span class="left">
-                      <label>Adreça de facturació:</label>
-                      <br> {{expense.invoicing_address}} <br> {{expense.invoicing_postalcode}} {{expense.invoicing_city}} <br> {{expense.invoicing_state}} {{expense.invoicing_country}}
-                    </span>
-                  </td>
-                  <td>
-                    <span class="right">
+                      <label>Dirección de envío:</label>
+                      {% if estimate.shipping_address|length > 0 %}
+                        <br> {{estimate.shipping_address}} <br> {{estimate.shipping_postalcode}} {{estimate.shipping_city}} <br> {{estimate.shipping_state}} {{estimate.shipping_country}}
+                      {% else %}
+                        <br> {{estimate.invoicing_address}} <br> {{estimate.invoicing_postalcode}} {{estimate.invoicing_city}} <br> {{estimate.invoicing_state}} {{estimate.invoicing_country}}
+                 {% endif %}
                     </span>
                   </td>
                 </tr>
@@ -2449,24 +960,209 @@ Template:
           </div>
 
           <div class="section">
-            <h3>Detalls del pagament</h3>
-            <span> Facturado el : {{expense.issue_date}}</span><br>
-            <span> Referencia: {{expense.supplier_reference}}</span
-            <br><br>
+            <h3>Detalles del pago</h3>
+            <div>
+                   Fecha pressupusto:  {{estimate.issue_date}}:
+                 <br> Fecha vencimento: {{estimate.due_date}}
+            </div>
 
             <div class="payment-data">
               <table>
                 <thead>
                   <tr>
-                    <th>Descripció</th>
-                    <th class="right">Preu</th>
-                    <th class="right">Quantitat</th>
-                    <th class="right">Impostos</th>
+                    <th width="50%">Descripción</th>
+                    <th width="12.5%" class="right">Precio</th>
+                    <th class="right">Cdad.</th>
+                    <th class="right">Imp.</th>
                     {# show discounts only if there is some discount #}
-                    {% if expense.discount_amount %}
-                    <th class="right">Descompte</th>
+                    {% if estimate.discount_amount > 0 %}
+                    <th class="right">Desc.</th>
                     {% endif %}
-                    <th class="right">Total</th>
+                    <th width="12.5%" class="right">Total Factura</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in estimate.Items %}
+                    <tr>
+                      <td>
+                        {{item.description}}
+                      </td>
+                      <td class="right">{{item.unitary_cost|currency}}</td>
+                      <td class="right">{{item.quantity}}</td>
+                      <td class="right">
+                        {% for tax in item.Taxes %}
+                          <span class="tax">{{tax.value}}%</span>
+                        {% endfor %}
+                      </td>
+                      {% if estimate.discount_amount > 0 %}
+                      <td class="right">{{item.discount}}%</td>
+                      {% endif %}
+                      <td class="right">{{item.net_amount|currency}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+                </table>
+                <div style="padding-top:30px">
+                <table>
+                  <tr>
+                     <th class="right padding">Descuento</th>
+                     <td width="12.5%" class="td_global_discount right padding">{{estimate.discount_amount|currency}}</td>
+                     <th class="right padding">Total Factura</th>
+                     <td width="12.5%" class="td_total right padding">{{estimate.gross_amount|currency}}</td>
+                   </tr>
+              </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>Terminos y Condiciones</h3>
+            <div class="terms">
+              {{estimate.terms|format}}
+            </div>
+          </div>
+        </body>
+        </html>
+
+    -
+  Template_6:
+      name: Castellano - Plantilla de gastos
+      slug: plantilla-de-gastos
+      models:
+      template: |-
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+          <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
+          <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>Gasto</title>
+
+            <style type="text/css">
+              /* Custom CSS code */
+              table {border-spacing:0; border-collapse: collapse;}
+              ul {list-style-type: none; padding-left:0;}
+              body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
+              body { color:#464648; margin:2cm 1.5cm; }
+              h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
+              h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
+
+              table th.right,
+              table td.right              { text-align:right; }
+
+              .customer-data              { padding:1em 0; }
+              .customer-data table        { width:100%;       }
+              .customer-data table td     { width:50%;        }
+              .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
+              .customer-data td span.left { margin-right:1em; }
+              .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
+              .payment-data               { padding:1em 0;    }
+              .payment-data table         { width:100%;       }
+              .payment-data th,
+              .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
+              .payment-data thead th      { background:#FAFAFA; }
+              .payment-data th            { font-weight:bold; white-space:nowrap; }
+              .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
+              .payment-data span.tax      { display:block; white-space:nowrap; }
+              .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
+
+              .section                    { margin-bottom: 1em; }
+              .logo                       { float: right; }
+            </style>
+
+            <style type="text/css">
+                body           { margin:auto; }
+                .section       { page-break-inside:avoid; }
+                div#sfWebDebug { display:none; }
+            </style>
+          </head>
+          <body>
+            <div class="h2">
+             <h2> Gasto #{{expense}} - Factura Número: {{expense.supplier_reference}}</h2>
+            </div>
+            <div class="section">
+              <h3>Información del proveedor</h3>
+
+              <div class="customer-data">
+                <table cellspacing="0" cellpadding="0" width="100%">
+                  <tr>
+                    <td>
+                      <span class="left">
+                        <label>Proveedor:</label>
+                        {{expense.supplier_name}}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="right">
+                        <label>Identificacion legal:</label>
+                        {{expense.supplier_identification}}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="left">
+                        <label>Persona de contacto:</label>
+                        {{expense.contact_person}}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="right">
+                        <label>Telefono:</label>
+                        {{expense.supplier_phone}}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="left">
+                        <label>Dirección de facturación:</label>
+                        <br> {{expense.invoicing_address}} <br> {{expense.invoicing_postalcode}} {{expense.invoicing_city}} <br> {{expense.invoicing_state}} {{expense.invoicing_country}}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="right">
+                        <label>Email:</label>
+                        {{expense.supplier_email}}
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="section">
+                  <h3>Información del cliente</h3>
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr><td width=60%>
+                  <ul>
+                      <li>Cliente: {{expense.Company.name}} - {{expense.Company.identification}} </li>
+                      <li> {{expense.Company.address}} <br> {{expense.Company.postalcode}} {{expense.Company.city}} <br> {{expense.Company.state}} {{expense.Company.country}}</li>
+                      <li>Telèfono: {{expense.Company.phone}}</li>
+                      <li>Fax: {{expense.Company.fax}}</li>
+                      <li>Email: {{expense.Company.email}}</li>
+                      <li>Sitio web: {{expense.Company.url}}</li>
+                  </ul>
+                </td>
+              </tr></table>
+          </div>
+
+            <div class="section">
+              <h3>Detalles del pago</h3>
+              <span> Fecha Factura : {{expense.issue_date}}</span><br>
+              <span> Fecha Vencimento : {{expense.due_date}}</span><br>
+              <br><br>
+
+            <div class="payment-data">
+              <table>o
+                <thead>
+                  <tr>
+                    <th width="50%">Descripción</th>
+                    <th width="12.5%" class="right">Precio</th>
+                    <th class="right">Cdad.</th>
+                    <th class="right">Imp.</th>
+                    {# show discounts only if there is some discount #}
+                    {% if expense.discount_amount > 0 %}
+                    <th class="right">Desc.</th>
+                    {% endif %}
+                    <th width="12.5%" class="right">Total Factura</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -2479,56 +1175,608 @@ Template:
                       <td class="right">{{item.quantity}}</td>
                       <td class="right">
                         {% for tax in item.Taxes %}
-                          <span class="tax">{{tax.name}}</span>
+                          <span class="tax">{{tax.value}}%</span>
                         {% endfor %}
                       </td>
-                      {% if expense.discount_amount %}
-                      <td class="right">{{item.discount_amount|currency}}</td>
+                      {% if expense.discount_amount > 0 %}
+                      <td class="right">{{item.discount}}%</td>
                       {% endif %}
-                      <td class="right">{{item.gross_amount|currency}}</td>
+                      <td class="right">{{item.net_amount|currency}}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Base</th>
-                    <td class="right">{{expense.base_amount|currency}}</td>
-                  </tr>
-                  {% if expense.discount_amount %}
-                  <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Descompte</th>
-                    <td class="td_global_discount right">{{expense.discount_amount|currency}}</td>
-                  </tr>
-                  {% endif %}
-                  <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Subtotal</th>
-                    <td class="td_subtotal right">{{expense.net_amount|currency}}</td>
-                  </tr>
-                  {% for name,ammount in expense.tax_details %}
-                    <tr>
-                      <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                      <th class="right">{{name}}</th>
-                      <td class="td_subtotal right">{{ammount|currency}}</td>
-                    </tr>  
+                </table>
+                <div style="padding-top:30px">
+                <table>
+                  {% for name,value in expense.tax_details %}
+                      <tr>
+                      <th class="right padding">Base {{name}}</th>
+                      <td width="12.5%"  class="td_subtotal right padding">{{value.base|currency}}</td>
+                      <th class="right padding">{{name}}</th>
+                      <td width="12.5%"  class="td_subtotal right padding">{{value.tax|currency}}</td>
+                      </tr>
                   {% endfor %}
+                  </tr>
                   <tr>
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Total Impostos</th>
-                    <td class="td_total_taxes right">{{expense.tax_amount|currency}}</td>
-                  </tr>
-                  <tr class="strong">
-                    <td class="bottomleft" colspan="{% if expense.discount_amount %}4{% else %}3{% endif %}"></td>
-                    <th class="right">Total</th>
-                    <td class="td_total right">{{expense.gross_amount|currency}}</td>
-                  </tr>
-                </tfoot>
+                     <th class="right padding">Descuento</th>
+                     <td width="12.5%" class="td_global_discount right padding">{{expense.discount_amount|currency}}</td>
+                     <th class="right padding">Total Factura</th>
+                     <td width="12.5%" class="td_total right padding">{{expense.gross_amount|currency}}</td>
+                   </tr>
               </table>
+              </div>
+            </div>
+          </div>
+          </body>
+          </html>
+
+    -
+  Template_7:
+      name: Català - Plantilla de Factura
+      slug: plantilla-factura-cat
+      models: Invoice
+      template: |-
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+        <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+          <title>Factura</title>
+
+          <style type="text/css">
+            /* Custom CSS code */
+            table {border-spacing:0; border-collapse: collapse;}
+            ul {list-style-type: none; padding-left:0;}
+            body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
+            body { color:#464648; margin:2cm 1.5cm; }
+            h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DCDCDC; margin-right:40% }
+            h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
+
+            table th.right,
+            table td.right              { text-align:right; }
+
+
+            table th.padding             { width: 7.5%; }
+            table td.padding              { width: 12.5%; }
+
+            .customer-data              { padding:1em 0; }
+            .customer-data table        { width:100%;       }
+            .customer-data table td     { width:50%;        }
+            .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
+            .customer-data td span.left { margin-right:1em; }
+            .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
+            .payment-data               { padding:1em 0;    }
+            .payment-data table         { width:100%;       }
+            .payment-data th,
+            .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
+            .payment-data thead th      { background:#FAFAFA; }
+            .payment-data th            { font-weight:bold; white-space:nowrap; }
+            .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
+            .payment-data span.tax      { display:block; white-space:nowrap; }
+            .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
+
+            .section                    { margin-bottom: 1em; }
+            .logo                       { float: right; }
+             .tax                       { vertical-align:center; }
+          </style>
+
+          <style type="text/css">
+              body           { margin:auto; }
+              .section       { page-break-inside:avoid; }
+              div#sfWebDebug { display:none; }
+          </style>
+        </head>
+        <body>
+
+            <div class="h2">
+             <h2> Factura #{{invoice}} ({{invoice.getSeries.name}})</h2>
+            </div>
+
+            <div class="section">
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr><td width=60%>
+                  <ul>
+                      <li style="font-weight:bold;">{{invoice.Company.name}} - {{invoice.Company.identification}} </li>
+                      <li>{{invoice.Company.address}} <br> {{invoice.Company.postalcode}} {{invoice.Company.city}} <br> {{invoice.Company.state}} {{invoice.Company.country}}</li>
+                      <li>Telèfon: {{invoice.Company.phone}}  Fax: {{invoice.Company.fax}}</li>
+                      <li>Email: {{invoice.Company.email}} </li>
+                      <li>Pàgina Web: {{invoice.Company.url}}</li>
+                  </ul>
+                </td>
+                {% if invoice.Company.logo %}
+                  <td width="40%">
+                     <img src="{{ invoice.Company.logoURL }}" alt="{{ invoice.Company.name }}" />
+                  </td>
+               {% endif %}
+              </tr></table>
+          </div>
+
+          <div class="section">
+            <h3>Informació del client</h3>
+
+            <div class="customer-data">
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr>
+                  <td>
+                    <span class="left">
+                      <label>Identificador legal:</label>
+                      {{invoice.customer_identification}}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="right">
+                     <label>Client:</label>
+                      {{invoice.customer_name}}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="left">
+                      <label>Adreça de facturació:</label>
+                      <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="right">
+                      <label>Adreça d'enviament:</label>
+                      {% if invoice.shipping_address|length > 0 %}
+                        <br> {{invoice.shipping_address}} <br> {{invoice.shipping_postalcode}} {{invoice.shipping_city}} <br> {{invoice.shipping_state}} {{invoice.shipping_country}}
+                      {% else %}
+                        <br> {{invoice.invoicing_address}} <br> {{invoice.invoicing_postalcode}} {{invoice.invoicing_city}} <br> {{invoice.invoicing_state}} {{invoice.invoicing_country}}
+                 {% endif %}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>Detalls del pagament</h3>
+            <div>
+                   Data factura:  {{invoice.issue_date}}<br>Forma de pagament:
+                 {% if invoice.PaymentType.description %}
+                    {{invoice.PaymentType.description}}
+                 {% endif %}
+                 <br> Data de venciment: {{invoice.due_date}}
+            </div>
+
+            <div class="payment-data">
+              <table>
+                <thead>
+                  <tr>
+                    <th width="50%">Descripció</th>
+                    <th width="12.5%" class="right">Preu</th>
+                    <th class="right">Qtat.</th>
+                    <th class="right">Imp.</th>
+                    {# show discounts only if there is some discount #}
+                    {% if invoice.discount_amount > 0 %}
+                    <th class="right">Desc.</th>
+                    {% endif %}
+                    <th width="12.5%" class="right">Total Factura</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in invoice.Items %}
+                    <tr>
+                      <td>
+                        {{item.description}}
+                      </td>
+                      <td class="right">{{item.unitary_cost|currency}}</td>
+                      <td class="right">{{item.quantity}}</td>
+                      <td class="right">
+                        {% for tax in item.Taxes %}
+                          <span class="tax">{{tax.value}}%</span>
+                        {% endfor %}
+                      </td>
+                      {% if invoice.discount_amount > 0 %}
+                      <td class="right">{{item.discount}}%</td>
+                      {% endif %}
+                      <td class="right">{{item.net_amount|currency}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+                </table>
+                <div style="padding-top:30px">
+                <table>
+                  {% for name,value in invoice.tax_details %}
+                      <tr>
+                      <th class="right padding">Base {{name}}</th>
+                      <td width="12.5%"  class="td_subtotal right padding">{{value.base|currency}}</td>
+                      <th class="right padding">{{name}}</th>
+                      <td width="12.5%"  class="td_subtotal right padding">{{value.tax|currency}}</td>
+                      </tr>
+                  {% endfor %}
+                  </tr>
+                  <tr>
+                     <th class="right padding">Descompte</th>
+                     <td width="12.5%" class="td_global_discount right padding">{{invoice.discount_amount|currency}}</td>
+                     <th class="right padding">Total Factura</th>
+                     <td width="12.5%" class="td_total right padding">{{invoice.gross_amount|currency}}</td>
+                   </tr>
+              </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>Termes i Condicions</h3>
+            <div class="terms">
+              {{invoice.terms|format}}
             </div>
           </div>
         </body>
         </html>
 
+    -
+  Template_8:
+      name: Català - Plantila de Pressupost
+      slug: plantilla-de-presupost
+      models: Estimate
+      template: |-
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+        <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+          <title>Pressupost</title>
+
+          <style type="text/css">
+            /* Custom CSS code */
+            table {border-spacing:0; border-collapse: collapse;}
+            ul {list-style-type: none; padding-left:0;}
+            body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
+            body { color:#464648; margin:2cm 1.5cm; }
+            h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DCDCDC; margin-right:40% }
+            h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
+
+            table th.right,
+            table td.right              { text-align:right; }
+
+
+            table th.padding             { width: 7.5%; }
+            table td.padding              { width: 12.5%; }
+
+            .customer-data              { padding:1em 0; }
+            .customer-data table        { width:100%;       }
+            .customer-data table td     { width:50%;        }
+            .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
+            .customer-data td span.left { margin-right:1em; }
+            .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
+            .payment-data               { padding:1em 0;    }
+            .payment-data table         { width:100%;       }
+            .payment-data th,
+            .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
+            .payment-data thead th      { background:#FAFAFA; }
+            .payment-data th            { font-weight:bold; white-space:nowrap; }
+            .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
+            .payment-data span.tax      { display:block; white-space:nowrap; }
+            .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
+
+            .section                    { margin-bottom: 1em; }
+            .logo                       { float: right; }
+             .tax                       { vertical-align:center; }
+          </style>
+
+          <style type="text/css">
+              body           { margin:auto; }
+              .section       { page-break-inside:avoid; }
+              div#sfWebDebug { display:none; }
+          </style>
+        </head>
+        <body>
+
+            <div class="h2">
+             <h2> Pressupost #{{estimate}} ({{estimate.getSeries.name}})</h2>
+            </div>
+
+            <div class="section">
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr><td width=60%>
+                  <ul>
+                      <li style="font-weight:bold;">{{estimate.Company.name}} - {{estimate.Company.identification}} </li>
+                      <li>{{estimate.Company.address}} <br> {{estimate.Company.postalcode}} {{estimate.Company.city}} <br> {{estimate.Company.state}} {{estimate.Company.country}}</li>
+                      <li>Telèfon: {{estimate.Company.phone}}  Fax: {{estimate.Company.fax}}</li>
+                      <li>Email: {{estimate.Company.email}} </li>
+                      <li>Pàgina Web: {{estimate.Company.url}}</li>
+                  </ul>
+                </td>
+                {% if estimate.Company.logo %}
+                  <td width="40%">
+                     <img src="{{ estimate.Company.logoURL }}" alt="{{ estimate.Company.name }}" />
+                  </td>
+               {% endif %}
+              </tr></table>
+          </div>
+
+          <div class="section">
+            <h3>Informació del client</h3>
+
+            <div class="customer-data">
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr>
+                  <td>
+                    <span class="left">
+                      <label>Identificador legal:</label>
+                      {{estimate.customer_identification}}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="right">
+                     <label>Client:</label>
+                      {{estimate.customer_name}}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="left">
+                      <label>Adreça de facturació:</label>
+                      <br> {{estimate.invoicing_address}} <br> {{estimate.invoicing_postalcode}} {{estimate.invoicing_city}} <br> {{estimate.invoicing_state}} {{estimate.invoicing_country}}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="right">
+                      <label>Adreça d'enviament:</label>
+                      {% if estimate.shipping_address|length > 0 %}
+                        <br> {{estimate.shipping_address}} <br> {{estimate.shipping_postalcode}} {{estimate.shipping_city}} <br> {{estimate.shipping_state}} {{estimate.shipping_country}}
+                      {% else %}
+                        <br> {{estimate.invoicing_address}} <br> {{estimate.invoicing_postalcode}} {{estimate.invoicing_city}} <br> {{estimate.invoicing_state}} {{estimate.invoicing_country}}
+                 {% endif %}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>Detalls del pagament</h3>
+            <div>
+                   Data pressupost:  {{estimate.issue_date}}:
+                 <br> Data de venciment: {{estimate.due_date}}
+            </div>
+
+            <div class="payment-data">
+              <table>
+                <thead>
+                  <tr>
+                    <th width="50%">Descripció</th>
+                    <th width="12.5%" class="right">Preu</th>
+                    <th class="right">Qtat.</th>
+                    <th class="right">Imp.</th>
+                    {# show discounts only if there is some discount #}
+                    {% if estimate.discount_amount > 0 %}
+                    <th class="right">Desc.</th>
+                    {% endif %}
+                    <th width="12.5%" class="right">Total Factura</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in estimate.Items %}
+                    <tr>
+                      <td>
+                        {{item.description}}
+                      </td>
+                      <td class="right">{{item.unitary_cost|currency}}</td>
+                      <td class="right">{{item.quantity}}</td>
+                      <td class="right">
+                        {% for tax in item.Taxes %}
+                          <span class="tax">{{tax.value}}%</span>
+                        {% endfor %}
+                      </td>
+                      {% if estimate.discount_amount > 0 %}
+                      <td class="right">{{item.discount}}%</td>
+                      {% endif %}
+                      <td class="right">{{item.net_amount|currency}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+                </table>
+                <div style="padding-top:30px">
+                <table>
+                  <tr>
+                     <th class="right padding">Descompte</th>
+                     <td width="12.5%" class="td_global_discount right padding">{{estimate.discount_amount|currency}}</td>
+        <th class="right padding">Base Imponible</th><td width="12.5%" class="td_total right padding">{{estimate.net_amount|currency}}</td><th class="right padding">Total Factura</th>
+                     <td width="12.5%" class="td_total right padding">{{estimate.gross_amount|currency}}</td>
+                   </tr>
+              </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>Termes i Condicions</h3>
+            <div class="terms">
+              {{estimate.terms|format}}
+            </div>
+          </div>
+        </body>
+        </html>
+
+    -
+  Template_9:
+      name: Català - Plantilla de despeses
+      slug: plantilla-de-despeses
+      models: Expense
+      template: |-
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+          <html lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
+          <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>Despesa</title>
+
+            <style type="text/css">
+              /* Custom CSS code */
+              table {border-spacing:0; border-collapse: collapse;}
+              ul {list-style-type: none; padding-left:0;}
+              body, input, textarea { font-family:helvetica,sans-serif; font-size:8pt; }
+              body { color:#464648; margin:2cm 1.5cm; }
+              h2   { color:#535255; font-size:16pt; font-weight:normal; line-height:1.2em; border-bottom:1px solid #DB4823; margin-right:220px }
+              h3   { color:#9A9A9A; font-size:13pt; font-weight:normal; margin-bottom: 0em}
+
+              table th.right,
+              table td.right              { text-align:right; }
+
+              .customer-data              { padding:1em 0; }
+              .customer-data table        { width:100%;       }
+              .customer-data table td     { width:50%;        }
+              .customer-data td span      { display:block; margin:0 0 5pt; padding-bottom:2pt; border-bottom:1px solid #DCDCDC; }
+              .customer-data td span.left { margin-right:1em; }
+              .customer-data label        { display:block; font-weight:bold; font-size:8pt; }
+              .payment-data               { padding:1em 0;    }
+              .payment-data table         { width:100%;       }
+              .payment-data th,
+              .payment-data td            { line-height:1em; padding:5pt 8pt 5pt; border:1px solid #DCDCDC; }
+              .payment-data thead th      { background:#FAFAFA; }
+              .payment-data th            { font-weight:bold; white-space:nowrap; }
+              .payment-data .bottomleft   { border-color:white; border-top:inherit; border-right:inherit; }
+              .payment-data span.tax      { display:block; white-space:nowrap; }
+              .terms, .notes              { padding:9pt 0 0; font-size:7pt; line-height:9pt; }
+
+              .section                    { margin-bottom: 1em; }
+              .logo                       { float: right; }
+            </style>
+
+            <style type="text/css">
+                body           { margin:auto; }
+                .section       { page-break-inside:avoid; }
+                div#sfWebDebug { display:none; }
+            </style>
+          </head>
+          <body>
+            <div class="h2">
+             <h2> Despesa #{{expense}} - Número Factura: {{expense.supplier_reference}}</h2>
+            </div>
+            <div class="section">
+              <h3>Informació del proveïdor</h3>
+
+              <div class="customer-data">
+                <table cellspacing="0" cellpadding="0" width="100%">
+                  <tr>
+                    <td>
+                      <span class="left">
+                        <label>Proveïdor:</label>
+                        {{expense.supplier_name}}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="right">
+                        <label>Identificacion legal:</label>
+                        {{expense.supplier_identification}}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="left">
+                        <label>Persona de contacte:</label>
+                        {{expense.contact_person}}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="right">
+                        <label>Telèfon:</label>
+                        {{expense.supplier_phone}}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="left">
+                        <label>Adreça de facturació:</label>
+                        <br> {{expense.invoicing_address}} <br> {{expense.invoicing_postalcode}} {{expense.invoicing_city}} <br> {{expense.invoicing_state}} {{expense.invoicing_country}}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="right">
+                        <label>Email:</label>
+                        {{expense.supplier_email}}
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="section">
+                  <h3>Informació del client</h3>
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <tr><td width=60%>
+                  <ul>
+                      <li>{{expense.Company.name}} - {{expense.Company.identification}} </li>
+                      <li>{{expense.Company.address}} <br> {{expense.Company.postalcode}} {{expense.Company.city}} <br> {{expense.Company.state}} {{expense.Company.country}}</li>
+                      <li>Telèfon: {{expense.Company.phone}}</li>
+                      <li>Fax: {{expense.Company.fax}}</li>
+                      <li>Email: {{expense.Company.email}}</li>
+                      <li>Lloc web: {{expense.Company.url}}</li>
+                  </ul>
+                </td>
+              </tr></table>
+          </div>
+
+            <div class="section">
+              <h3>Detalls del pagament</h3>
+              <span> Data Factura : {{expense.issue_date}}</span><br>
+              <span> Data Venciment : {{expense.due_date}}</span><br>
+              <br><br>
+
+            <div class="payment-data">
+              <table>
+                <thead>
+                  <tr>
+                    <th width="50%">Descripció</th>
+                    <th width="12.5%" class="right">Preu</th>
+                    <th class="right">Qtat.</th>
+                    <th class="right">Imp.</th>
+                    {# show discounts only if there is some discount #}
+                    {% if expense.discount_amount > 0 %}
+                    <th class="right">Desc.</th>
+                    {% endif %}
+                    <th width="12.5%" class="right">Total Factura</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in expense.Items %}
+                    <tr>
+                      <td>
+                        {{item.description}}
+                      </td>
+                      <td class="right">{{item.unitary_cost|currency}}</td>
+                      <td class="right">{{item.quantity}}</td>
+                      <td class="right">
+                        {% for tax in item.Taxes %}
+                          <span class="tax">{{tax.value}}%</span>
+                        {% endfor %}
+                      </td>
+                      {% if expense.discount_amount > 0 %}
+                      <td class="right">{{item.discount}}%</td>
+                      {% endif %}
+                      <td class="right">{{item.net_amount|currency}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+                </table>
+                <div style="padding-top:30px">
+                <table>
+                  {% for name,value in expense.tax_details %}
+                      <tr>
+                      <th class="right padding">Base {{name}}</th>
+                      <td width="12.5%"  class="td_subtotal right padding">{{value.base|currency}}</td>
+                      <th class="right padding">{{name}}</th>
+                      <td width="12.5%"  class="td_subtotal right padding">{{value.tax|currency}}</td>
+                      </tr>
+                  {% endfor %}
+                  </tr>
+                  <tr>
+                     <th class="right padding">Descompte</th>
+                     <td width="12.5%" class="td_global_discount right padding">{{expense.discount_amount|currency}}</td>
+                     <th class="right padding">Total Factura</th>
+                     <td width="12.5%" class="td_total right padding">{{expense.gross_amount|currency}}</td>
+                   </tr>
+              </table>
+              </div>
+            </div>
+          </div>
+          </body>
+          </html>
 
