@@ -262,6 +262,7 @@ BEGIN
     INSERT INTO payment_type(company_id,name,description,enabled) SELECT NEW.id,name,description,enabled from payment_type where company_id = 0;
     INSERT INTO expense_type(company_id,name,enabled) SELECT NEW.id,name,enabled from expense_type where company_id = 0;
     INSERT INTO customer(company_id,name,name_slug,identification) SELECT NEW.id,name,name_slug,identification from customer where company_id = 0;
+    INSERT INTO supplier(company_id,name,name_slug,identification) SELECT NEW.id,name,name_slug,identification from supplier where company_id = 0;
    INSERT INTO product(company_id,reference,description,category_id) SELECT NEW.id,reference,description, pc2.id
    from product p inner join product_category pc on pc.id = p.category_id inner join product_category pc2 on pc.name = pc2.name and pc2.company_id = NEW.id where p.company_id = 0;
    INSERT INTO template (company_id,name,template,models,slug) select NEW.id,name,template,models,slug FROM template where company_id = 0;
@@ -427,11 +428,11 @@ END;
     //Assing the user to the first company:
     $sql[] = "INSERT INTO company_user VALUES (0,'1')";
     //Create default taxes
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Exento',0,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA 0%',0,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA General (21%)',21.0,'1','1')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Reducido (10%)',10.0,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Super Reducido (4%)',4.0,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Agricola/Forestal (12%)',12.0,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Agrícola/Forestal (12%)',12.0,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'IVA Ganadería/Pesca (10.5%)',10.5,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'R.E. IVA General (5.2%)',5.2,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'R.E. IVA Reducido (1.4%)',1.4,'1','0')";
@@ -442,8 +443,8 @@ END;
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Capital mobiliario (21%)',-21,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Modulos (1%)',-1,'1','0')";
     $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Retencion Profesionales (21%)',-21,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Ret. Regimen especial Agrario 2%)',-2,'1','0')";
-    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Ret. Profesional Reduida 9%)',-9,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Ret. Regimen especial Agrario (2%)',-2,'1','0')";
+    $sql[] = "INSERT INTO tax (company_id,name,value,active,is_default) VALUES (0,'Ret. Profesional Reduida (9%)',-9,'1','0')";
     $sql = array_merge($sql, $this->getDefaultTemplateQuery());
     //Product categories
     $sql[] = "INSERT INTO product_category(company_id,name) VALUES (0,'Material')";
@@ -488,7 +489,7 @@ END;
     $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Otros gastos','1')";
     $sql[] = "INSERT INTO expense_type(company_id,name,enabled) VALUES (0,'Bienes de inversión','1')";
     //Default customer
-    $sql[] = "INSERT INTO customer(company_id,name,name_slug,identification) VALUES (0,'CLIENTE CONTADO','clientecontado','00000000T')";
+    $sql[] = "INSERT INTO customer(company_id,name,name_slug,identification) VALUES (0,'CLIENT COMPTAT / CLIENTE CONTADO','clientecontado','00000000T')";
     $sql[] = $this->getMigrationVersionQuery();
     //Assign templates to first company
     $sql[] = "UPDATE template set company_id = 0";
