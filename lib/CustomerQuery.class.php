@@ -8,7 +8,7 @@ class CustomerQuery extends Doctrine_Query
     $q->from("Customer c, c.Commons i WITH i.type= 'Invoice'")
       ->orderBy('c.name asc')
       ->groupBy('id');
-    
+
     return $q;
   }
 
@@ -34,11 +34,12 @@ class CustomerQuery extends Doctrine_Query
       {
         $this->toDate($search['to']);
       }
+      if(isset($search['tags']))        $this->withTags($search['tags']);
     }
 
     return $this;
   }
-  
+
   public function textSearch($text)
   {
     $text = trim($text);
@@ -66,7 +67,7 @@ class CustomerQuery extends Doctrine_Query
 
     return parent::orderBy($order);
   }
-  
+
   public function total($field)
   {
     $other = clone($this);
@@ -81,15 +82,15 @@ class CustomerQuery extends Doctrine_Query
         $sum = sprintf('SUM(if(i.%s is null,0,i.%s)) as total',$field,$field);
         break;
     }
-    
-    
+
+
     $other->select($sum)->orderBy('total')
       ->addSelect("'t' AS true_column")
       ->addWhere("i.draft = ?",0)
       ->groupBy('true_column');
    if(!sfContext::getInstance()->getUser()->getAttribute('debug_developer'))
         $other->andWhere(" exists (select id from series where name <> 'DD' and id = series_id ) ");
-  
+
 
     return $other->fetchOne() ? $other->fetchOne()->getTotal() : 0;
   }
@@ -113,7 +114,7 @@ class CustomerQuery extends Doctrine_Query
         ->andWhere('i.issue_date >= ?', sfDate::getInstance($date)->to_database());
     }
   }
-  
+
   /**
    * Limits the results to those customer whose invoices are issued in a date smaller or equal than that
    * one passed as parameter.
@@ -133,7 +134,7 @@ class CustomerQuery extends Doctrine_Query
         ->andWhere('i.issue_date < ?', sfDate::getInstance($date)->addDay(1)->to_database());
     }
   }
-  
+
   /**
    * Internal method to deduce a correct or null date value.
    * @param mixed date; if it is an array it must have the 'year', 'month' and 'day' keys.
@@ -157,5 +158,17 @@ class CustomerQuery extends Doctrine_Query
         return $date;
     }
   }
-  
+
+  public function withTags($tags)
+  {
+    if ($tags)
+    {
+      $taggings = TagTable::getTaggings($tags, array('model' => 'Customer'));
+      $cmp_tags = isset($taggings['Customer']) ? $taggings['Customer'] : array(0);
+      $this->andWhereIn('i.id', $cmp_tags);
+    }
+
+    return $this;
+  }
+
 }
