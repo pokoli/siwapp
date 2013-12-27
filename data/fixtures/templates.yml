@@ -219,8 +219,7 @@ Template:
           </div>
         </body>
         </html>
-
-    -
+        -
 
   Template_2:
       name: English - Estimate Template
@@ -440,8 +439,8 @@ Template:
           </div>
         </body>
         </html>
+        -
 
-    -
   Template_3:
       name: English - Expense Template
       slug: expense-template
@@ -639,8 +638,7 @@ Template:
             </div>
           </body>
           </html>
-
-    -
+        -
   Template_4:
       name: Castellano - Plantilla de Factura
       slug: plantilla-factura
@@ -837,8 +835,8 @@ Template:
           </div>
         </body>
         </html>
+        -
 
-    -
   Template_5:
       name: Castellano - Plantila de Presupuesto
       slug: plantilla-de-presupuestos
@@ -1023,8 +1021,8 @@ Template:
           </div>
         </body>
         </html>
+        -
 
-    -
   Template_6:
       name: Castellano - Plantilla de gastos
       slug: plantilla-de-gastos
@@ -1209,8 +1207,8 @@ Template:
           </div>
           </body>
           </html>
+        -
 
-    -
   Template_7:
       name: Català - Plantilla de Factura
       slug: plantilla-factura-cat
@@ -1407,8 +1405,8 @@ Template:
           </div>
         </body>
         </html>
+        -
 
-    -
   Template_8:
       name: Català - Plantila de Pressupost
       slug: plantilla-de-presupost
@@ -1593,8 +1591,8 @@ Template:
           </div>
         </body>
         </html>
+        -
 
-    -
   Template_9:
       name: Català - Plantilla de despeses
       slug: plantilla-de-despeses
