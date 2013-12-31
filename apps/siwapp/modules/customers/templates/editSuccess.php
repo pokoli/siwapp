@@ -134,7 +134,11 @@ $customer = $customerForm->getObject();
     <h3><?php echo __('Bank details') ?></h3>
     <ul>
     <li>
-      <span class="_100">
+      <span class="_50">
+        <label for="<? echo $customerForm['discount']->renderId()?>"><?php echo __('Discount') ?></label>
+        <?php echo render_tag($customerForm['discount'])  ?>
+        </span>
+      <span class="_50">
         <label for="<? echo $customerForm['payment_type_id']->renderId()?>"><?php echo __('Payment type') ?></label>
         <?php echo render_tag($customerForm['payment_type_id'])  ?>
         </span>
@@ -171,6 +175,33 @@ $customer = $customerForm->getObject();
   <?php include_partial('common/tagsDataBlock', array('invoice' => $customer, 'invoiceForm' => $customerForm)) ?>
   <div id="saving-options" class="block">
     <?php
+echo javascript_tag("
+  var validateDC = function(){
+      var cd = $('#".$customerForm['control_digit']->renderId()."');
+      var entity = $('#".$customerForm['entity']->renderId()."');
+      var office = $('#".$customerForm['office']->renderId()."');
+      var account = $('#".$customerForm['account']->renderId()."');
+
+      if (entity.val() == '' || office.val() == '' || cd.val() == '' || account.val() == '')
+          return;
+
+      correctcd = calcularDC(entity.val(), office.val(), account.val())
+          if (correctcd != cd.val()){
+                alert('". __('Wrong Control Digit')."');
+              }
+          else {
+            $('#".$customerForm['iban']->renderId()."').val(calcIBANforSpain(entity.val(), office.val(), cd.val(), account.val()));
+          }
+    }
+    var cd = $('#".$customerForm['control_digit']->renderId()."');
+    var entity = $('#".$customerForm['entity']->renderId()."');
+    var office = $('#".$customerForm['office']->renderId()."');
+    var account = $('#".$customerForm['account']->renderId()."');
+    cd.change(validateDC);
+    entity.change(validateDC);
+    office.change(validateDC);
+    account.change(validateDC);
+");
     if ($customer->getId()) {
       echo gButton_to(__('Delete'), "customers/delete?id=" . $customer->getId(), array(
         'class' => 'action delete',
