@@ -5,3 +5,9 @@ indexSuccess:
   javascripts:
     - core/table.js
     - siwapp/invoices/payments.js
+
+helpSuccess:
+  metas:
+    title:     fac24 - Help
+  stylesheets: [ /sfFormExtraPlugin/css/jquery.autocompleter.css ]
+  javascripts:

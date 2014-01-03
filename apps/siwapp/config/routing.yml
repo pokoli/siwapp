@@ -66,6 +66,10 @@ dashboard:
   url:   /dashboard
   param:  { module: dashboard, action: index, tab: dashboard, searchForm: true, searchNamespace: invoices }
 
+dashboard_help:
+  url:   /help
+  param:  { module: dashboard, action: help, tab: dashboard, searchForm: false}
+
 dashboard_new:
   url: /invoices/new
   param: { module: invoices, action: new, tab: invoices, searchForm: false}
@@ -173,7 +177,7 @@ profile:
 categories:
   url:   /settings/categories
   param:  { module: configuration, action: productCategories, searchForm: false, tab: categories }
-  
+
 testing:
   url:   /settings/testing
   param:  { module: configuration, action: testing, searchForm: false, tab: testing }

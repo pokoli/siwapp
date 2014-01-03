@@ -82,6 +82,20 @@ class PasswordMessage extends SiwappMessage
   }
 }
 
+class HelpMessage extends SiwappMessage
+{
+  public function __construct($subject,$message)
+  {
+    $profile = Doctrine_Core::getTable('Company')->find(1);
+    parent::__construct();
+
+    $this
+      ->setTo($profile->email, "System administrator")
+      ->setSubject($subject)
+      ->setBody($message);
+  }
+}
+
 
 /**
  * An email message containing the invoice/estimate formatted in html and

@@ -215,4 +215,38 @@ class dashboardActions extends sfActions
     $this->expense_net=$exp->total('net_amount');
   }
 
+ /**
+  * Executes index action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeHelp(sfWebRequest $request)
+  {
+    $this->contactForm = new ContactForm(null, array('culture'=>$this->culture));
+    $this->action      = 'createhelp';
+    $this->setTemplate('help');
+  }
+
+  public function executeCreatehelp(sfWebRequest $request)
+  {
+    $this->forward404Unless($request->isMethod('post'));
+    $this->setTemplate('help');
+    $i18n = $this->getContext()->getI18N();
+    $form = new ContactForm(null, array('culture'=>$this->culture));
+    $form->bind($request->getParameter('contact'));
+    if ($form->isValid())
+    {
+        try {
+          $message = new HelpMessage($form->getValue('subject'), $form->getValue('message'));
+          $result = $this->getMailer()->send($message);
+          $this->getUser()->info($i18n->__('Message sent correctly'));
+        } catch (Exception $e) {
+          $message = $i18n->__('There is a problem sending your question') .': '.$e->getMessage();
+          $this->getUser()->error($message);
+        }
+    } else {
+        $this->getUser()->error($i18n->__('Invalid message'));
+    }
+    $this->executeHelp($request);
+  }
 }

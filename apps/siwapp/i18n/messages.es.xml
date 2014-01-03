@@ -1694,6 +1694,34 @@
         <source>Wrong Control Digit</source>
         <target>Dígito de Control invalido</target>
       </trans-unit>
+      <trans-unit>
+        <source>Help</source>
+        <target>Ayuda</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Enter your question</source>
+        <target>Introducir vuestra pregunta</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Subject</source>
+        <target>Asunto</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Message</source>
+        <target>Mensaje</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Support Program</source>
+        <target>Programa de soporte</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Invalid message</source>
+        <target>Mensaje invalido</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Message sent correctly</source>
+        <target>Mensaje enviado correctamente</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

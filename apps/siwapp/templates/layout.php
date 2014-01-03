@@ -29,10 +29,10 @@
         <?php echo 'v. '.sfConfig::get('app_version');?>
       </span>
     </a>
-    
+
       <?php
-        if($sf_user->getAttribute('logo_url') != '') 
-            echo image_tag($sf_user->getAttribute('logo_url'), 'alt=siwapp height=100 border=0') 
+        if($sf_user->getAttribute('logo_url') != '')
+            echo image_tag($sf_user->getAttribute('logo_url'), 'alt=siwapp height=100 border=0')
       ?>
     <ul id="hd-top-menu" class="inline content">
       <li><?php echo __('Welcome, [1]!', array('[1]' => $sf_user->getUsername())) ?> |</li>
@@ -41,13 +41,14 @@
           <?php echo __('Current Company:') ?>
           <select id="session_company" name="session_company" onchange="javascript:changeCompany(this);">
           <?php foreach ($sf_user->getAttribute('available_companies') as $company): ?>
-             <?php 
+             <?php
                 $selected = $company['id'] == $sf_user->getAttribute('company_id') ? 'selected=true' : '';
                 echo '<option '.$selected.' value="'.$company['id'].'">'.$company['name'].'</option>' ;
              ?>
           <?php endforeach ?>
          </select> |
       </li>
+      <li><?php echo link_to(__('Help'), '@dashboard_help') ?> |</li>
       <li><?php echo link_to(__('Settings'), 'configuration/settings', array('accesskey' => "s")) ?> |</li>
       <li><?php echo link_to(__('Logout'), '@sf_guard_signout') ?></li>
       <?php
@@ -58,21 +59,21 @@
         }
       ?>
     </ul>
-    
+
     </div>
 
     <?php include_partial('global/notifications') ?>
   </div>
-  
+
    <div id="hd-navbar" class="content">
-   <?php 
+   <?php
    $mainButton  = array(__('New Invoice'), '@dashboard_new');
       $tab            = $sf_request->getParameter('tab');
       $active         = 'class="active"';
       $siwapp_modules = array();
       $modules_info   = sfConfig::get('app_modules_mandatory');
-      foreach($sf_user->getAttribute('siwapp_modules') as $sm) 
-      { 
+      foreach($sf_user->getAttribute('siwapp_modules') as $sm)
+      {
         $prps = $modules_info[$sm];
         $siwapp_modules[$sm] = $prps;
         if($tab == $sm)
@@ -88,18 +89,18 @@
       <?php endforeach?>
     </ul>
   </div>
-  
+
 </div>
 
 <div id="bd">
   <div id="bd-top">
     <?php if ($sf_params->get('searchForm')) include_component_slot('searchForm')?>
   </div>
-  
+
   <div id="bd-content">
     <?php echo $sf_content ?>
   </div>
 </div>
-  
+
 </body>
 </html>
