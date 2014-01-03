@@ -101,9 +101,18 @@
 <div class="clear"></div>
 <?php
    if($fiscality) {
-?>
-  <h2><?php echo __('Fiscality'); ?></h2>
-  <div id="situation-wrapper" class="left">
+echo javascript_tag("
+jQuery(document).ready(function() {
+  jQuery('#fiscality-wrapper').hide();
+  //toggle the componenet with class msg_body
+  jQuery('#fiscality-title').click(function()
+  {
+    jQuery(this).next('#fiscality-wrapper').slideToggle(500);
+  });
+});
+");?>
+  <h2 id="fiscality-title"><?php echo __('Fiscality'); ?></h2>
+  <div id="fiscality-wrapper" class="left">
   <div class="left">
   <h3><?php echo __('Incoming Taxes'); ?></h3>
   <table class="dashboard-info">
