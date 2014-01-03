@@ -586,11 +586,11 @@
       </trans-unit>
       <trans-unit>
         <source>Drafts</source>
-        <target>Esborranys</target>
+        <target>ProFormes</target>
       </trans-unit>
       <trans-unit>
         <source>No Drafts</source>
-        <target>No Esborranys</target>
+        <target>No Proformes</target>
       </trans-unit>
       <trans-unit>
         <source>Enabled</source>

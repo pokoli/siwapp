@@ -586,11 +586,11 @@
       </trans-unit>
       <trans-unit>
         <source>Drafts</source>
-        <target>Borrador</target>
+        <target>Proformas</target>
       </trans-unit>
       <trans-unit>
         <source>No Drafts</source>
-        <target>No Borrador</target>
+        <target>No Proformas</target>
       </trans-unit>
       <trans-unit>
         <source>Enabled</source>
