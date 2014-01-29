@@ -1715,8 +1715,8 @@
         <target>Ajuda</target>
       </trans-unit>
       <trans-unit>
-        <source>Enter your question</source>
-        <target>Introduïu la vostra pregunta</target>
+        <source>Enter your Question</source>
+        <target>Formulari de consulta</target>
       </trans-unit>
       <trans-unit>
         <source>Subject</source>
@@ -1728,7 +1728,7 @@
       </trans-unit>
       <trans-unit>
         <source>Support Program</source>
-        <target>Programa de suport</target>
+        <target>Descarregar Programa de suport remot</target>
       </trans-unit>
       <trans-unit>
         <source>Invalid message</source>
@@ -1737,6 +1737,22 @@
       <trans-unit>
         <source>Message sent correctly</source>
         <target>Missatge enviat correctament</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Windows</source>
+        <target>Versió per ordinadors amb Sistema Operatiu Windows</target>
+      </trans-unit>
+      <trans-unit>
+        <source>MAC</source>
+        <target>Versió per ordinadors amb Sistema Operatiu Mac</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Android</source>
+        <target>Versió per tauletes amb Sistema Operatiu Android</target>
+      </trans-unit>
+      <trans-unit>
+        <source>iOS</source>
+        <target>Versió per tauletes amb Sistema Operatiu iOS</target>
       </trans-unit>
     </body>
   </file>

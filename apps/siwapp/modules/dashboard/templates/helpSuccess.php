@@ -18,8 +18,10 @@
   <div class="block" style="float:left; min-width:48%">
     <h3><?php echo __('Support Program') ?></h3>
     <ul class="inline">
-        <li> <a href="http://download.teamviewer.com/download/TeamViewerQS_es.exe"> Windows </a> </li><br/>
-        <li> <a href="http://download.teamviewer.com/download/TeamViewerQS.dmg"> MAC </a> </li><br/>
+    <li> <a href="http://download.teamviewer.com/download/TeamViewerQS_es.exe"><?php echo __('Windows') ?></a> </li><br/>
+        <li> <a href="http://download.teamviewer.com/download/TeamViewerQS.dmg"><?php echo __(' MAC') ?> </a> </li><br/>
+        <li> <a href="https://play.google.com/store/apps/details?id=com.teamviewer.quicksupport.market"><?php echo __('Android') ?> </a> </li><br/>
+        <li> <a href="https://itunes.apple.com/es/app/teamviewer-quicksupport/id661649585"><?php echo __('iOS') ?> </a> </li><br/>
     </ul>
 
 </div>

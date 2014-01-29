@@ -1715,8 +1715,8 @@
         <target>Ayuda</target>
       </trans-unit>
       <trans-unit>
-        <source>Enter your question</source>
-        <target>Introducir vuestra pregunta</target>
+        <source>Enter your Question</source>
+        <target>Formulario de consulta</target>
       </trans-unit>
       <trans-unit>
         <source>Subject</source>
@@ -1728,7 +1728,7 @@
       </trans-unit>
       <trans-unit>
         <source>Support Program</source>
-        <target>Programa de soporte</target>
+        <target>Descargar Programa de soporte remoto</target>
       </trans-unit>
       <trans-unit>
         <source>Invalid message</source>
@@ -1737,6 +1737,22 @@
       <trans-unit>
         <source>Message sent correctly</source>
         <target>Mensaje enviado correctamente</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Windows</source>
+        <target>Versión para ordinadores con Sistema Operativo Windows</target>
+      </trans-unit>
+      <trans-unit>
+        <source>MAC</source>
+        <target>Versión para ordinadores con Sistema Operativo Mac</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Android</source>
+        <target>Versión para tabletas con Sistema Operativo Android</target>
+      </trans-unit>
+      <trans-unit>
+        <source>iOS</source>
+        <target>Versión para tabletas con Sistema Operativo iOS</target>
       </trans-unit>
     </body>
   </file>
