@@ -21,9 +21,8 @@ class ContactForm extends sfForm
   public static function getSubjects()
   {
     return array(
-      'Fiscal'      => 'Fiscal',
-      'Comptable-Informatica'     => 'Comptable o Informatica',
-      'Tecnica'      => 'Tècnica',
+      'Fiscal-Comptable'      => 'Fiscal - Comptable',
+      'Informatica'     => 'Informatica',
     );
   }
 }
