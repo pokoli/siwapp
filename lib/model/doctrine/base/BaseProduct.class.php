@@ -10,6 +10,8 @@
  * @property clob $description
  * @property decimal $price
  * @property integer $category_id
+ * @property string $size
+ * @property string $color
  * @property Company $Company
  * @property ProductCategory $ProductCategory
  * @property Doctrine_Collection $Items
@@ -19,6 +21,8 @@
  * @method clob                getDescription()     Returns the current record's "description" value
  * @method decimal             getPrice()           Returns the current record's "price" value
  * @method integer             getCategoryId()      Returns the current record's "category_id" value
+ * @method string              getSize()            Returns the current record's "size" value
+ * @method string              getColor()           Returns the current record's "color" value
  * @method Company             getCompany()         Returns the current record's "Company" value
  * @method ProductCategory     getProductCategory() Returns the current record's "ProductCategory" value
  * @method Doctrine_Collection getItems()           Returns the current record's "Items" collection
@@ -27,6 +31,8 @@
  * @method Product             setDescription()     Sets the current record's "description" value
  * @method Product             setPrice()           Sets the current record's "price" value
  * @method Product             setCategoryId()      Sets the current record's "category_id" value
+ * @method Product             setSize()            Sets the current record's "size" value
+ * @method Product             setColor()           Sets the current record's "color" value
  * @method Product             setCompany()         Sets the current record's "Company" value
  * @method Product             setProductCategory() Sets the current record's "ProductCategory" value
  * @method Product             setItems()           Sets the current record's "Items" collection
@@ -61,6 +67,14 @@ abstract class BaseProduct extends sfDoctrineRecord
              ));
         $this->hasColumn('category_id', 'integer', null, array(
              'type' => 'integer',
+             ));
+        $this->hasColumn('size', 'string', 255, array(
+             'type' => 'string',
+             'length' => 255,
+             ));
+        $this->hasColumn('color', 'string', 255, array(
+             'type' => 'string',
+             'length' => 255,
              ));
 
         $this->option('charset', 'utf8');

@@ -21,6 +21,8 @@ abstract class BaseItemFormFilter extends BaseFormFilterDoctrine
       'expense_type_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ExpenseType'), 'add_empty' => true)),
       'description'     => new sfWidgetFormFilterInput(),
       'unitary_cost'    => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'size'            => new sfWidgetFormFilterInput(),
+      'color'           => new sfWidgetFormFilterInput(),
       'taxes_list'      => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'Tax')),
     ));
 
@@ -33,6 +35,8 @@ abstract class BaseItemFormFilter extends BaseFormFilterDoctrine
       'expense_type_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('ExpenseType'), 'column' => 'id')),
       'description'     => new sfValidatorPass(array('required' => false)),
       'unitary_cost'    => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
+      'size'            => new sfValidatorPass(array('required' => false)),
+      'color'           => new sfValidatorPass(array('required' => false)),
       'taxes_list'      => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'Tax', 'required' => false)),
     ));
 
@@ -80,6 +84,8 @@ abstract class BaseItemFormFilter extends BaseFormFilterDoctrine
       'expense_type_id' => 'ForeignKey',
       'description'     => 'Text',
       'unitary_cost'    => 'Number',
+      'size'            => 'Text',
+      'color'           => 'Text',
       'taxes_list'      => 'ManyKey',
     );
   }

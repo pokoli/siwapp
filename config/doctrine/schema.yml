@@ -302,6 +302,8 @@ Estimate:
     sent_by_email:
       type: boolean
       default: false
+    delivery_date: date
+    image: clob
 
 # DEFAULT VALUES ARE MANDATORY IN ORDER TO AVOID CALCULATION
 # ERRORS IN VIEWS (ARITHMETIC WITH NULL ALWAYS RETURN NULL)
@@ -315,6 +317,8 @@ Item:
     expense_type_id: integer
     description: clob
     unitary_cost: { type: decimal(53), scale: 15, notnull: true, default: 0 }
+    size: string(255)
+    color: string(255)
   relations:
     Company:
       foreignAlias: Company
@@ -546,6 +550,8 @@ Product:
     description: clob
     price: {type: decimal(53), scale: 15, notnull: true, default: 0}
     category_id: integer
+    size: string(255)
+    color: string(255)
   relations:
     Company:
       foreignAlias: Company

@@ -52,6 +52,8 @@
  * @property date $issue_date
  * @property date $due_date
  * @property string $supplier_reference
+ * @property date $delivery_date
+ * @property clob $image
  * @property integer $days_to_due
  * @property boolean $enabled
  * @property integer $max_occurrences
@@ -116,6 +118,8 @@
  * @method date                getIssueDate()               Returns the current record's "issue_date" value
  * @method date                getDueDate()                 Returns the current record's "due_date" value
  * @method string              getSupplierReference()       Returns the current record's "supplier_reference" value
+ * @method date                getDeliveryDate()            Returns the current record's "delivery_date" value
+ * @method clob                getImage()                   Returns the current record's "image" value
  * @method integer             getDaysToDue()               Returns the current record's "days_to_due" value
  * @method boolean             getEnabled()                 Returns the current record's "enabled" value
  * @method integer             getMaxOccurrences()          Returns the current record's "max_occurrences" value
@@ -179,6 +183,8 @@
  * @method Common              setIssueDate()               Sets the current record's "issue_date" value
  * @method Common              setDueDate()                 Sets the current record's "due_date" value
  * @method Common              setSupplierReference()       Sets the current record's "supplier_reference" value
+ * @method Common              setDeliveryDate()            Sets the current record's "delivery_date" value
+ * @method Common              setImage()                   Sets the current record's "image" value
  * @method Common              setDaysToDue()               Sets the current record's "days_to_due" value
  * @method Common              setEnabled()                 Sets the current record's "enabled" value
  * @method Common              setMaxOccurrences()          Sets the current record's "max_occurrences" value
@@ -391,6 +397,12 @@ abstract class BaseCommon extends sfDoctrineRecord
         $this->hasColumn('supplier_reference', 'string', 50, array(
              'type' => 'string',
              'length' => 50,
+             ));
+        $this->hasColumn('delivery_date', 'date', null, array(
+             'type' => 'date',
+             ));
+        $this->hasColumn('image', 'clob', null, array(
+             'type' => 'clob',
              ));
         $this->hasColumn('days_to_due', 'integer', 3, array(
              'type' => 'integer',

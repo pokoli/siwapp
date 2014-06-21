@@ -13,6 +13,8 @@
  * @property integer $expense_type_id
  * @property clob $description
  * @property decimal $unitary_cost
+ * @property string $size
+ * @property string $color
  * @property Company $Company
  * @property Common $Common
  * @property Doctrine_Collection $Taxes
@@ -28,6 +30,8 @@
  * @method integer             getExpenseTypeId()   Returns the current record's "expense_type_id" value
  * @method clob                getDescription()     Returns the current record's "description" value
  * @method decimal             getUnitaryCost()     Returns the current record's "unitary_cost" value
+ * @method string              getSize()            Returns the current record's "size" value
+ * @method string              getColor()           Returns the current record's "color" value
  * @method Company             getCompany()         Returns the current record's "Company" value
  * @method Common              getCommon()          Returns the current record's "Common" value
  * @method Doctrine_Collection getTaxes()           Returns the current record's "Taxes" collection
@@ -42,6 +46,8 @@
  * @method Item                setExpenseTypeId()   Sets the current record's "expense_type_id" value
  * @method Item                setDescription()     Sets the current record's "description" value
  * @method Item                setUnitaryCost()     Sets the current record's "unitary_cost" value
+ * @method Item                setSize()            Sets the current record's "size" value
+ * @method Item                setColor()           Sets the current record's "color" value
  * @method Item                setCompany()         Sets the current record's "Company" value
  * @method Item                setCommon()          Sets the current record's "Common" value
  * @method Item                setTaxes()           Sets the current record's "Taxes" collection
@@ -94,6 +100,14 @@ abstract class BaseItem extends sfDoctrineRecord
              'notnull' => true,
              'default' => 0,
              'length' => 53,
+             ));
+        $this->hasColumn('size', 'string', 255, array(
+             'type' => 'string',
+             'length' => 255,
+             ));
+        $this->hasColumn('color', 'string', 255, array(
+             'type' => 'string',
+             'length' => 255,
              ));
 
 

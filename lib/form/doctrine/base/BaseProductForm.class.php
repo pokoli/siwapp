@@ -21,6 +21,8 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'description' => new sfWidgetFormTextarea(),
       'price'       => new sfWidgetFormInputText(),
       'category_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductCategory'), 'add_empty' => true)),
+      'size'        => new sfWidgetFormInputText(),
+      'color'       => new sfWidgetFormInputText(),
       'created_at'  => new sfWidgetFormDateTime(),
       'updated_at'  => new sfWidgetFormDateTime(),
     ));
@@ -32,6 +34,8 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'description' => new sfValidatorString(array('required' => false)),
       'price'       => new sfValidatorNumber(array('required' => false)),
       'category_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('ProductCategory'), 'required' => false)),
+      'size'        => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+      'color'       => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'created_at'  => new sfValidatorDateTime(),
       'updated_at'  => new sfValidatorDateTime(),
     ));
