@@ -76,6 +76,8 @@
         <thead>
           <tr>
             <th><?php echo __('Description') ?></th>
+            <th><?php echo __('Size') ?></th>
+            <th><?php echo __('Color') ?></th>
             <th class="right" width="100"><?php echo __('Unit cost') ?></th>
             <th class="right" width="60"><?php echo __('Qty') ?></th>
             <th class="right" width="100"><?php echo __('Taxes') ?></th>
@@ -106,7 +108,7 @@
         <tfoot id="global_calculations">
           <?php foreach ($invoice->getBasesDetails() as $name => $amount): ?>
           <tr>
-            <td colspan="4" class="noborder"></td>
+            <td colspan="6" class="noborder"></td>
             <td><?php echo __('Base')." ".$name ?></td>
             <td id="td_subtotal" class="right">
               <?php echo format_currency($amount, $currency) ?>
@@ -115,20 +117,20 @@
           <?php endforeach ?>
           <?php foreach ($invoice->getTaxDetails() as $name => $amount): ?>
           <tr>
-            <td colspan="4" class="noborder"></td>
+            <td colspan="6" class="noborder"></td>
             <td><?php echo __('Total')." ".$name ?></td>
             <td class="right"><?php echo format_currency($amount,$currency)?></td>
           </tr>
           <?php endforeach ?>
           <tr>
-            <td colspan="4" class="noborder"></td>
+            <td colspan="6" class="noborder"></td>
             <td><?php echo __('Discount') ?></td>
             <td id="td_global_discount" class="right">
               <?php echo format_currency($invoice->getDiscountAmount(), $currency) ?>
             </td>
           </tr>
           <tr class="strong">
-            <td colspan="4" class="noborder"></td>
+            <td colspan="6" class="noborder"></td>
             <td><?php echo __('Total') ?></td>
             <td id="td_total" class="right">
               <?php echo format_currency($invoice->getGrossAmount(), $currency) ?>

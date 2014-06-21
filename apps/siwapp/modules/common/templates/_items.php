@@ -15,6 +15,8 @@
           <th><?php echo __('Reference') ?></th>
           <?php endif?>
           <th><?php echo __('Description') ?></th>
+          <th><?php echo __('Size') ?></th>
+          <th><?php echo __('Color') ?></th>
           <th class="right"><?php echo __('Unit Cost') ?></th>
           <th class="right"><?php echo __('Qty') ?></th>
           <th class="right"><?php echo __('Taxes') ?></th>
@@ -40,9 +42,9 @@
 
   <tfoot id="global_calculations">
     <tr>
-      <?php $colspan = '4';
+      <?php $colspan = '6';
             if ($expense) $colspan = '4';
-            else if ($sf_user->has_module('products')) $colspan='5' ?>
+            else if ($sf_user->has_module('products')) $colspan='7' ?>
       <td colspan="<?php echo $colspan ?>" rowspan="25" class="noborder top">
         <div id="addItem">
           <?php  ?>

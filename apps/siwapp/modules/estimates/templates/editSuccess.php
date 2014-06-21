@@ -6,19 +6,19 @@ include_javascripts_for_form($estimateForm);
 $estimate = $estimateForm->getObject();
 ?>
 <div id="invoice-container" class="content">
-  
+
   <h2><?php echo $title ?></h2>
 
   <form action="<?php echo url_for("estimates/$action") ?>" method="post" <?php $estimateForm->isMultipart() and print 'enctype="multipart/form-data" ' ?> class="invoice">
-  
+
   <div id="saving-options" class="block">
-    <?php 
+    <?php
     if ($estimate->getId()) {
       echo gButton_to(__('Delete'), "estimates/delete?id=" . $estimate->getId(), array(
-        'class' => 'action delete', 
+        'class' => 'action delete',
         'post' => true,
         'confirm' => __('Are you sure?'),
-        ) , 'button=false')."&nbsp;&nbsp;&nbsp;&nbsp;"; 
+        ) , 'button=false')."&nbsp;&nbsp;&nbsp;&nbsp;";
     }
     if (!$estimate->isNew())
     {
@@ -34,12 +34,12 @@ $estimate = $estimateForm->getObject();
       echo gButton_to_function(__('Save and create invoice'), "\$('form.invoice').setValueAndSendForm('#generate_invoice', 1);", 'class=action create-invoice')." ";
     }
     echo gButton_to_function(__('Save and send by e-mail'),"\$('form.invoice').saveInvoiceAndEmail();", 'class=action send save-email')."&nbsp;&nbsp;";
-    echo gButton(__('Save'), 'type=submit class=action primary save', 'button=true'); 
+    echo gButton(__('Save'), 'type=submit class=action primary save', 'button=true');
     ?>
   </div>
     <input type="hidden" id="send_email" name="send_email" value="0" />
     <input type="hidden" id="generate_invoice" name="generate_invoice" value="0" />
-  <?php 
+  <?php
     echo $estimateForm['id'];
     // here draft, in case were saved as draft, the button must put 1 here
     echo $estimateForm['draft'];
@@ -52,37 +52,46 @@ $estimate = $estimateForm->getObject();
     <?php echo $estimateForm['status']->renderRow() ?>
     <?php echo $estimateForm['sent_by_email']->renderRow() ?>
   </ul>
-  
-  <?php 
+
+  <?php
     include_partial('common/globalErrors', array('form' => $estimateForm));
     include_partial('common/clientInfo', array('invoiceForm' => $estimateForm)); ?>
-    
+
   <div id="payment-data" class="block">
     <h3><?php echo __('Estimate details') ?></h3>
     <ul class="inline">
       <?php echo $estimateForm['issue_date']->renderRow() ?>
     </ul>
-      
+    <ul class="inline">
+      <?php echo $estimateForm['delivery_date']->renderRow() ?>
+    </ul>
+
     <?php include_partial('common/items', array(
       'invoice' => $estimate,
       'invoiceForm' => $estimateForm,
-      'currency' => $currency, 
+      'currency' => $currency,
       'expense' => false,
       ));?>
   </div>  <!-- div#payment-data -->
+  <div id="image" class="block">
+    <h3><?php echo __('Image') ?></h3>
+    <ul class="inline">
+      <?php echo $estimateForm['image']->renderRow() ?>
+    </ul>
+  </div>
 
   <?php include_partial('common/termsAndNotes', array('invoiceForm' => $estimateForm)); ?>
 
   <?php include_partial('common/tagsDataBlock', array('invoice' => $estimate, 'invoiceForm' => $estimateForm)) ?>
-  
+
   <div id="saving-options" class="block">
-    <?php 
+    <?php
     if ($estimate->getId()) {
       echo gButton_to(__('Delete'), "estimates/delete?id=" . $estimate->getId(), array(
-        'class' => 'action delete', 
+        'class' => 'action delete',
         'post' => true,
         'confirm' => __('Are you sure?'),
-        ) , 'button=false')."&nbsp;&nbsp;&nbsp;&nbsp;"; 
+        ) , 'button=false')."&nbsp;&nbsp;&nbsp;&nbsp;";
     }
     if (!$estimate->isNew())
     {
@@ -98,7 +107,7 @@ $estimate = $estimateForm->getObject();
       echo gButton_to_function(__('Save and create invoice'), "\$('form.invoice').setValueAndSendForm('#generate_invoice', 1);", 'class=action create-invoice')." ";
     }
     echo gButton_to_function(__('Save and send by e-mail'),"\$('form.invoice').saveInvoiceAndEmail();", 'class=action send save-email')."&nbsp;&nbsp;";
-    echo gButton(__('Save'), 'type=submit class=action primary save', 'button=true'); 
+    echo gButton(__('Save'), 'type=submit class=action primary save', 'button=true');
     ?>
   </div>
   </form>

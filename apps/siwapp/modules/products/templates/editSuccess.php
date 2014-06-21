@@ -18,7 +18,7 @@ $product = $productForm->getObject();
         'confirm' => __('Are you sure?'),
         ) , 'button=false')." ";
     }
-    
+
     echo gButton(__('Save'), 'type=submit class=action primary save', 'button=true');
     ?>
   </div>
@@ -39,7 +39,11 @@ $product = $productForm->getObject();
     <li></li>
     <li>
       <span class="_25"><label for="<? echo $productForm['price']->renderId()?>"><?php echo __('Product price') ?></label><?php echo render_tag($productForm['price'])?></span>
-      <span class="_50"><label for="<? echo $productForm['reference']->renderId()?>"><?php echo __('Category') ?></label><?php echo render_tag($productForm['category_id'])?></span> 
+      <span class="_50"><label for="<? echo $productForm['reference']->renderId()?>"><?php echo __('Category') ?></label><?php echo render_tag($productForm['category_id'])?></span>
+    </li>
+    <li>
+      <span class="_50"><label for="<? echo $productForm['size']->renderId()?>"><?php echo __('Size') ?></label><?php echo render_tag($productForm['size'])?></span>
+      <span class="_50"><label for="<? echo $productForm['color']->renderId()?>"><?php echo __('Color') ?></label><?php echo render_tag($productForm['color'])?></span>
     </li>
   </ul>
 </div>
@@ -52,7 +56,7 @@ $product = $productForm->getObject();
         'confirm' => __('Are you sure?'),
         ) , 'button=false')." ";
     }
-    
+
     echo gButton(__('Save'), 'type=submit class=action primary save', 'button=true');
     ?>
   </div>

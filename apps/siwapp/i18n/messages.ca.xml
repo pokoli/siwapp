@@ -1698,6 +1698,26 @@
         <source>Wrong Control Digit</source>
         <target>Dígit de Control invàlid</target>
       </trans-unit>
+      <trans-unit>
+        <source>Size</source>
+        <target>Talla</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Color</source>
+        <target>Color</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Image</source>
+        <target>Imatge</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Delivery Date</source>
+        <target>Data entrega</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Delivery date</source>
+        <target>Data entrega</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

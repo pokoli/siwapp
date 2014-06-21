@@ -3,6 +3,12 @@
   <td>
     <?php echo $item->getDescription() ?>
   </td>
+  <td>
+    <?php echo $item->getSize() ?>
+  </td>
+  <td>
+    <?php echo $item->getColor() ?>
+  </td>
   <td class="right ucost">
     <?php echo format_currency($item->getUnitaryCost(), $currency) ?>
   </td>

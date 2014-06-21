@@ -1,4 +1,4 @@
-<?php 
+<?php
 use_helper('jQuery', 'Number', 'JavascriptBase');
 $currency = $sf_user->getAttribute('currency');
 ?>
@@ -22,14 +22,28 @@ $currency = $sf_user->getAttribute('currency');
     <?php echo $invoiceItemForm->renderHiddenFields();?>
     <?php echo $invoiceItemForm['description']->render(array(), ESC_RAW) ?>
   </td>
-  <td class="right ucost"><?php 
+  <td class="product"><?php
+    if ($invoiceItemForm['size']->hasError()):
+      echo $invoiceItemForm['size']->render(array('class'=>'error'), ESC_RAW);
+    else:
+      echo $invoiceItemForm['size']->render(array(), ESC_RAW);
+    endif;
+  ?></td>
+  <td class="product"><?php
+    if ($invoiceItemForm['color']->hasError()):
+      echo $invoiceItemForm['color']->render(array('class'=>'error'), ESC_RAW);
+    else:
+      echo $invoiceItemForm['color']->render(array(), ESC_RAW);
+    endif;
+  ?></td>
+  <td class="right ucost"><?php
     if ($invoiceItemForm['unitary_cost']->hasError()):
       echo $invoiceItemForm['unitary_cost']->render(array('class'=>'error'), ESC_RAW);
     else:
       echo $invoiceItemForm['unitary_cost']->render(array(), ESC_RAW);
     endif;
   ?></td>
-  <td class="right quantity"><?php 
+  <td class="right quantity"><?php
     if ($invoiceItemForm['quantity']->hasError()):
       echo $invoiceItemForm['quantity']->render(array('class'=>'error'), ESC_RAW);
     else:
@@ -39,7 +53,7 @@ $currency = $sf_user->getAttribute('currency');
   <td class="right taxes_td">
     <span id="<?php echo $rowId?>_taxes" class="taglist taxes">
       <?php $err = $invoiceItemForm['taxes_list']->hasError() ? 'error' : '';
-        $item_taxes = $invoiceItemForm['taxes_list']->getValue() ? 
+        $item_taxes = $invoiceItemForm['taxes_list']->getValue() ?
           $invoiceItemForm['taxes_list']->getValue() : array();
         $totalTaxesValue = Doctrine::getTable('Tax')->getTotalTaxesValue($item_taxes);
         echo jq_javascript_tag("
@@ -74,7 +88,7 @@ $currency = $sf_user->getAttribute('currency');
                        'position' => 'bottom',
                        'method'   => 'post',
                        'with'     => "{
-                                        item_tax_index:   new_item_tax_index++, 
+                                        item_tax_index:   new_item_tax_index++,
                                         invoice_item_key: '$rowId',
                                         selected_tax:     '".$taxx->id."'
                                       }"
@@ -85,7 +99,7 @@ $currency = $sf_user->getAttribute('currency');
         }
       ?>
     </span>
-    
+
   </td>
   <td class="right discount"><?php echo $invoiceItemForm['discount']->render(array(), ESC_RAW) ?> %</td>
     <td class="right price"><?php echo format_currency(Tools::getRounded(Tools::getNetAmount($invoiceItemForm['unitary_cost']->getValue(),$invoiceItemForm['quantity']->getValue(),$invoiceItemForm['discount']->getValue(),$totalTaxesValue), Tools::getDecimals()), $currency) ?> </td>
@@ -102,10 +116,12 @@ echo javascript_tag("
         var parsed = [];
         for (key in data) {
           parsed[parsed.length] = { data: [
-            data[key].description, 
-            data[key].reference, 
+            data[key].description,
+            data[key].reference,
             data[key].price,
-            data[key].id
+            data[key].id,
+            data[key].size,
+            data[key].color,
           ], value: data[key].description, result: data[key].description };
         }
         return parsed;
@@ -118,9 +134,11 @@ echo javascript_tag("
       $('#".$invoiceItemForm['product_autocomplete']->renderId()."').val(item[1]);
       $('#".$invoiceItemForm['unitary_cost']->renderId()."').val(item[2]);
       $('#".$invoiceItemForm['product_id']->renderId()."').val(item[3]);
+      $('#".$invoiceItemForm['size']->renderId()."').val(item[4]);
+      $('#".$invoiceItemForm['color']->renderId()."').val(item[5]);
       $(document).trigger('GlobalUpdateEvent');
     });
-    
+
   //connect the selection of a product to update the row item
   $('#".$invoiceItemForm['product_autocomplete']->renderId()."')
     .autocomplete('".$urlAjaxSelectProduct."', jQuery.extend({}, {
@@ -130,9 +148,11 @@ echo javascript_tag("
         for (key in data) {
           parsed[parsed.length] = { data: [
             data[key].description,
-            data[key].reference,  
+            data[key].reference,
             data[key].price,
-            data[key].id
+            data[key].id,
+            data[key].size,
+            data[key].color,
           ], value: data[key].description, result: data[key].description };
         }
         return parsed;
@@ -145,6 +165,8 @@ echo javascript_tag("
       $('#".$invoiceItemForm['product_autocomplete']->renderId()."').val(item[1]);
       $('#".$invoiceItemForm['unitary_cost']->renderId()."').val(item[2]);
       $('#".$invoiceItemForm['product_id']->renderId()."').val(item[3]);
+      $('#".$invoiceItemForm['size']->renderId()."').val(item[4]);
+      $('#".$invoiceItemForm['color']->renderId()."').val(item[5]);
       $(document).trigger('GlobalUpdateEvent');
     });
 ");

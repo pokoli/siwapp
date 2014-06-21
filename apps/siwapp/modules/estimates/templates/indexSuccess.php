@@ -6,17 +6,17 @@ $csrf     = new sfForm();
 ?>
 
 <div class="content">
-  
+
   <?php if (count($invoices)): ?>
-    
+
     <?php echo form_tag('estimates/batch', 'id=batch_form class=batch') ?>
       <?php echo $csrf['_csrf_token']->render(); ?>
       <input type="hidden" name="batch_action" id="batch_action">
 
       <table id="listing" class="listing">
-        
+
         <thead>
-          
+
           <tr>
             <td colspan="4" class="listing-options noborder">
               <?php include_partial('estimates/batchActions')?>
@@ -37,6 +37,7 @@ $csrf     = new sfForm();
                 'number'        => array('Number', 'desc'),
                 'customer_name' => array('Customer Name', 'asc'),
                 'issue_date'    => array('Date', 'desc'),
+                'delivery_date'    => array('Delivery Date', 'desc'),
                 'status'        => array('Status', 'asc'),
                 'gross_amount'  => array('Total', 'desc'),
                 'related_invoice'  => array('Invoice', 'asc')
@@ -46,7 +47,7 @@ $csrf     = new sfForm();
         </thead>
 
         <tbody>
-          
+
           <?php foreach ($invoices as $i => $invoice): ?>
             <?php
               $id       = $invoice->getId();
@@ -59,6 +60,7 @@ $csrf     = new sfForm();
               <td><?php echo $invoice ?></td>
               <td class="<?php echo $invoice->getSentByEmail() ? 'sent' : null ?>"><?php echo $invoice->getCustomerName() ?></td>
               <td><?php echo format_date($invoice->getIssueDate()) ?></td>
+              <td><?php echo format_date($invoice->getDeliveryDate()) ?></td>
               <td>
                 <span class="status <?php echo ($stat = $invoice->getStatusString()) ?>">
                   <?php echo __($stat) ?>
@@ -98,9 +100,9 @@ $csrf     = new sfForm();
     </form>
 
     <?php include_partial('global/pager', array('pager' => $pager, 'route' => '@estimates')) ?>
-    
+
   <?php else: ?>
     <p><?php echo __('No results') ?></p>
   <?php endif ?>
-  
+
 </div>
