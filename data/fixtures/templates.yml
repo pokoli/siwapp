@@ -128,10 +128,6 @@ Template:
         <div class="section">
           <h3>Payment details</h3>
           <div>
-               Payment type: {{invoice.PaymentType.name}}
-               {% if invoice.PaymentType.description %}
-                  - {{invoice.PaymentType.description}}
-               {% endif %}
                <br> Due Date: {{invoice.due_date}}
           </div>
 
@@ -140,6 +136,8 @@ Template:
               <thead>
                 <tr>
                   <th>Description</th>
+                  <th>Size</th>
+                  <th>Color</th>
                   <th class="right">Unit Cost</th>
                   <th class="right">Qty</th>
                   <th class="right">Taxes total</th>
@@ -156,6 +154,8 @@ Template:
                     <td>
                       {{item.description}}
                     </td>
+                    <td>{{item.size}}</td>
+                    <td>{{item.color}}</td>
                     <td class="right">{{item.unitary_cost|currency}}</td>
                     <td class="right">{{item.quantity}}</td>
                     <td class="right">
@@ -172,36 +172,36 @@ Template:
               </tbody>
               <tfoot>
                 <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
+                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}6{% else %}5{% endif %}"></td>
                   <th class="right">Base</th>
                   <td class="right">{{invoice.base_amount|currency}}</td>
                 </tr>
                 {% if invoice.discount_amount %}
                 <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
+                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}6{% else %}5{% endif %}"></td>
                   <th class="right">Discount</th>
                   <td class="td_global_discount right">{{invoice.discount_amount|currency}}</td>
                 </tr>
                 {% endif %}
                 <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
+                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}6{% else %}5{% endif %}"></td>
                   <th class="right">Subtotal</th>
                   <td class="td_subtotal right">{{invoice.net_amount|currency}}</td>
                 </tr>
-                {% for name,ammount in invoice.tax_details %}
+                {% for name,value in invoice.tax_details %}
                   <tr>
-                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}6{% else %}5{% endif %}"></td>
                     <th class="right">{{name}}</th>
-                    <td class="td_subtotal right">{{ammount|currency}}</td>
+                    <td class="td_subtotal right">{{value.tax|currency}}</td>
                   </tr>  
                 {% endfor %}
                 <tr>
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
+                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}6{% else %}5{% endif %}"></td>
                   <th class="right">Taxes total</th>
                   <td class="td_total_taxes right">{{invoice.tax_amount|currency}}</td>
                 </tr>
                 <tr class="strong">
-                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
+                  <td class="bottomleft" colspan="{% if invoice.discount_amount %}6{% else %}5{% endif %}"></td>
                   <th class="right">Total</th>
                   <td class="td_total right">{{invoice.gross_amount|currency}}</td>
                 </tr>
@@ -348,10 +348,6 @@ Template:
         <div class="section">
           <h3>Payment details</h3>
           <div>
-               Payment type: {{invoice.PaymentType.name}}
-               {% if invoice.PaymentType.description %}
-                  - {{invoice.PaymentType.description}}
-               {% endif %}
                <br> Due Date: {{invoice.due_date}}
           </div>
 
@@ -361,6 +357,8 @@ Template:
                <tr>
                  <th>Reference</th>
                  <th>Description</th>
+                 <th>Size</th>
+                 <th>Color</th>
                  <th class="right">Unit Cost</th>
                  <th class="right">Qty</th>
                  <th class="right">TVA</th>
@@ -380,6 +378,8 @@ Template:
                    <td>
                      {{item.description}}
                    </td>
+                   <td>{{item.size}}</td>
+                   <td>{{item.color}}</td>
                    <td class="right">{{item.unitary_cost|currency}}</td>
                    <td class="right">{{item.quantity}}</td>
                    <td class="right">
@@ -396,36 +396,36 @@ Template:
              </tbody>
              <tfoot>
                <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
+                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}7{% else %}6{% endif %}"></td>
                  <th class="right">Base</th>
                  <td class="right">{{invoice.base_amount|currency}}</td>
                </tr>
                {% if invoice.discount_amount %}
                <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
+                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}7{% else %}6{% endif %}"></td>
                  <th class="right">Discount</th>
                  <td class="td_global_discount right">{{invoice.discount_amount|currency}}</td>
                </tr>
                {% endif %}
                <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
+                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}7{% else %}6{% endif %}"></td>
                  <th class="right">Subtotal</th>
                  <td class="td_subtotal right">{{invoice.net_amount|currency}}</td>
                </tr>
-               {% for name,ammount in invoice.tax_details %}
+               {% for name,value in invoice.tax_details %}
                  <tr>
-                   <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
+                   <td class="bottomleft" colspan="{% if invoice.discount_amount %}7{% else %}6{% endif %}"></td>
                    <th class="right">{{name}}</th>
-                   <td class="td_subtotal right">{{ammount|currency}}</td>
+                   <td class="td_subtotal right">{{value.tax|currency}}</td>
                  </tr>  
                {% endfor %}
                <tr>
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
+                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}7{% else %}6{% endif %}"></td>
                  <th class="right">Taxes</th>
                  <td class="td_total_taxes right">{{invoice.tax_amount|currency}}</td>
                </tr>
                <tr class="strong">
-                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}5{% else %}4{% endif %}"></td>
+                 <td class="bottomleft" colspan="{% if invoice.discount_amount %}7{% else %}6{% endif %}"></td>
                  <th class="right">Total</th>
                  <td class="td_total right">{{invoice.gross_amount|currency}}</td>
                </tr>
@@ -583,6 +583,8 @@ Template:
               <thead>
                 <tr>
                   <th>Description</th>
+                  <th>Size</th>
+                  <th>Color</th>
                   <th class="right">Unit Cost</th>
                   <th class="right">Qty</th>
                   <th class="right">Taxes total</th>
@@ -599,6 +601,8 @@ Template:
                     <td>
                       {{item.description}}
                     </td>
+                    <td>{{item.size}}</td>
+                    <td>{{item.color}}</td>
                     <td class="right">{{item.unitary_cost|currency}}</td>
                     <td class="right">{{item.quantity}}</td>
                     <td class="right">
@@ -615,36 +619,36 @@ Template:
               </tbody>
               <tfoot>
                 <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
+                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}6{% else %}5{% endif %}"></td>
                   <th class="right">Base</th>
                   <td class="right">{{estimate.base_amount|currency}}</td>
                 </tr>
                 {% if estimate.discount_amount %}
                 <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
+                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}6{% else %}5{% endif %}"></td>
                   <th class="right">Discount</th>
                   <td class="td_global_discount right">{{estimate.discount_amount|currency}}</td>
                 </tr>
                 {% endif %}
                 <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
+                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}6{% else %}5{% endif %}"></td>
                   <th class="right">Subtotal</th>
                   <td class="td_subtotal right">{{estimate.net_amount|currency}}</td>
                 </tr>
                 {% for name,ammount in invoice.tax_details %}
                   <tr>
-                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
+                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}6{% else %}5{% endif %}"></td>
                     <th class="right">{{name}}</th>
                     <td class="td_subtotal right">{{ammount|currency}}</td>
                   </tr>  
                 {% endfor %}
                 <tr>
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
+                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}6{% else %}5{% endif %}"></td>
                   <th class="right">Taxes total</th>
                   <td class="td_total_taxes right">{{estimate.tax_amount|currency}}</td>
                 </tr>
                 <tr class="strong">
-                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}4{% else %}3{% endif %}"></td>
+                  <td class="bottomleft" colspan="{% if estimate.discount_amount %}6{% else %}5{% endif %}"></td>
                   <th class="right">Total</th>
                   <td class="td_total right">{{estimate.gross_amount|currency}}</td>
                 </tr>
@@ -652,7 +656,12 @@ Template:
             </table>
           </div>
         </div>
-
+        {% if estimate.imageURL %}
+        <div class="section">
+          <h3>Image</h3>
+          <img src="{{ estimate.imageURL }}"/>
+        </div>
+        {% endif %}
         <div class="section">
           <h3>Terms & conditions</h3>
           <div class="terms">
