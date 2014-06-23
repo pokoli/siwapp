@@ -188,11 +188,11 @@ Template:
                   <th class="right">Subtotal</th>
                   <td class="td_subtotal right">{{invoice.net_amount|currency}}</td>
                 </tr>
-                {% for name,ammount in invoice.tax_details %}
+                {% for name,value in invoice.tax_details %}
                   <tr>
                     <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
                     <th class="right">{{name}}</th>
-                    <td class="td_subtotal right">{{ammount|currency}}</td>
+                    <td class="td_subtotal right">{{value.tax|currency}}</td>
                   </tr>  
                 {% endfor %}
                 <tr>
@@ -412,11 +412,11 @@ Template:
                  <th class="right">Subtotal</th>
                  <td class="td_subtotal right">{{invoice.net_amount|currency}}</td>
                </tr>
-               {% for name,ammount in invoice.tax_details %}
+               {% for name,value in invoice.tax_details %}
                  <tr>
                    <td class="bottomleft" colspan="{% if invoice.discount_amount %}4{% else %}3{% endif %}"></td>
                    <th class="right">{{name}}</th>
-                   <td class="td_subtotal right">{{ammount|currency}}</td>
+                   <td class="td_subtotal right">{{value.tax|currency}}</td>
                  </tr>  
                {% endfor %}
                <tr>
