@@ -121,12 +121,14 @@
           </tr>
           <?php endforeach ?>
           <tr>
+            <td colspan="4" class="noborder"></td>
             <td><?php echo __('Discount') ?></td>
             <td id="td_global_discount" class="right">
               <?php echo format_currency($invoice->getDiscountAmount(), $currency) ?>
             </td>
           </tr>
           <tr class="strong">
+            <td colspan="4" class="noborder"></td>
             <td><?php echo __('Total') ?></td>
             <td id="td_total" class="right">
               <?php echo format_currency($invoice->getGrossAmount(), $currency) ?>
