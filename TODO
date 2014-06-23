@@ -1,24 +1,12 @@
-- Remesas bancarias.
-Comporta crear campo Número de cuenta en la ficha de configuraciónde la empresa y en la ficha de clientes.
-(ejemplo de creación de fichero con norma 19 para remesas)
-http://www.php-hispano.net/foros/PHP/38067-crear-archivo-norma-19-para-remesas
 5. Módulo Gastos
 - Posibilidad de subir factura escaneda.
-6. Los presupuestos que se han pasado a factura guardar el número de factura para hacer seguimiento. A ser possible que quede un registro de quien lo hizo y cuando lo hizo. 
+6. Los presupuestos que se han pasado a factura guardar el número de factura para hacer seguimiento. A ser possible que quede un registro de quien lo hizo y cuando lo hizo.
 
-Miscelànea: 
-- Acabar traducciones.
-- Encajar factura en una sola pagina. 
-- Poner la pestaña presupostos antes de facturas.
-
-Seguridad: 
+Seguridad:
 - Obligar a cambiar la contraseña según paràmetro (por defecto 3 meses)
 - Obligar a seleccionar una contraseña fuerte: longitud mínima, mayuculas y minúsculas, números y caracteres especiales.
-- Registrar la fecha en que se entró por última vez. Mostrarlo en la parte superior derecha de la pantalla. 
+- Registrar la fecha en que se entró por última vez. Mostrarlo en la parte superior derecha de la pantalla.
 - Registro d'acciones realizadas por usuario.
 
 Cosas secundarias que serian interesantes:
-2. Formas de pago. Poder especificar al realizar una factura que forma de pago tendrá (Giro bancario, pagaré, cheque, transferencia, efectivo, ...
-3. Hacer categorías de productos.
-4. En el resumen añadir información de gastos.
-5. Añadir gráfico de situación.
+1. Añadir gráfico de situación.
