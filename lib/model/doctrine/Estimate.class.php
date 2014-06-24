@@ -33,6 +33,10 @@ class Estimate extends BaseEstimate
 
   public function __isset($name)
   {
+    if($name == 'due_amount' || $name == 'tax_details')
+    {
+      return true;
+    }
     if(strpos($name, 'tax_amount_') === 0)
     {
       return true;
