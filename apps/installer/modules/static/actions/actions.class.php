@@ -413,7 +413,7 @@ END;
 
     if ($this->getUser()->getAttribute('preload'))
     {
-      $sql[] = "INSERT INTO property VALUES ('sample_data_load', '1')";
+      $sql[] = "INSERT INTO property VALUES (1,'sample_data_load', '1')";
     }
     // if no data preload, insert a default invoice serie
     else
